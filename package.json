@@ -1,0 +1,22 @@
+{
+  "name": "s21-22-webapp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "backend:dev": "cd backend && npm run dev",
+    "frontend:dev": "cd frontend && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/No-Country-simulation/s21-07-webapp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/No-Country-simulation/s21-07-webapp/issues"
+  },
+  "homepage": "https://github.com/No-Country-simulation/s21-07-webapp#readme",
+  "description": ""
+}
