@@ -9,6 +9,6 @@ export default defineConfig({
     port: process.env.PORT ? parseInt(process.env.PORT) : 5173,
   },
   preview: {
-    allowedHosts: ['s21-t22s21-t22-frontend.onrender.com', 'localhost'], // Permitir la URL de Render y localhost
+    allowedHosts: ['s21-t22-frontend.onrender.com', 'localhost'], // Permitir la URL de Render y localhost
   },
 });
