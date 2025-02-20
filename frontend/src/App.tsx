@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { SOCKET } from './socket/socket-connection';
-import { getRequest } from './services/http-requests';
+import { SOCKET } from "./socket/socket-connection";
+import { getRequest } from "./services/http-requests";
+import { Link } from "react-router-dom";
 
 function App() {
   const [respuesta, setRespuesta] = useState<string | null>(null);
@@ -25,19 +26,23 @@ function App() {
 
   // Hace una petición HTTP GET a "/api/"
   useEffect(() => {
-    getRequest('/')
-      .then(data => setRespuesta(data as string));
+    getRequest("/").then((data) => setRespuesta(data as string));
   }, []);
 
-
   return (
-    <><div>
-      <h3>Respuesta al hacer fetch a la raíz del backend:</h3>
-      <pre>{JSON.stringify(respuesta)}</pre>
-    </div>
+    <>
+      <div>
+        <h3>Respuesta al hacer fetch a la raíz del backend:</h3>
+        <pre>{JSON.stringify(respuesta)}</pre>
+      </div>
       <div>
         <h3>Probar Conexión Socket:</h3>
-        <form onSubmit={(e) => { e.preventDefault(); enviarMensaje(); }}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            enviarMensaje();
+          }}
+        >
           <input value={mensaje} onChange={(e) => setMensaje(e.target.value)} />
           <button type="submit">Enviar</button>
         </form>
@@ -47,6 +52,7 @@ function App() {
           ))}
         </ul>
       </div>
+      <Link to="/prueba">Ruta de prueba</Link>
     </>
   );
 }
