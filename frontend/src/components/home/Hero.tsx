@@ -1,21 +1,20 @@
-import { useState } from "react";
 import {
-  Container,
-  Typography,
-  Button,
-  Box,
-
-  Stack,
   alpha,
+  Box,
+  Button,
+  Container,
+  Stack,
+  Typography,
 } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
-import { Search as SearchIcon } from "@mui/icons-material";
 import { es } from "date-fns/locale";
+import { formatDateToDDMMYYYY } from '../../utils/formatDateToDDMMYYYY ';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { Search as SearchIcon } from "@mui/icons-material";
+import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 import CustomAutocomplete from './Autocomplete';
 import CustomDatePicker from './Datepicker';
-import { formatDateToDDMMYYYY } from '../../utils/formatDateToDDMMYYYY ';
-import { useNavigate } from 'react-router-dom';
 
 
 // Simulación de búsqueda, luego se reemplazará por una llamada a una API real
