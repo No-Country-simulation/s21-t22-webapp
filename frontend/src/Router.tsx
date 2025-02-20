@@ -2,7 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthProvider";
 import { ReactElement } from "react";
 import Prueba, { Anidada1, Anidada2 } from "./pages/Prueba";
-import App from "./App"; // Importa App.tsx
+// import BusSeatSelector from './components/BusSeatSelector';
+import Home from './pages/Home';
 
 type Route = {
   path: string;
@@ -10,10 +11,24 @@ type Route = {
   children?: Route[];
 };
 
+// Genera 50 asientos (NO BORRAR!!!)
+const generateSeats = (count: number) => {
+  return Array.from({ length: count }, (_, index) => ({
+    id: index + 1,
+    numero: index + 1,
+    // Genera aleatoriamente si el asiento está ocupado o libre
+    tipo: Math.random() > 0.3 ? "libre" : "ocupado",
+  }));
+};
+
+// Genera 50 asientos (NO BORRAR!!)
+const sampleSeats = generateSeats(50);
+
 const browserRoutes = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    // element: <BusSeatSelector seats={sampleSeats} quantity={2} />,
+    element: <Home />,
   },
   {
     path: "/prueba",

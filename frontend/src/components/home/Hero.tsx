@@ -15,6 +15,7 @@ import { es } from "date-fns/locale";
 import CustomAutocomplete from './Autocomplete';
 import CustomDatePicker from './Datepicker';
 import { formatDateToDDMMYYYY } from '../../utils/formatDateToDDMMYYYY ';
+import { useNavigate } from 'react-router-dom';
 
 
 // Simulación de búsqueda, luego se reemplazará por una llamada a una API real
@@ -34,6 +35,7 @@ const Hero = () => {
   const [date, setDate] = useState<Date | null>(null);
   const [originOptions, setOriginOptions] = useState<string[]>([]);
   const [destinationOptions, setDestinationOptions] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const handleOriginSearch = async (query: string) => {
     if (query.length > 2) {
@@ -53,7 +55,9 @@ const Hero = () => {
     if (!origin || !destination || !date) {
       return;
     }
-    console.log("Buscando viajes:", { origin, destination, date: formatDateToDDMMYYYY(date!) });
+    const formattedDate = formatDateToDDMMYYYY(date!);
+    console.log("Buscando viajes:", { origin, destination, date: formattedDate });
+    navigate(`/viajes?origenId=${10}&destinoId=${20}&fecha=${encodeURIComponent(formattedDate)}`);
   };
 
   return (

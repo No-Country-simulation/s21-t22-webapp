@@ -97,7 +97,7 @@ const experiences = [
   },
 ];
 
-export default function TravelHeroSearch() {
+export default function Home() {
   return (
     <MainLayout>
       <>
