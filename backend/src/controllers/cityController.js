@@ -1,19 +1,19 @@
 import cityService from "../services/cityService.js";
 
-const searchCities = async (req, res) => {
-  try {
-    const { names } = req.query;
+const searchCities = (req, res) => {
+  const { from, to } = req.query;
 
-    if (!names) {
-      return res.status(400).json({ error: "Debes proporcionar nombres de ciudades" });
-    }
-
-    const cities = await cityService.findCitiesByName(names);
-    res.json(cities);
-  } catch (error) {
-    console.error("Error en la búsqueda:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
-  }
+  cityService.searchCities(from, to)
+    .then(cities => {
+      if (cities.length === 0) {
+        return res.status(404).json({ message: "Ciudades no encontradas" });
+      }
+      res.status(200).json(cities);
+    })
+    .catch(error => {
+      console.error("Error al buscar ciudades:", error);
+      res.status(500).json({ message: "Error en el servidor" });
+    });
 };
 
 export default { searchCities };

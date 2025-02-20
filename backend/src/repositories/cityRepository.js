@@ -1,7 +1,7 @@
 import City from "../models/City.js";
 
-const getCitiesByNames = async (cityNames) => {
-  return await City.find({ name: { $in: cityNames } });
+const getCitiesByRoute = async (from, to) => {
+  return await City.find({ name: { $in: [from, to] } });
 };
 
-export default { getCitiesByNames };
+export default { getCitiesByRoute };

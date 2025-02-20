@@ -1,8 +1,13 @@
-import cityRepository from "../repositories/cityRepository.js";
+import City from "../models/City.js";
 
-const findCitiesByName = async (names) => {
-  const cityNames = names.split(",").map(name => name.trim());
-  return await cityRepository.getCitiesByNames(cityNames);
+const searchCities = (from, to) => {
+  return City.find({ name: { $in: [from, to] } })
+    .then(cities => {
+      return cities;
+    })
+    .catch(error => {
+      throw new Error("Error al buscar ciudades: " + error.message);
+    });
 };
 
-export default { findCitiesByName };
+export default { searchCities };
