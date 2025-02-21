@@ -1,4 +1,4 @@
-import http from "http";
+/*import http from "http";
 import { Server } from "socket.io";
 import app from "./app.js"; 
 
@@ -31,3 +31,4 @@ server.listen(PORT, () => {
   console.log(`🚀 Servidor en http://localhost:${PORT}`);
 });
 
+*/
