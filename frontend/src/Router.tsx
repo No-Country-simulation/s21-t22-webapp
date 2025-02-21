@@ -4,6 +4,8 @@ import { ReactElement } from "react";
 import Prueba, { Anidada1, Anidada2 } from "./pages/Prueba";
 // import BusSeatSelector from './components/BusSeatSelector';
 import Home from './pages/Home';
+import Travels from "./pages/Travels";
+import Viajes from "./pages/Viajes";
 
 type Route = {
   path: string;
@@ -44,6 +46,15 @@ const browserRoutes = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/travels/:origin/:destination/:date",
+    element: <Travels />,
+  },
+  {
+    path: "/viajes",
+    element: <Viajes/>,
+  },
+
 ] as Route[]);
 
 const AppRouter: React.FC = () => {

@@ -56,7 +56,7 @@ const Hero = () => {
     }
     const formattedDate = formatDateToDDMMYYYY(date!);
     console.log("Buscando viajes:", { origin, destination, date: formattedDate });
-    navigate(`/viajes?origenId=${10}&destinoId=${20}&fecha=${encodeURIComponent(formattedDate)}`);
+    navigate(`/viajes?origenId=${origin}&destinoId=${destination}&fecha=${encodeURIComponent(formattedDate)}`); 
   };
 
   return (
