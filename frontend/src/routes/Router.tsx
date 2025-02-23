@@ -31,6 +31,7 @@ const browserRoutes = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+    index: true,
   },
   {
     path: "/login",
