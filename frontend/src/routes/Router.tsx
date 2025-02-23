@@ -1,11 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AuthProvider } from "../contexts/AuthProvider";
 import { ReactElement } from "react";
-import Prueba, { Anidada1, Anidada2 } from "../pages/Prueba";
-// import BusSeatSelector from './components/BusSeatSelector';
 import Home from "../pages/Home";
 import Travels from "../pages/Travels";
 import Viajes from "../pages/Viajes";
+import Profile from "../auth/components/Profile";
+import PrivateRoute from "./PrivateRoute";
+import Login from "../auth/components/Login";
 
 type Route = {
   path: string;
@@ -27,41 +27,46 @@ const generateSeats = (count: number) => {
 const sampleSeats = generateSeats(50);
 
 const browserRoutes = createBrowserRouter([
+  // RUTAS PUBLICAS
   {
     path: "/",
-    // element: <BusSeatSelector seats={sampleSeats} quantity={2} />,
     element: <Home />,
   },
   {
-    path: "/prueba",
-    element: <Prueba />,
-    children: [
-      {
-        path: "anidada1",
-        element: <Anidada1 />,
-      },
-      {
-        path: "anidada2",
-        element: <Anidada2 />,
-      },
-    ],
+    path: "/login",
+    element: <Login />,
   },
   {
     path: "/travels/:origin/:destination/:date",
     element: <Travels />,
   },
+
+  // RUTAS PRIVADAS  ( para ingresar a rutas privadas, en "/login" poner---> user:admin clave:1234)
+  {
+    path: "/profile",
+    element: <PrivateRoute />,
+    children: [
+      {
+        path: "",
+        element: <Profile />,
+      },
+    ],
+  },
+
   {
     path: "/viajes",
-    element: <Viajes />,
+    element: <PrivateRoute />,
+    children: [
+      {
+        path: "",
+        element: <Viajes />,
+      },
+    ],
   },
 ] as Route[]);
 
 const AppRouter: React.FC = () => {
-  return (
-    <AuthProvider>
-      <RouterProvider router={browserRoutes} />
-    </AuthProvider>
-  );
+  return <RouterProvider router={browserRoutes} />;
 };
 
 export default AppRouter;
