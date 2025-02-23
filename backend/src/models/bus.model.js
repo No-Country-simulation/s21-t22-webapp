@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema(
+const BusSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    role: { type: String, enum: ["passenger", "admin"], default: "passenger" },
+    plate: { type: String, required: true, unique: true }, // Placa del bus
+    capacity: { type: Number, required: true }, // Número total de asientos
   },
   { timestamps: true }
 );
 
-export default mongoose.model("User", UserSchema);
+export default mongoose.model("Bus", BusSchema);
