@@ -5,6 +5,7 @@ import HeroDinamic from "../components/test/HeroDinamic";
 import { Box, Typography, Grid, Button } from "@mui/material";
 import { Grafo } from "../utils/test/algoritmoGrafos";
 import { dijkstra } from "../utils/test/dijkstra";
+import MainLayout from '../components/common/MainLayout';
 
 // Define el tipo TravelType
 interface TravelType {
@@ -46,7 +47,7 @@ const Viajes = () => {
         // Encontrar la mejor ruta desde Arequipa a Lima
         const ruta = dijkstra(grafo, "Nazca", "Lima");
         console.log("Ruta más corta:", ruta);
-    })
+    });
 
     useEffect(() => {
         const fetchTravelData = async () => {
@@ -72,62 +73,63 @@ const Viajes = () => {
 
 
     return (
-        <div>
-            <NavBar />
-            <HeroDinamic travelData={{ origin: origenId ?? "Buenos Aires", destination: destinoId ?? "Entre Rios", date: new Date(fecha ?? "") }} />
-            {
-                /*
-                <h1>Detalles del Viaje</h1>
-                <p>Origen ID: {origenId ?? "No especificado"}</p>
-                <p>Destino ID: {destinoId ?? "No especificado"}</p>
-                <p>Fecha: {fecha ?? "No especificada"}</p>
-                */
-            }
-            <Grid container spacing={2}>
-                {travelInfo.map((travel) => (
-                    <Grid item xs={12} sm={6} md={4} key={travel.id}>
-                        <Box
-                            sx={{
-                                margin: "10px",
-                                border: '1px solid #ccc',
-                                borderRadius: 2,
-                                overflow: 'hidden',
-                                padding: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                                backgroundColor: '#f9f9f9',
-                                height: '100%', // Asegura que el rectángulo ocupe toda la altura disponible
-                                width: "82%",
-                                transition: '0.3s',
-                                '&:hover': {
-                                    transform: 'scale(1.02)',
-                                    boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
-                                }
-                            }}
-                        >
-                            <img
-                                src={travel.imageUrl}
-                                alt={`${travel.origin} a ${travel.destination}`}
-                                style={{ width: '100%', height: 'auto', borderRadius: 4 }}
-                            />
-                            <Typography variant="h6" component="div" sx={{ mt: 2 }}>
-                                {travel.origin} a {travel.destination}
-                            </Typography>
-                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                Fecha: {travel.date}
-                            </Typography>
-                            <Typography variant="body2" sx={{ mb: 2 }}>
-                                {travel.description}
-                            </Typography>
-                            <Button variant="contained" color="primary" fullWidth>
-                                Reservar
-                            </Button>
-                        </Box>
-                    </Grid>
-                ))}
-            </Grid>
-        </div>
+        <MainLayout >
+            <>
+                <HeroDinamic travelData={{ origin: origenId ?? "Buenos Aires", destination: destinoId ?? "Entre Rios", date: new Date(fecha ?? "") }} />
+                {
+                    /*
+                    <h1>Detalles del Viaje</h1>
+                    <p>Origen ID: {origenId ?? "No especificado"}</p>
+                    <p>Destino ID: {destinoId ?? "No especificado"}</p>
+                    <p>Fecha: {fecha ?? "No especificada"}</p>
+                    */
+                }
+                <Grid container spacing={2}>
+                    {travelInfo.map((travel) => (
+                        <Grid item xs={12} sm={6} md={4} key={travel.id}>
+                            <Box
+                                sx={{
+                                    margin: "10px",
+                                    border: '1px solid #ccc',
+                                    borderRadius: 2,
+                                    overflow: 'hidden',
+                                    padding: 2,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    backgroundColor: '#f9f9f9',
+                                    width: "82%",
+                                    transition: '0.3s',
+                                    '&:hover': {
+                                        transform: 'scale(1.02)',
+                                        boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+                                    }
+                                }}
+                            >
+                                <img
+                                    src={travel.imageUrl}
+                                    alt={`${travel.origin} a ${travel.destination}`}
+                                    style={{ width: '100%', height: 'auto', borderRadius: 4 }}
+                                />
+                                <Typography variant="h6" component="div" sx={{ mt: 2 }}>
+                                    {travel.origin} a {travel.destination}
+                                </Typography>
+                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                    Fecha: {travel.date}
+                                </Typography>
+                                <Typography variant="body2" sx={{ mb: 2 }}>
+                                    {travel.description}
+                                </Typography>
+                                <Button variant="contained" color="primary" fullWidth>
+                                    Reservar
+                                </Button>
+                            </Box>
+                        </Grid>
+                    ))}
+                </Grid>
+            </>
+
+        </MainLayout >
     );
 };
 
