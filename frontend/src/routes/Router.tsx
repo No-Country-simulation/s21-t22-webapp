@@ -6,6 +6,7 @@ import Viajes from "../pages/Viajes";
 import Profile from "../auth/components/Profile";
 import PrivateRoute from "./PrivateRoute";
 import Login from "../auth/components/Login";
+import TestPage from "../pages/TestPage";
 
 type Route = {
   path: string;
@@ -40,6 +41,10 @@ const browserRoutes = createBrowserRouter([
   {
     path: "/travels/:origin/:destination/:date",
     element: <Travels />,
+  },
+  {
+    path: "/testpage",
+    element: <TestPage />,
   },
 
   // RUTAS PRIVADAS  ( para ingresar a rutas privadas, en "/login" poner---> user:admin clave:1234)

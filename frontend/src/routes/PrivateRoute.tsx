@@ -9,7 +9,7 @@ const PrivateRoute: React.FC = () => {
   //const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   // Si no está autenticado, redirigir al login
-  if (!isAuthenticated) {
+  if (!isAuthenticated) { 
     return <Navigate to="/login" replace />;
   }
 

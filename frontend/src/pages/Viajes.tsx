@@ -44,7 +44,7 @@ const Viajes = () => {
         grafo.agregarArista("Ica", "Lima", 300, 240);
 
         // Encontrar la mejor ruta desde Arequipa a Lima
-        const ruta = dijkstra(grafo, "Arequipa", "Lima");
+        const ruta = dijkstra(grafo, "Nazca", "Lima");
         console.log("Ruta más corta:", ruta);
     })
 
@@ -69,6 +69,7 @@ const Viajes = () => {
 
         fetchTravelData();
     }, []);
+
 
     return (
         <div>
