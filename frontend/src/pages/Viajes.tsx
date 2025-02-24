@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import NavBar from "../components/common/Navbar";
 import HeroDinamic from "../components/test/HeroDinamic";
 import { Box, Typography, Grid, Button } from "@mui/material";
+import { Grafo } from "../utils/test/algoritmoGrafos";
+import { dijkstra } from "../utils/test/dijkstra";
 
 // Define el tipo TravelType
 interface TravelType {
@@ -24,6 +26,27 @@ const Viajes = () => {
     const fecha = searchParams.get("fecha");
 
     console.log("Params:", { origenId, destinoId, fecha });
+
+    useEffect(() => {
+        const grafo = new Grafo();
+
+        // Agregar ciudades
+        grafo.agregarNodo("Arequipa");
+        grafo.agregarNodo("Camaná");
+        grafo.agregarNodo("Nazca");
+        grafo.agregarNodo("Ica");
+        grafo.agregarNodo("Lima");
+
+        // Agregar rutas entre ciudades
+        grafo.agregarArista("Arequipa", "Camaná", 180, 120);
+        grafo.agregarArista("Camaná", "Nazca", 400, 300);
+        grafo.agregarArista("Nazca", "Ica", 150, 120);
+        grafo.agregarArista("Ica", "Lima", 300, 240);
+
+        // Encontrar la mejor ruta desde Arequipa a Lima
+        const ruta = dijkstra(grafo, "Arequipa", "Lima");
+        console.log("Ruta más corta:", ruta);
+    })
 
     useEffect(() => {
         const fetchTravelData = async () => {
