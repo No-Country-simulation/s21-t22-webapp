@@ -20,7 +20,8 @@ const UserSchema = new mongoose.Schema(
       unique: true,
     },
     password: { type: String, required: [true, "Please add your password"] },
-    role: { type: String, enum: ["passenger", "admin"], default: "passenger" },
+    role: { type: String, enum: ["USER", "ADMIN"], default: "USER" },
+    miles_balace: { type: Number, default: 0}
   },
   { timestamps: true }
 );
