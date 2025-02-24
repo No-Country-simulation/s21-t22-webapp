@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const BusSchema = new mongoose.Schema(
   {
-    plate: {
+    company_id: { type: mongoose.Schema.Types.ObjectId, ref: "Company", required: true },
+    license_plate: {
       type: String,
       required: true,
       unique: [true, "The plate is require"],
