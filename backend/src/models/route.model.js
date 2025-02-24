@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const RouteSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true }, // Nombre de la ruta (Ej: "CDMX - Guadalajara")
+    name: { type: String, required: [true, "Route's name is require"] }, // Nombre de la ruta (Ej: "CDMX - Guadalajara")
     stops: [
       {
         name: String, // Nombre de la parada (Ej: "León")

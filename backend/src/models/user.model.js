@@ -4,7 +4,11 @@ const UserSchema = new mongoose.Schema(
   {
     name: { type: String, required: [true, "Please add your name"] },
     lastname: { type: String, required: [true, "Please add your lastname"] },
-    phone: { type: String, required: [true, "Please add your phone"] },
+    phone: {
+      type: String,
+      required: [true, "Please add your phone"],
+      unique: true,
+    },
     dni: {
       type: String,
       required: [true, "Please add your dni"],
