@@ -5,4 +5,4 @@ export const companySchema = new mongoose.Schema({
     logo_url: { type: String }
 }, { timestamps: true })
 
-export const Company = mongoose.model('Company', companySchema);
+export default mongoose.model('Company', companySchema);
