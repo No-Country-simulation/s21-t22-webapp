@@ -7,7 +7,7 @@ export const ticketSchema = new mongoose.Schema({
     alighting_stop_id: {type: mongoose.Types.ObjectId, ref: 'TripStop', required: true},
     seat_number: { type: Number, required: true },
     purchase_date: { type: Date, default: Date.now },
-    status: { type: String, enum: ['ACTIVE', 'CANCELLED']},
+    status: { type: String, enum: ['ACTIVE', 'USED', 'CANCELLED']},
 }, { timestamps: true })
 
-export const Ticket = mongoose.model('Ticket', ticketSchema)
+export default mongoose.model('Ticket', ticketSchema)
