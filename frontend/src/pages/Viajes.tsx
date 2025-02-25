@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import NavBar from "../components/common/Navbar";
 import HeroDinamic from "../components/test/HeroDinamic";
 import { Box, Typography, Grid, Button } from "@mui/material";
 import { Grafo } from "../utils/test/algoritmoGrafos";
@@ -75,6 +74,7 @@ const Viajes = () => {
     return (
         <MainLayout >
             <>
+                {/* OJO ACÁ QUE HAY QUE TRABAJAR BASTANTE ESE "HeroDinamic" */}
                 <HeroDinamic travelData={{ origin: origenId ?? "Buenos Aires", destination: destinoId ?? "Entre Rios", date: new Date(fecha ?? "") }} />
                 {
                     /*

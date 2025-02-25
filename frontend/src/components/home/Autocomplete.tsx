@@ -5,6 +5,7 @@ interface Props {
   onChange: (value: string | null) => void;
   options: string[];
   onSearch: (query: string) => void;
+  onBlur?: () => void;
   placeholder: string;
 }
 
@@ -12,6 +13,7 @@ const CustomAutocomplete: React.FC<Props> = ({
   value,
   onChange,
   options,
+  onBlur,
   onSearch,
   placeholder,
 }) => {
@@ -40,6 +42,7 @@ const CustomAutocomplete: React.FC<Props> = ({
       )}
       value={value}
       onChange={(_, newValue) => onChange(newValue)}
+      onBlur={onBlur}
     />
   );
 };

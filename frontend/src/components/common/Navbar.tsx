@@ -13,6 +13,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
+import { nanoid } from 'nanoid';
 
 const pages = ["Enlace1", "Enlace2", "Enlace3"];
 const settings = [
@@ -98,7 +99,7 @@ function NavBar() {
               sx={{ display: { xs: "block", md: "none" } }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={nanoid()} onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: "center" }}>{page}</Typography>
                 </MenuItem>
               ))}
@@ -128,7 +129,7 @@ function NavBar() {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={nanoid()}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
@@ -160,6 +161,7 @@ function NavBar() {
             >
               {settings.map((setting) => (
                 <MenuItem
+                  key={nanoid()}
                   onClick={handleCloseUserMenu}
                   component={NavLink}
                   to={setting.link}
