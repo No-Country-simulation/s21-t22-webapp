@@ -22,7 +22,7 @@ const searchPlaces = async (query: string) => {
   return await getRequest<City[]>(`/cities/search-by-query?query=${query}`);
 };
 
-const baclgoundImage = "https://www.infobae.com/resizer/v2/https%3A%2F%2Fs3.amazonaws.com%2Farc-wordpress-client-uploads%2Finfobae-wp%2Fwp-content%2Fuploads%2F2018%2F05%2F16163658%2Fmicros-larga-distancia-Getty-Images.jpg?auth=719b522476893895b314fbd2a2b32db914361f6be2e99aad2c7afe065edfdc3f&smart=true&width=1200&height=675&quality=85";
+const backgroundImage = "https://www.infobae.com/resizer/v2/https%3A%2F%2Fs3.amazonaws.com%2Farc-wordpress-client-uploads%2Finfobae-wp%2Fwp-content%2Fuploads%2F2018%2F05%2F16163658%2Fmicros-larga-distancia-Getty-Images.jpg?auth=719b522476893895b314fbd2a2b32db914361f6be2e99aad2c7afe065edfdc3f&smart=true&width=1200&height=675&quality=85";
 
 const Hero = () => {
   const [origin, setOrigin] = useState<City | null>(null);
@@ -51,9 +51,18 @@ const Hero = () => {
     if (!origin || !destination || !date) {
       return;
     }
+
     const formattedDate = formatDateToDDMMYYYY(date!);
     console.log("Buscando viajes:", { origin: origin._id, destination: destination._id, date: formattedDate });
     navigate(`/viajes?origenId=${origin._id}&destinoId=${destination._id}&fecha=${formattedDate}`);
+  };
+
+  const handleBlurOrigin = () => {
+    setOriginOptions([]);
+  };
+
+  const handleBlurDestination = () => {
+    setDestinationOptions([]);
   };
 
   return (
@@ -81,7 +90,7 @@ const Hero = () => {
             right: 0,
             bottom: 0,
             backgroundImage:
-              `url(${baclgoundImage})`,
+              `url(${backgroundImage})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -138,6 +147,7 @@ const Hero = () => {
                 }}
                 options={originOptions.map((city) => city.name)}
                 onSearch={handleOriginSearch}
+                onBlur={handleBlurOrigin}
                 placeholder="Origen"
               />
               <CustomAutocomplete
@@ -148,6 +158,7 @@ const Hero = () => {
                 }}
                 options={destinationOptions.map((city) => city.name)}
                 onSearch={handleDestinationSearch}
+                onBlur={handleBlurDestination}
                 placeholder="Destino"
               />
               <CustomDatePicker
