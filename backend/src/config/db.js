@@ -7,8 +7,8 @@ const connectDB = async () => {
   try {
     await mongoose
       .connect(process.env.MONGO_URI, {
-        ssl: true,
-        authSource: "admin",
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
       })
       .then((db) => {
         console.log("🔥 MongoDB conectado");
