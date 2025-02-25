@@ -9,4 +9,4 @@ export const TripStopSchema = new mongoose.Schema({
     }, {timestamp: true}
 );
 
-export const TripStop = mongoose.model('TripStop', TripStopSchema)
+export default mongoose.model('TripStop', TripStopSchema)
