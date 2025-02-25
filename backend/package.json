@@ -5,12 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/app.js",
-<<<<<<< HEAD
-    "start": "node src/app.js"
-=======
     "start": "node src/app.js",
     "seed": "node src/seed/seed.js"
->>>>>>> 2f9dd42048e0882d79f9279e205e1230f172bc49
   },
   "keywords": [],
   "author": "",

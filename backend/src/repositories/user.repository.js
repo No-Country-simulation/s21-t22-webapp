@@ -8,4 +8,8 @@ const createUser = async (data) => {
   return await User.create(data);
 };
 
-export default { getAllUsers, createUser };
+const getUserByEmail = async (email) => {
+  return await User.findOne({ email });
+};
+
+export default { getAllUsers, createUser, getUserByEmail };
