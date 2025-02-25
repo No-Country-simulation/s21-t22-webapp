@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "backend:dev": "cd backend && npm run dev",
+    "backend:seed": "cd backend && npm run seed",
     "frontend:dev": "cd frontend && npm run dev"
   },
   "keywords": [],

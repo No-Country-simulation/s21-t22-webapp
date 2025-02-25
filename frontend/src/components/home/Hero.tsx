@@ -7,8 +7,10 @@ import {
   Typography,
 } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { City } from '../../../types/city';
 import { es } from "date-fns/locale";
 import { formatDateToDDMMYYYY } from '../../utils/formatDateToDDMMYYYY ';
+import { getRequest } from '../../services/http-requests';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
@@ -16,24 +18,19 @@ import { useState } from "react";
 import CustomAutocomplete from './Autocomplete';
 import CustomDatePicker from './Datepicker';
 
-
-// Simulación de búsqueda, luego se reemplazará por una llamada a una API real
-const searchPlaces = (query: string) => {
-  return new Promise<string[]>((resolve) => {
-    setTimeout(() => {
-      resolve([`${query} Ciudad`, `${query} Aeropuerto`, `${query} Central`, `${query} Plaza`]);
-    }, 300);
-  });
+const searchPlaces = async (query: string) => {
+  return await getRequest<City[]>(`/cities/search-by-query?query=${query}`);
 };
 
 const baclgoundImage = "https://www.infobae.com/resizer/v2/https%3A%2F%2Fs3.amazonaws.com%2Farc-wordpress-client-uploads%2Finfobae-wp%2Fwp-content%2Fuploads%2F2018%2F05%2F16163658%2Fmicros-larga-distancia-Getty-Images.jpg?auth=719b522476893895b314fbd2a2b32db914361f6be2e99aad2c7afe065edfdc3f&smart=true&width=1200&height=675&quality=85";
 
 const Hero = () => {
-  const [origin, setOrigin] = useState<string | null>(null);
-  const [destination, setDestination] = useState<string | null>(null);
+  const [origin, setOrigin] = useState<City | null>(null);
+  const [destination, setDestination] = useState<City | null>(null);
   const [date, setDate] = useState<Date | null>(null);
-  const [originOptions, setOriginOptions] = useState<string[]>([]);
-  const [destinationOptions, setDestinationOptions] = useState<string[]>([]);
+  const [originOptions, setOriginOptions] = useState<City[]>([]);
+  const [destinationOptions, setDestinationOptions] = useState<City[]>([]);
+
   const navigate = useNavigate();
 
   const handleOriginSearch = async (query: string) => {
@@ -55,8 +52,8 @@ const Hero = () => {
       return;
     }
     const formattedDate = formatDateToDDMMYYYY(date!);
-    console.log("Buscando viajes:", { origin, destination, date: formattedDate });
-    navigate(`/viajes?origenId=${origin}&destinoId=${destination}&fecha=${encodeURIComponent(formattedDate)}`); 
+    console.log("Buscando viajes:", { origin: origin._id, destination: destination._id, date: formattedDate });
+    navigate(`/viajes?origenId=${origin._id}&destinoId=${destination._id}&fecha=${formattedDate}`);
   };
 
   return (
@@ -134,16 +131,22 @@ const Hero = () => {
           >
             <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center">
               <CustomAutocomplete
-                value={origin}
-                onChange={setOrigin}
-                options={originOptions}
+                value={origin ? origin.name : null}
+                onChange={(value) => {
+                  const selectedCity = originOptions.find(city => city.name === value) || null;
+                  setOrigin(selectedCity);
+                }}
+                options={originOptions.map((city) => city.name)}
                 onSearch={handleOriginSearch}
                 placeholder="Origen"
               />
               <CustomAutocomplete
-                value={destination}
-                onChange={setDestination}
-                options={destinationOptions}
+                value={destination ? destination.name : null}
+                onChange={(value) => {
+                  const selectedCity = destinationOptions.find(city => city.name === value) || null;
+                  setDestination(selectedCity);
+                }}
+                options={destinationOptions.map((city) => city.name)}
                 onSearch={handleDestinationSearch}
                 placeholder="Destino"
               />
