@@ -1,7 +1,7 @@
 // Función para convertir grados a radianes
 const toRadians = (degrees) => (degrees * Math.PI) / 180;
 
-export const calcularDistancia = (lat1, lon1) => {
+export const distance = (lat1, lon1) => {
   // Coordenadas de Buenos Aires
   const lat2 = -34.59509790616856;
   const lon2 = -58.36923257361296;
