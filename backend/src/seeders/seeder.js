@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Stop from "../models/stops.model.js";
 import { stops } from "./stops.seeder.js";
-import { createRoutes, deleteRoutes } from "./route.seeder.js";
 
 dotenv.config();
 
@@ -37,8 +36,6 @@ const deleteData = async () => {
 
 if (process.argv[2] === "-i") {
   importData();
-  createRoutes();
 } else if (process.argv[2] === "-d") {
   deleteData();
-  deleteRoutes();
 }
