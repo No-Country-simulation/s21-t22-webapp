@@ -1,5 +1,14 @@
 import { Grafo } from "./base.graph.js";
 import { dijkstra } from "./dijkstra.graph.js";
+import { distance } from "./distance.graph.js";
+
+const lat1 = -34.603722,
+  lon1 = -58.381592; // Buenos Aires
+const lat2 = -32.94682,
+  lon2 = -60.63932; // Rosario
+
+const distancia = distance(lat1, lon1, lat2, lon2);
+console.log(`📍 La distancia entre Buenos Aires y Rosario es: ${distancia} km`);
 
 const grafo = new Grafo();
 

@@ -6,7 +6,7 @@ dotenv.config();
 const connectDB = async () => {
   try {
     await mongoose
-      .connect(process.env.MONGO_URI, {
+      .connect(process.env.MY_MONGO_URI, {
         ssl: true,
         authSource: "admin",
       })

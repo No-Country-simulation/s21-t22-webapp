@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "nodemon src/app.js",
     "start": "node src/app.js",
-    "seed": "node src/seed/seed.js"
+    "seed": "node src/seeders/seeder.js -i",
+    "delete": "node src/seeders/seeder.js -d",
+    "routes": "node src/seeders/route.seeder.js -i",
+    "delete-routes": "node src/seeders/route.seeder.js -d"
   },
   "keywords": [],
   "author": "",

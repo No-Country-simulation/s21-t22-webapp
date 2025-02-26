@@ -1,44 +1,54 @@
-import { Grafo } from "./base.graph.js";
+import Route from "../../models/route.model.js";
 
-export function dijkstra(grafo, inicio, fin, criterio = "distancia") {
+export const dijkstra = async (routeId, startId, endId) => {
+  const route = await Route.findById(routeId).populate(
+    "connections.from connections.to"
+  );
+
+  if (!route) throw new Error("Ruta no encontrada");
+
+  const graph = new Map();
+
+  route.connections.forEach(({ from, to, distance }) => {
+    if (!graph.has(from._id.toString())) graph.set(from._id.toString(), []);
+    if (!graph.has(to._id.toString())) graph.set(to._id.toString(), []);
+
+    graph
+      .get(from._id.toString())
+      .push({ destino: to._id.toString(), distancia: distance });
+    graph
+      .get(to._id.toString())
+      .push({ destino: from._id.toString(), distancia: distance });
+  });
+
+  // Inicializar estructuras
   const distancias = new Map();
   const previos = new Map();
   const visitados = new Set();
   const cola = new Map();
 
-  // Inicializar distancias con infinito
-  for (const ciudad of grafo.obtenerCiudades()) {
-    distancias.set(ciudad, Infinity);
-    previos.set(ciudad, null);
+  for (const key of graph.keys()) {
+    distancias.set(key, Infinity);
+    previos.set(key, null);
   }
-  distancias.set(inicio, 0);
-  cola.set(inicio, 0);
+  distancias.set(startId, 0);
+  cola.set(startId, 0);
 
   while (cola.size > 0) {
-    const nodoActual = [...cola.entries()].reduce((a, b) =>
+    const [nodoActual] = [...cola.entries()].reduce((a, b) =>
       a[1] < b[1] ? a : b
-    )[0];
+    );
     cola.delete(nodoActual);
     visitados.add(nodoActual);
 
-    if (nodoActual === fin) break;
+    if (nodoActual === endId) break;
 
-    for (const vecino of grafo.obtenerConexiones(nodoActual)) {
-      console.log(`Nodo ${nodoActual} tiene vecino:`, vecino);
+    for (const vecino of graph.get(nodoActual) || []) {
       if (visitados.has(vecino.destino)) continue;
 
-      const peso = criterio === "distancia" ? vecino.distancia : vecino.tiempo;
-      const distanciaNodoActual =
-        distancias.get(nodoActual) !== undefined
-          ? distancias.get(nodoActual)
-          : Infinity;
-      const nuevaDistancia = distanciaNodoActual + peso;
+      const nuevaDistancia = distancias.get(nodoActual) + vecino.distancia;
 
-      const distanciaVecino =
-        distancias.get(vecino.destino) !== undefined
-          ? distancias.get(vecino.destino)
-          : Infinity;
-      if (nuevaDistancia < distanciaVecino) {
+      if (nuevaDistancia < distancias.get(vecino.destino)) {
         distancias.set(vecino.destino, nuevaDistancia);
         previos.set(vecino.destino, nodoActual);
         cola.set(vecino.destino, nuevaDistancia);
@@ -46,12 +56,12 @@ export function dijkstra(grafo, inicio, fin, criterio = "distancia") {
     }
   }
 
-  // Reconstruir la ruta
+  // Reconstrucción de la ruta
   let ruta = [];
-  for (let at = fin; at !== null; at = previos.get(at) || null) {
+  for (let at = endId; at !== null; at = previos.get(at)) {
     ruta.push(at);
   }
-  console.log("Distancias:", Array.from(distancias.entries()));
-  console.log("Predecesores:", Array.from(previos.entries()));
-  return ruta.reverse();
-}
+  ruta.reverse();
+
+  return { ruta, distanciaTotal: distancias.get(endId) };
+};
