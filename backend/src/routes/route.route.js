@@ -1,8 +1,8 @@
 import express from "express";
 import { addRoute } from "../controllers/route/add.controller.js";
 
-const router = express.Router();
+const routRouter = express.Router();
 
-router.post("/agregar", addRoute);
+routRouter.post("/add", addRoute);
 
-export default router;
+export default routRouter;
