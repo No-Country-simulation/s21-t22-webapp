@@ -1,8 +1,8 @@
-import Route from "../models/route.model.js";
-import Stop from "../models/stops.model.js";
-import { distance } from "../utils/graph/distance.graph.js";
+import Route from "../../models/route.model.js";
+import Stop from "../../models/stops.model.js";
+import { distance } from "../../utils/graph/distance.graph.js";
 
-export const agregarRuta = async (req, res) => {
+export const addRoute = async (req, res) => {
   try {
     const { routeName, stops } = req.body;
 
