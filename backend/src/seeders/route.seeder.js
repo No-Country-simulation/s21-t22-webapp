@@ -6,7 +6,7 @@ import { distance } from "../utils/graph/distance.graph.js";
 
 dotenv.config();
 
-mongoose.connect(process.env.MY_MONGO_URI, {
+mongoose.connect(process.env.MONGO_URI, {
   ssl: true,
   authSource: "admin",
 });
