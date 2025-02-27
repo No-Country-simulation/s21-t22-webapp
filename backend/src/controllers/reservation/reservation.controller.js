@@ -1,7 +1,7 @@
-import Trip from "../models/trip.model.js";
-import Reservation from "../models/reservation.model.js";
-import { dijkstra } from "../utils/graph/dijkstra.graph.js";
-import Stop from "../models/stops.model.js";
+import Trip from "../../models/trip.model.js";
+import Reservation from "../../models/reservation.model.js";
+import { dijkstra } from "../../utils/graph/dijkstra.graph.js";
+import Stop from "../../models/stops.model.js";
 
 export const reservarAsiento = async (req, res) => {
   try {
