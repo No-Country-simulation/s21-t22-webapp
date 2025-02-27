@@ -1,10 +1,10 @@
-import Trip from "../models/trip.model.js";
-import Route from "../models/route.model.js";
-import Bus from "../models/bus.model.js";
+import Trip from "../../models/trip.model.js";
+import Route from "../../models/route.model.js";
+import Bus from "../../models/bus.model.js";
 
 export const createTrip = async (req, res) => {
   try {
-    const { routeId, busId, departureTime, arrivalTime, price } = req.body;
+    const { routeId, busId, departureDate, arrivalDate, price } = req.body;
 
     // Verificar si la ruta existe
     const route = await Route.findById(routeId);
@@ -22,8 +22,8 @@ export const createTrip = async (req, res) => {
     const newTrip = new Trip({
       route: routeId,
       bus: busId,
-      departureTime,
-      arrivalTime,
+      departureDate,
+      arrivalDate,
       price,
     });
 

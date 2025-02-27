@@ -1,5 +1,5 @@
-import Payment from "../models/payment.model.js";
-import Reservation from "../models/reservation.model.js";
+import Payment from "../../models/payment.model.js";
+import Reservation from "../../models/reservation.model.js";
 
 export const processPayment = async (req, res) => {
   try {
