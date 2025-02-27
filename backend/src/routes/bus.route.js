@@ -1,5 +1,5 @@
 import express from "express";
-import { addBus } from "../controllers/bus/add.controller.js";
+import { addBus } from "../controllers/bus.controller.js";
 
 const busRouter = express.Router();
 
