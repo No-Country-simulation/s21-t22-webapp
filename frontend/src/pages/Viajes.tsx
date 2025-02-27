@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import HeroDinamic from "../components/test/HeroDinamic";
 import { Box, Typography, Grid, Button } from "@mui/material";
 import { Grafo } from "../utils/test/algoritmoGrafos";
 import { dijkstra } from "../utils/test/dijkstra";
 import MainLayout from '../components/common/MainLayout';
+import Hero from '../components/home/Hero';
 
 // Define el tipo TravelType
 interface TravelType {
@@ -75,7 +75,7 @@ const Viajes = () => {
         <MainLayout >
             <>
                 {/* OJO ACÁ QUE HAY QUE TRABAJAR BASTANTE ESE "HeroDinamic" */}
-                <HeroDinamic travelData={{ origin: origenId ?? "Buenos Aires", destination: destinoId ?? "Entre Rios", date: new Date(fecha ?? "") }} />
+                <Hero from={origenId!} to={destinoId!} tripDate={fecha!} />
                 {
                     /*
                     <h1>Detalles del Viaje</h1>
