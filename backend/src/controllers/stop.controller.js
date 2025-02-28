@@ -1,5 +1,4 @@
-// src/controllers/stop.controller.js
-import { createStopService } from "../services/stop.service.js";
+import stopService, { createStopService } from "../services/stop.service.js";
 import Stop from "../models/stops.model.js"
 import Trip from "../models/trip.model.js"
 
@@ -96,30 +95,13 @@ export const buscarViajePorFecha = async (req, res) => {
   }
 };
 
-export const buscarStopsPorQuery = async (req, res) => {
+export const findStopsByQuery = async (req, res) => {
   try {
     const { q } = req.query;
-
-    if (!q) {
-      return res.status(400).json({ error: "Se requiere un parámetro de búsqueda (q)." });
-    }
-
-    // Expresión regular para buscar coincidencias en name o city (insensible a mayúsculas/minúsculas)
-    const stops = await Stop.find({
-      $or: [
-        { name: { $regex: q, $options: "i" } }, // Busca en el campo 'name'
-        { city: { $regex: q, $options: "i" } }  // Busca en el campo 'city'
-      ]
-    });
-
-    if (stops.length === 0) {
-      return res.status(404).json({ error: "No se encontraron paradas con el criterio de búsqueda." });
-    }
-
+    const stops = await stopService.findStopsByQuery(q);
     return res.status(200).json({ stops });
-
   } catch (error) {
-    console.error("Error al buscar paradas:", error);
-    res.status(500).json({ message: "Error interno del servidor", details: error.message });
+    console.error("Error al buscar paradas:", error.message);
+    return res.status(400).json({ message: error.message });
   }
 };
