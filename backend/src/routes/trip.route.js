@@ -1,10 +1,12 @@
 import express from "express";
-import { createTripController, getTripController, searchTripsController } from "../controllers/trip.controller.js";
+import { obtenerViajesController, obtenerViajePorIdController } from "../controllers/trip.controller.js";
 
-const tripRouter = express.Router(); // Asegúrate de definir esto antes de usarlo
+const router = express.Router();
 
-tripRouter.post("/create", createTripController);
-tripRouter.get("/get/:routeId", getTripController);
-tripRouter.get("/search", searchTripsController);
+// Obtener todos los viajes
+router.get("/viajes", obtenerViajesController);
 
-export default tripRouter;
+// Obtener un viaje por ID
+router.get("/viajes/:tripId", obtenerViajePorIdController);
+
+export default router;
