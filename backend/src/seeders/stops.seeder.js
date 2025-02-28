@@ -1,6 +1,7 @@
 export const stops = [
   {
     name: "Buenos Aires",
+    city: "Buenos Aires",
     location: {
       lat: -34.603722,
       lng: -58.381592,
@@ -8,6 +9,7 @@ export const stops = [
   },
   {
     name: "Córdoba",
+    city: "Córdoba",
     location: {
       lat: -31.420083,
       lng: -64.188776,
@@ -15,6 +17,7 @@ export const stops = [
   },
   {
     name: "Rosario",
+    city: "Santa Fé",
     location: {
       lat: -32.94682,
       lng: -60.63932,
@@ -22,6 +25,7 @@ export const stops = [
   },
   {
     name: "Mendoza",
+    city: "Mendoza",
     location: {
       lat: -32.889458,
       lng: -68.845839,
@@ -29,6 +33,7 @@ export const stops = [
   },
   {
     name: "La Plata",
+    city: "Buenos Aires",
     location: {
       lat: -34.92145,
       lng: -57.95453,
@@ -36,6 +41,7 @@ export const stops = [
   },
   {
     name: "San Miguel de Tucumán",
+    city: "Tucumán",
     location: {
       lat: -26.808285,
       lng: -65.21759,
@@ -43,6 +49,7 @@ export const stops = [
   },
   {
     name: "Mar del Plata",
+    city: "Buenos Aires",
     location: {
       lat: -38.005477,
       lng: -57.542611,
@@ -50,6 +57,7 @@ export const stops = [
   },
   {
     name: "Salta",
+    city: "Salta",
     location: {
       lat: -24.782932,
       lng: -65.423197,
@@ -57,6 +65,7 @@ export const stops = [
   },
   {
     name: "Santa Fe",
+    city: "Santa Fe",
     location: {
       lat: -31.6239,
       lng: -60.6953,
@@ -64,6 +73,7 @@ export const stops = [
   },
   {
     name: "San Juan",
+    city: "San Juan",
     location: {
       lat: -31.5375,
       lng: -68.5364,
