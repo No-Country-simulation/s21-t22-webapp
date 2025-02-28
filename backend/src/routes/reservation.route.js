@@ -3,13 +3,10 @@ import { obtenerAsientosLibresController, reservarAsientoController } from "../c
 
 const reservationRouter = express.Router();
 
-// Endpoint para obtener los asientos disponibles y ocupados
-reservationRouter.get("/asientos/:tripId", obtenerAsientosDisponibles);
-
 // Obtener asientos libres
-router.get("/viaje/:tripId/asientos-libres", obtenerAsientosLibresController);
+reservationRouter.get("/viaje/:tripId/asientos-libres", obtenerAsientosLibresController);
 
 // Hacer una reserva de asiento
-router.post("/reservar", reservarAsientoController);
+reservationRouter.post("/reservar", reservarAsientoController);
 
 export default reservationRouter;

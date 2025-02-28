@@ -1,47 +1,30 @@
-// src/controllers/reservation.controller.js
-import Trip from "../models/trip.model.js";
-import { reservarAsientoService } from "../services/reservation.service.js";
+import { obtenerAsientosLibresService, reservarAsientoService } from "../services/reservation.service.js";
 
-export const obtenerAsientosDisponibles = async (req, res) => {
+// Obtener asientos libres
+export const obtenerAsientosLibresController = async (req, res) => {
   try {
-    const { tripId } = req.params;
-
-    // Buscar el viaje por ID
-    const trip = await Trip.findById(tripId).populate("seats.availability.stop");
-
-    if (!trip) {
-      return res.status(404).json({ error: "Viaje no encontrado" });
-    }
-
-    // Preparar la información de los asientos disponibles y ocupados
-    const asientos = trip.seats.map((seat) => {
-      const asientosDisponibles = seat.availability.filter((avail) => avail.isAvailable);
-      return {
-        seatNumber: seat.seatNumber,
-        asientosDisponibles: asientosDisponibles,
-        ocupados: seat.availability.length - asientosDisponibles.length,
-      };
-    });
-
-    res.status(200).json({
-      message: "Asientos obtenidos con éxito",
-      asientos,
-    });
+    const asientosLibres = await obtenerAsientosLibresService(req.params.tripId);
+    res.status(200).json(asientosLibres);
   } catch (error) {
-    res.status(500).json({
-      error: "Error al obtener los asientos",
-      details: error.message,
-    });
+    res.status(500).json({ error: "Error al obtener los asientos libres", details: error.message });
   }
 };
 
+// Reservar un asiento
 export const reservarAsientoController = async (req, res) => {
   try {
     const { tripId, userId, seatNumber, from, to } = req.body;
 
-    console.log("Datos de la reserva recibidos:", { tripId, userId, seatNumber, from, to });
+    // Validar campos obligatorios
+    if (!tripId || !userId || !seatNumber || !from || !to) {
+      return res.status(400).json({ error: "Faltan campos obligatorios" });
+    }
 
-    // Llamamos al servicio para realizar la reserva
+    // Validar tipos de datos
+    if (typeof seatNumber !== "number") {
+      return res.status(400).json({ error: "El número de asiento debe ser un número" });
+    }
+
     const { reservation, precioFinal } = await reservarAsientoService({
       tripId,
       userId,
@@ -56,11 +39,6 @@ export const reservarAsientoController = async (req, res) => {
       precioTotal: precioFinal,
     });
   } catch (error) {
-    console.error("Error al procesar la reserva:", error);
-    res.status(500).json({
-      error: "Error al procesar la reserva",
-      details: error.message,
-    });
+    res.status(500).json({ error: "Error al procesar la reserva", details: error.message });
   }
 };
-
