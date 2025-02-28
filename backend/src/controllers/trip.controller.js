@@ -1,5 +1,10 @@
 // src/controllers/trip.controller.js
-import { createTripService, getTripsByRouteIdService, searchTripsService } from "../services/trip.service.js";
+import { 
+  createTripService, 
+  getTripsByRouteIdService, 
+  searchTripsService, 
+  getTripsForDate 
+} from "../services/trip.service.js";
 
 export const createTripController = async (req, res) => {
   try {
@@ -61,5 +66,21 @@ export const searchTripsController = async (req, res) => {
       message: "Error interno del servidor",
       details: error.message,
     });
+  }
+};
+
+export const buscarViajePorFecha = async (req, res) => {
+  try {
+    const { id1, id2, fecha } = req.query; // Usar id1 e id2 en lugar de desde y hasta
+
+    // Obtener los viajes mediante el servicio
+    const trips = await getTripsForDate(id1, id2, fecha);
+
+    return res.status(200).json(trips);
+  } catch (error) {
+    console.error("Error al buscar el viaje:", error);
+    return res
+      .status(500)
+      .json({ message: "Error interno del servidor", details: error.message });
   }
 };
