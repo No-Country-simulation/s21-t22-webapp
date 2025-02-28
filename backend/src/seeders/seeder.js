@@ -5,10 +5,13 @@ import { stops } from "./stops.seeder.js";
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URI, {
-  ssl: true,
-  authSource: "admin",
-});
+const MONGO_URI = process.env.MONGO_URI;
+const isAtlas = MONGO_URI.includes("mongodb+srv://");
+
+    mongoose.connect(MONGO_URI, {
+      ssl: isAtlas, // Activa SSL solo para Atlas
+      authSource: isAtlas ? "admin" : undefined,
+    });
 
 const importData = async () => {
   try {

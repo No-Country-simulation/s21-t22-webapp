@@ -9,7 +9,8 @@
     "seed": "node src/seeders/seeder.js -i",
     "delete": "node src/seeders/seeder.js -d",
     "routes": "node src/seeders/route.seeder.js -i",
-    "delete-routes": "node src/seeders/route.seeder.js -d"
+    "delete-routes": "node src/seeders/route.seeder.js -d",
+    "seed:trips": "node src/seeders/trip.seeder.js"
   },
   "keywords": [],
   "author": "",
