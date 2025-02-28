@@ -14,9 +14,16 @@ import { getRequest } from '../../services/http-requests';
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomAutocomplete from './Autocomplete';
 import CustomDatePicker from './Datepicker';
+import React from 'react';
+
+interface Props {
+  from?: string;
+  to?: string;
+  tripDate?: string;
+}
 
 const searchPlaces = async (query: string) => {
   return await getRequest<City[]>(`/cities/search-by-query?query=${query}`);
@@ -24,7 +31,7 @@ const searchPlaces = async (query: string) => {
 
 const backgroundImage = "https://www.infobae.com/resizer/v2/https%3A%2F%2Fs3.amazonaws.com%2Farc-wordpress-client-uploads%2Finfobae-wp%2Fwp-content%2Fuploads%2F2018%2F05%2F16163658%2Fmicros-larga-distancia-Getty-Images.jpg?auth=719b522476893895b314fbd2a2b32db914361f6be2e99aad2c7afe065edfdc3f&smart=true&width=1200&height=675&quality=85";
 
-const Hero = () => {
+const Hero: React.FC<Props> = ({ from, to, tripDate }) => {
   const [origin, setOrigin] = useState<City | null>(null);
   const [destination, setDestination] = useState<City | null>(null);
   const [date, setDate] = useState<Date | null>(null);
@@ -64,6 +71,12 @@ const Hero = () => {
   const handleBlurDestination = () => {
     setDestinationOptions([]);
   };
+
+  useEffect(() => {
+    if (!from || !to || !tripDate) return;
+
+    // Si estan las ids de origen y destino, buscar las ciudades (AUN NO EXISTE EL ENDPOINT)
+  }, [tripDate, from, to]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
