@@ -1,5 +1,6 @@
 // src/services/trip.service.js
-import { createTrip, getTripsByRouteId, getTripsByRoutes } from "../repositories/trip.repository.js";
+import { createTrip, getTripsByRouteId, getTripsByRoutes, findTripsByDate } from "../repositories/trip.repository.js";
+import { findStopById } from "../repositories/stop.repository.js";
 import Route from "../models/route.model.js";
 import Bus from "../models/bus.model.js";
 import { buildGraphFromConnections, canTravel } from "../utils/graph/bfs.graph.js";
@@ -63,4 +64,59 @@ export const searchTripsService = async ({ from, to }) => {
 
   // Buscar viajes con esas rutas
   return await getTripsByRoutes(validRoutes);
+};
+
+export const hasValidConnection = (connections, stopDesde, stopHasta) => {
+  let foundDesde = false;
+  for (const connection of connections) {
+    if (String(connection.from._id) === String(stopDesde._id)) {
+      foundDesde = true; // Se encontró la parada de inicio
+    }
+    if (foundDesde && String(connection.to._id) === String(stopHasta._id)) {
+      return true; // Se encontró la parada de destino después del inicio
+    }
+  }
+  return false;
+};
+
+export const getTripsForDate = async (id1, id2, fecha) => {
+  // Buscar las paradas por ID
+  const stopDesde = await findStopById(id1);
+  const stopHasta = await findStopById(id2);
+
+  if (!stopDesde || !stopHasta) {
+    throw new Error("No se encontró una o ambas paradas.");
+  }
+
+  // Definir rango de búsqueda para la fecha (todo el día)
+  const startDate = new Date(fecha);
+  startDate.setUTCHours(0, 0, 0, 0);
+  const endDate = new Date(fecha);
+  endDate.setUTCHours(23, 59, 59, 999);
+
+  // Buscar los viajes dentro del rango de fechas
+  const trips = await findTripsByDate(startDate, endDate);
+
+  // Filtrar los viajes que tengan una conexión válida entre las paradas
+  const validTrips = trips.filter((trip) =>
+    hasValidConnection(trip.route.connections, stopDesde, stopHasta)
+  );
+
+  if (!validTrips || validTrips.length === 0) {
+    throw new Error("No se encontró un viaje válido en la fecha indicada.");
+  }
+
+  return validTrips.map((trip) => ({
+    trip: {
+      _id: trip._id,
+      departureDate: trip.departureDate,
+      arrivalDate: trip.arrivalDate,
+      bus: trip.bus,
+      route: {
+        _id: trip.route._id,
+        name: trip.route.name
+      }
+    },
+    stops: [stopDesde, stopHasta]
+  }));
 };
