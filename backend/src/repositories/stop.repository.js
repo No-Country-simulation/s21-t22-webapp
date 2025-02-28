@@ -26,3 +26,14 @@ export const createStop = async (stopData) => {
     throw new Error("Error al crear la parada: " + error.message);
   }
 };
+
+const findStopsByQuery = async (query) => {
+  return await Stop.find({
+    $or: [
+      { name: { $regex: `^${query}`, $options: "i" } },
+      { city: { $regex: `^${query}`, $options: "i" } } 
+    ]
+  }).sort({ name: 1 });
+};
+
+export default { findStopsByQuery };
