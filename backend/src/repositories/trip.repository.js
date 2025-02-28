@@ -30,3 +30,19 @@ export const getTripsByRoutes = async (validRoutes) => {
     throw new Error("Error al obtener los viajes: " + error.message);
   }
 };
+
+export const findTripsByDate = async (startDate, endDate) => {
+  return await Trip.find({
+    departureDate: { $gte: startDate, $lte: endDate }
+  })
+    .select("departureDate arrivalDate bus route")
+    .populate({
+      path: "route",
+      select: "name connections",
+      populate: {
+        path: "connections.from connections.to",
+        select: "name"
+      }
+    })
+    .lean();
+};
