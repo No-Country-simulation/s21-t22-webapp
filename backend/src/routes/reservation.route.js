@@ -1,9 +1,12 @@
 import express from "express";
-import { reservarAsiento } from "../controllers/reservation.controller.js";
+import { obtenerAsientosDisponibles, reservarAsientoController } from "../controllers/reservation.controller.js";
 
-const router = express.Router();
+const reservationRouter = express.Router();
+
+// Endpoint para obtener los asientos disponibles y ocupados
+reservationRouter.get("/asientos/:tripId", obtenerAsientosDisponibles);
 
 // Endpoint para reservar un asiento
-router.post("/reservar", reservarAsiento);
+reservationRouter.post("/reservar", reservarAsientoController);
 
-export default router;
+export default reservationRouter;

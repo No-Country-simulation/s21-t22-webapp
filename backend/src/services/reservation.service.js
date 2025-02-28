@@ -1,68 +1,49 @@
-// src/services/reservation.service.js
-import Trip from "../../models/trip.model.js";
-import Stop from "../../models/stops.model.js";
-import { dijkstra } from "../../utils/graph/dijkstra.graph.js";
+import Trip from "../models/trip.model.js";
+import Stop from "../models/stops.model.js";
 import { createReservation } from "../repositories/reservation.repository.js";
 
 // Lógica para reservar un asiento
 export const reservarAsientoService = async ({ tripId, userId, seatNumber, from, to }) => {
-  // Valida si las paradas existen
-  const stopFrom = await Stop.findById(from);
-  const stopTo = await Stop.findById(to);
-  if (!stopFrom || !stopTo) {
-    throw new Error("Una o ambas paradas no existen");
-  }
-
   // Buscar el viaje
-  const trip = await Trip.findById(tripId).populate("route seats.availability.stop");
+  const trip = await Trip.findById(tripId).populate("seats.availability.stop");
   if (!trip) {
     throw new Error("Viaje no encontrado");
   }
 
-  // Calcular ruta
-  const resultadoRuta = await dijkstra(trip.route._id, from, to);
-  if (!resultadoRuta || resultadoRuta.ruta.length === 0) {
-    throw new Error("No se pudo calcular la ruta");
-  }
-
-  // Encontrar el asiento
+  console.log("Viaje encontrado:", trip);
+  console.log("Asientos del viaje:", trip.seats);
   const seat = trip.seats.find((s) => s.seatNumber === seatNumber);
+  console.log("Asiento encontrado:", seat);
   if (!seat) {
     throw new Error("Asiento no encontrado");
   }
 
-  // Verifica la disponibilidad del asiento en cada tramo del recorrido
-  let disponible = true;
-  for (let i = 0; i < resultadoRuta.ruta.length - 1; i++) {
-    const tramo = resultadoRuta.ruta[i];
-    const index = seat.availability.findIndex(
-      (avail) => avail.stop.toString() === tramo
-    );
-    if (index === -1 || !seat.availability[index].isAvailable) {
-      disponible = false;
-      break;
-    }
+  // Verificar la disponibilidad en las paradas 'from' y 'to'
+  const availabilityFrom = seat.availability.find(
+    (a) => a.stop._id.toString() === from
+  );
+  const availabilityTo = seat.availability.find(
+    (a) => a.stop._id.toString() === to
+  );
+
+  if (!availabilityFrom || !availabilityTo) {
+    throw new Error("Las paradas no están disponibles para este asiento");
   }
 
-  if (!disponible) {
-    throw new Error("El asiento no está disponible en todo el tramo");
+  if (!availabilityFrom.isAvailable || !availabilityTo.isAvailable) {
+    throw new Error("El asiento no está disponible en las paradas seleccionadas");
   }
 
-  // Calcular el precio basado en la distancia
-  const precioBasePorKm = 10;
-  const precioFinal = resultadoRuta.distanciaTotal * precioBasePorKm;
+  // Si todo está bien, reservamos el asiento: actualizamos la disponibilidad
+  availabilityFrom.isAvailable = false; // El asiento ya no está disponible en la parada de origen
+  availabilityTo.isAvailable = false; // El asiento ya no está disponible en la parada de destino
 
-  // Marcar el asiento como ocupado
-  for (let i = 0; i < resultadoRuta.ruta.length - 1; i++) {
-    const tramo = resultadoRuta.ruta[i];
-    const index = seat.availability.findIndex(
-      (avail) => avail.stop.toString() === tramo
-    );
-    if (index !== -1) seat.availability[index].isAvailable = false;
-  }
-
-  // Guardar los cambios en el viaje
+  // Guardamos los cambios en el viaje
   await trip.save();
+
+  // Calcular el precio de la reserva (puedes ajustar este cálculo según tus necesidades)
+  const precioBase = 100; // Este es un valor de ejemplo, usa lo que sea relevante para tu sistema
+  const precioFinal = precioBase;
 
   // Crear la reserva
   const reservationData = {
@@ -78,3 +59,7 @@ export const reservarAsientoService = async ({ tripId, userId, seatNumber, from,
 
   return { reservation, precioFinal };
 };
+
+
+
+
