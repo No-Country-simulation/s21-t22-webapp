@@ -6,6 +6,7 @@ import busRouter from "./bus.route.js";
 import paymentRouter from "./payment.route.js";
 import tripRouter from "./trip.route.js";
 import stopsRouter from "./stops.route.js";
+import reservationRouter from "./reservation.route.js";
 
 const indexRouter = express.Router();
 
@@ -16,5 +17,6 @@ indexRouter.use("/bus", busRouter);
 indexRouter.use("/payment", paymentRouter);
 indexRouter.use("/trip", tripRouter);
 indexRouter.use("/stops", stopsRouter);
+indexRouter.use("/reservation", reservationRouter);
 
 export default indexRouter;

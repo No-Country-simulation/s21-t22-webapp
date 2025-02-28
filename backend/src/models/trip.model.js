@@ -12,11 +12,11 @@ const TripSchema = new mongoose.Schema(
     arrivalDate: { type: Date, required: true }, // Fecha de llegada
     seats: [
       {
-        seatNumber: Number,
+        seatNumber: { type: Number, required: true },
         availability: [
           {
             stop: { type: mongoose.Schema.Types.ObjectId, ref: "Stop" },
-            isAvailable: Boolean,
+            isAvailable: { type: Boolean, default: true }, // isAvailable agregado
           },
         ],
       },
@@ -24,5 +24,10 @@ const TripSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Agregar índices
+TripSchema.index({ bus: 1 }); // Índice en el campo "bus"
+TripSchema.index({ route: 1 }); // Índice en el campo "route"
+TripSchema.index({ "seats.seatNumber": 1 }); // Índice en el campo "seats.seatNumber"
 
 export default mongoose.model("Trip", TripSchema);
