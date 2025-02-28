@@ -5,7 +5,7 @@ import routRouter from "./route.route.js";
 import busRouter from "./bus.route.js";
 import paymentRouter from "./payment.route.js";
 import tripRouter from "./trip.route.js";
-import stopsRouter from "./stops.route.js";
+import stopsRouter from "./stop.route.js";
 
 const indexRouter = express.Router();
 
