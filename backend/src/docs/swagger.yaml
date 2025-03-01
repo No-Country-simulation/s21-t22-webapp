@@ -4,7 +4,7 @@ info:
   description: API for bus reservations, payments, trips, and more.
   version: 1.0.0
 paths:
-  /users:
+  /api/users:
     get:
       summary: Get all users
       responses:
@@ -32,7 +32,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
 
-  /bus/add:
+  /api/bus/add:
     post:
       summary: Add a new bus
       requestBody:
@@ -49,7 +49,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Bus'
 
-  /payment/pay:
+  /api/payment/pay:
     post:
       summary: Process a payment
       requestBody:
@@ -66,7 +66,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Payment'
 
-  /reservar:
+  /api/reservar:
     post:
       summary: Make a seat reservation
       requestBody:
@@ -83,7 +83,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Reservation'
 
-  /route/add:
+  /api/route/add:
     post:
       summary: Add a new route
       requestBody:
@@ -100,7 +100,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Route'
 
-  /stop/create:
+  /api/stop/create:
     post:
       summary: Create a new stop
       requestBody:
@@ -117,7 +117,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Stop'
 
-  /trip/search:
+  /api/trip/search:
     get:
       summary: Search for trips based on 'from' and 'to' locations
       parameters:
@@ -141,7 +141,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Trip'
 
-  /trip/get/{routeId}:
+  /api/trip/get/{routeId}:
     get:
       summary: Get trips for a specific route
       parameters:
@@ -160,7 +160,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Trip'
 
-  /trip/create:
+  /api/trip/create:
     post:
       summary: Create a new trip
       requestBody:
