@@ -3,3 +3,10 @@
   padding: 0;
   box-sizing: border-box;
 }
+h2 {
+  color: white;
+}
+h4 {
+  padding-left: 15vw;
+  color: #1d2a4a;
+}

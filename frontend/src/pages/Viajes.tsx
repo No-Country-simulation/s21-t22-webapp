@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Box, Typography, Grid, Button } from "@mui/material";
 import { Grafo } from "../utils/test/algoritmoGrafos";
 import { dijkstra } from "../utils/test/dijkstra";
@@ -8,8 +8,17 @@ import TravelSearchCard, {
   TravelSearchCardProps,
 } from "../components/travels/TravelSearchCard";
 import Hero from "../components/home/Hero";
+import useStore from "../contexts/store";
 
 // Define el tipo TravelType
+interface TravelType {
+  id: number;
+  origin: string;
+  destination: string;
+  date: string; // Cambiado a string
+  description: string;
+  imageUrl: string; // URL de la imagen
+}
 
 const Viajes = () => {
   const [searchParams] = useSearchParams();
@@ -21,10 +30,17 @@ const Viajes = () => {
   const fecha = searchParams.get("fecha");
 
   console.log("Params:", { origenId, destinoId, fecha });
+  console.log("Params:", { origenId, destinoId, fecha });
 
   useEffect(() => {
     const grafo = new Grafo();
 
+    // Agregar ciudades
+    grafo.agregarNodo("Arequipa");
+    grafo.agregarNodo("Camaná");
+    grafo.agregarNodo("Nazca");
+    grafo.agregarNodo("Ica");
+    grafo.agregarNodo("Lima");
     // Agregar ciudades
     grafo.agregarNodo("Arequipa");
     grafo.agregarNodo("Camaná");
