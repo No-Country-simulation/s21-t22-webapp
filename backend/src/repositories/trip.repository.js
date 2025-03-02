@@ -16,8 +16,12 @@ export const getTripById = async (tripId) => {
   }
 };
 
-export const findTripById = async (tripId) => {
-  return await Trip.findById(tripId).populate("route seats.availability.stop");
+export const findTripById = async (tripId, session = null) => {
+  try {
+    return await Trip.findById(tripId).populate("route seats.availability.stop").session(session);
+  } catch (error) {
+    throw new Error("Error al obtener el viaje: " + error.message);
+  }
 };
 
 export const createTrip = async (tripData) => {

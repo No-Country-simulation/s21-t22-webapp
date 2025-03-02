@@ -2,10 +2,10 @@
 import Reservation from "../models/reservation.model.js";
 
 // Función para crear una reserva
-export const createReservation = async (reservationData) => {
+export const createReservation = async (reservationData, session = null) => {
   try {
-    const reservation = await Reservation.create(reservationData);
-    return reservation;
+    const reservation = await Reservation.create([reservationData], { session });
+    return reservation[0];
   } catch (error) {
     throw new Error("Error al crear la reserva: " + error.message);
   }

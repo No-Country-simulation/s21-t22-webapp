@@ -1,16 +1,17 @@
-import mongoose from "mongoose"
+// src/services/reservation.service.js
+import mongoose from "mongoose";
 import { createReservation } from "../repositories/reservation.repository.js";
-import Trip from "../models/trip.model.js";
-import Stop from "../models/stops.model.js";
+import { findTripById } from "../repositories/trip.repository.js";
+import { findStopById } from "../repositories/stop.repository.js";
 
 // Obtener asientos disponibles para un viaje
 export const obtenerAsientosLibresService = async (tripId) => {
   try {
-    const trip = await Trip.findById(tripId, { seats: 1 }).populate("seats.availability.stop");
+    const trip = await findTripById(tripId);
     if (!trip) throw new Error("Viaje no encontrado");
 
     const asientosLibres = trip.seats.filter((seat) =>
-      seat.availability.every((avail) => avail.isAvailable)
+      seat.availability.some((avail) => avail.isAvailable)
     );
 
     return asientosLibres;
@@ -26,12 +27,12 @@ export const reservarAsientoService = async ({ tripId, userId, seatNumber, from,
 
   try {
     // Validar paradas
-    const stopFrom = await Stop.findById(from).session(session);
-    const stopTo = await Stop.findById(to).session(session);
+    const stopFrom = await findStopById(from, session);
+    const stopTo = await findStopById(to, session);
     if (!stopFrom || !stopTo) throw new Error("Una o ambas paradas no existen");
 
     // Obtener el viaje
-    const trip = await Trip.findById(tripId).populate("seats.availability.stop").session(session);
+    const trip = await findTripById(tripId, session);
     if (!trip) throw new Error("Viaje no encontrado");
 
     // Buscar el asiento
