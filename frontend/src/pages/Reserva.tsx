@@ -24,7 +24,7 @@ interface ReservaProps {
 }
 
 export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
-  const { origen, destino, fecha, descripcion, imagen } = useStore();
+  const { destinoImg, fecha, destino, origen, compañia } = useStore();
   const location = useLocation();
   //corrección de SPA (navegar hacia arriba)
   useEffect(() => {
@@ -35,8 +35,8 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
       {/* Destino*/}
       <Box
         sx={{
-          backgroundImage: imagen
-            ? `url(${imagen})`
+          backgroundImage: destinoImg
+            ? `url(${destinoImg})`
             : "url(https://www.infobae.com/resizer/v2/https%3A%2F%2Fs3.amazonaws.com%2Farc-wordpress-client-uploads%2Finfobae-wp%2Fwp-content%2Fuploads%2F2018%2F05%2F16163658%2Fmicros-larga-distancia-Getty-Images.jpg?auth=719b522476893895b314fbd2a2b32db914361f6be2e99aad2c7afe065edfdc3f&smart=true&width=1200&height=675&quality=85)",
           backgroundSize: "cover",
           width: "100%",
@@ -46,7 +46,9 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          clipPath: "polygon(33% 0, 100% 0%, 100% 100%, 16% 100%)",
         }}
+        className="destino-clippath"
       >
         <Typography
           variant="h2"
@@ -108,8 +110,12 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
         </Stack>
       </Box>
       <hr />
-      <Typography variant="h4" sx={{ m: 3 }}>
-        Asientos
+      <Typography
+        variant="h4"
+        sx={{ m: 3, display: "flex", alignItems: "center" }}
+      >
+        Asientos &nbsp;
+        <Typography>/{compañia}</Typography>
       </Typography>
       <BusSeatSelector seats={seats || []} quantity={quantity || 0} />
       <Typography variant="h4" sx={{ m: 3 }}>

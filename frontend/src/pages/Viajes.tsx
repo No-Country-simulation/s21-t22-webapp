@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom"; // Importa useNavigate
 import { Box, Typography, Grid, Button } from "@mui/material";
 import { Grafo } from "../utils/test/algoritmoGrafos";
 import { dijkstra } from "../utils/test/dijkstra";
@@ -10,37 +10,47 @@ import TravelSearchCard, {
 import Hero from "../components/home/Hero";
 import useStore from "../contexts/store";
 
-// Define el tipo TravelType
-interface TravelType {
-  id: number;
-  origin: string;
-  destination: string;
-  date: string; // Cambiado a string
-  description: string;
-  imageUrl: string; // URL de la imagen
+// Define el tipo TripSimulation
+interface TripSimulation {
+  origenImg: string;
+  destinoImg: string;
+  compañia: string;
+  origen: string;
+  destino: string;
+  fecha: string;
+  precio: string;
+  bus: string;
+  duracion: string;
 }
 
 const Viajes = () => {
   const [searchParams] = useSearchParams();
   const [travelInfo, setTravelInfo] = useState<TravelSearchCardProps[]>([]);
   const [error, setError] = useState(false);
+  const navigate = useNavigate(); // Hook para navegar
+
+  const {
+    setOrigen,
+    setDestino,
+    setFecha,
+    setOrigenImg,
+    setDestinoImg,
+    setCompañia,
+    setPrecio,
+    setBus,
+    setDuracion,
+  } = useStore();
 
   const origenId = searchParams.get("origenId");
   const destinoId = searchParams.get("destinoId");
   const fecha = searchParams.get("fecha");
 
   console.log("Params:", { origenId, destinoId, fecha });
-  console.log("Params:", { origenId, destinoId, fecha });
 
+  // Inicialización del grafo
   useEffect(() => {
     const grafo = new Grafo();
 
-    // Agregar ciudades
-    grafo.agregarNodo("Arequipa");
-    grafo.agregarNodo("Camaná");
-    grafo.agregarNodo("Nazca");
-    grafo.agregarNodo("Ica");
-    grafo.agregarNodo("Lima");
     // Agregar ciudades
     grafo.agregarNodo("Arequipa");
     grafo.agregarNodo("Camaná");
@@ -54,11 +64,12 @@ const Viajes = () => {
     grafo.agregarArista("Nazca", "Ica", 150, 120);
     grafo.agregarArista("Ica", "Lima", 300, 240);
 
-    // Encontrar la mejor ruta desde Arequipa a Lima
+    // Encontrar la mejor ruta desde Nazca a Lima
     const ruta = dijkstra(grafo, "Nazca", "Lima");
     console.log("Ruta más corta:", ruta);
-  });
+  }, []);
 
+  // Fetch de datos de viajes
   useEffect(() => {
     const fetchTravelData = async () => {
       try {
@@ -68,72 +79,6 @@ const Viajes = () => {
         setTravelInfo(data);
       } catch (error) {
         console.error("Fetch error:", error);
-        // Usar información inventada por defecto
-        setTravelInfo([
-          {
-            id: 1,
-            origin: "Buenos Aires",
-            destination: "Entre Rios",
-            date: "2025-02-23",
-            description: "Un viaje relajante a la naturaleza.",
-            imageUrl:
-              "https://img.static-kl.com/images/media/EDD567B6-661E-481F-97ACD929AB125ABA",
-          },
-          {
-            id: 2,
-            origin: "Córdoba",
-            destination: "Mendoza",
-            date: "2025-03-10",
-            description: "Disfruta de la mejor gastronomía y vino.",
-            imageUrl:
-              "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1",
-          },
-          {
-            id: 2,
-            origin: "Córdoba",
-            destination: "Mendoza",
-            date: "2025-03-10",
-            description: "Disfruta de la mejor gastronomía y vino.",
-            imageUrl:
-              "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1",
-          },
-          {
-            id: 2,
-            origin: "Córdoba",
-            destination: "Mendoza",
-            date: "2025-03-10",
-            description: "Disfruta de la mejor gastronomía y vino.",
-            imageUrl:
-              "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1",
-          },
-          {
-            id: 2,
-            origin: "Córdoba",
-            destination: "Mendoza",
-            date: "2025-03-10",
-            description: "Disfruta de la mejor gastronomía y vino.",
-            imageUrl:
-              "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1",
-          },
-          {
-            id: 2,
-            origin: "Córdoba",
-            destination: "Mendoza",
-            date: "2025-03-10",
-            description: "Disfruta de la mejor gastronomía y vino.",
-            imageUrl:
-              "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1",
-          },
-          {
-            id: 2,
-            origin: "Córdoba",
-            destination: "Mendoza",
-            date: "2025-03-10",
-            description: "Disfruta de la mejor gastronomía y vino.",
-            imageUrl:
-              "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1",
-          },
-        ]);
         setError(true);
       }
     };
@@ -141,82 +86,99 @@ const Viajes = () => {
     fetchTravelData();
   }, []);
 
+  // Función para crear el contexto del viaje
+  const crearContextTrip = (
+    origenImg: string,
+    destinoImg: string,
+    compañia: string,
+    origen: string,
+    destino: string,
+    fecha: string,
+    precio: string,
+    bus: string,
+    duracion: string
+  ) => {
+    setOrigen(origen);
+    setDestino(destino);
+    setFecha(fecha);
+    setOrigenImg(origenImg);
+    setDestinoImg(destinoImg);
+    setCompañia(compañia);
+    setPrecio(precio);
+    setBus(bus);
+    setDuracion(duracion);
+  };
+
+  // Datos simulados de viajes
+  const apiTripsSimulation: TripSimulation[] = [
+    {
+      origenImg:
+        "https://media.istockphoto.com/id/667138246/es/foto/argentina-buenos-aires-amanecer-en-el-centro-con-hora-punta.jpg?s=612x612&w=0&k=20&c=tpvOrY5aqJBBaqb5X27WjlhDsUB0GHJWc1GRD5Z5icQ=",
+      destinoImg:
+        "https://content.r9cdn.net/rimg/dimg/f8/29/792a1090-city-10439-169073685b0.jpg?crop=true&width=1020&height=498",
+      compañia: "Tour Bus",
+      origen: "Buenos Aires",
+      destino: "Córdoba",
+      fecha: "2025-03-10",
+      precio: "50.00",
+      bus: "Semicama",
+      duracion: "6h 30m",
+    },
+    {
+      origenImg:
+        "https://media.istockphoto.com/id/667138246/es/foto/argentina-buenos-aires-amanecer-en-el-centro-con-hora-punta.jpg?s=612x612&w=0&k=20&c=tpvOrY5aqJBBaqb5X27WjlhDsUB0GHJWc1GRD5Z5icQ=",
+      destinoImg:
+        "https://content.r9cdn.net/rimg/dimg/f8/29/792a1090-city-10439-169073685b0.jpg?crop=true&width=1020&height=498",
+      compañia: "Tour Bus",
+      origen: "Buenos Aires",
+      destino: "Córdoba",
+      fecha: "2025-03-10",
+      precio: "50.00",
+      bus: "Semicama",
+      duracion: "6h 30m",
+    },
+  ];
+
   return (
     <MainLayout>
       <>
-        {/* OJO ACÁ QUE HAY QUE TRABAJAR BASTANTE ESE "HeroDinamic" */}
         <Hero from={origenId!} to={destinoId!} tripDate={fecha!} />
-        {/*
-                    <h1>Detalles del Viaje</h1>
-                    <p>Origen ID: {origenId ?? "No especificado"}</p>
-                    <p>Destino ID: {destinoId ?? "No especificado"}</p>
-                    <p>Fecha: {fecha ?? "No especificada"}</p>
-                    */}
         {error ? (
           <>
-            <TravelSearchCard
-              imageOrigin="https://media.istockphoto.com/id/667138246/es/foto/argentina-buenos-aires-amanecer-en-el-centro-con-hora-punta.jpg?s=612x612&w=0&k=20&c=tpvOrY5aqJBBaqb5X27WjlhDsUB0GHJWc1GRD5Z5icQ="
-              imageDestination="https://content.r9cdn.net/rimg/dimg/f8/29/792a1090-city-10439-169073685b0.jpg?crop=true&width=1020&height=498"
-              company="Empresa Ejemplo"
-              origin="Buenos Aires"
-              destination="Córdoba"
-              date="2025-03-10"
-              price="50.00"
-              busType="Normal"
-              duration="6h 30m"
-              seatsAvailable={5}
-              rating={4.5}
-              direct={false}
-              onClick={() => console.log("CLICK")}
-            />
-            <TravelSearchCard
-              imageOrigin="https://media.istockphoto.com/id/667138246/es/foto/argentina-buenos-aires-amanecer-en-el-centro-con-hora-punta.jpg?s=612x612&w=0&k=20&c=tpvOrY5aqJBBaqb5X27WjlhDsUB0GHJWc1GRD5Z5icQ="
-              imageDestination="https://content.r9cdn.net/rimg/dimg/f8/29/792a1090-city-10439-169073685b0.jpg?crop=true&width=1020&height=498"
-              company="Empresa Ejemplo"
-              origin="Buenos Aires"
-              destination="Córdoba"
-              date="2025-03-10"
-              price="50.00"
-              busType="Normal"
-              duration="6h 30m"
-              seatsAvailable={5}
-              rating={4.5}
-              direct={false}
-              onClick={() => console.log("CLICK")}
-            />
-            <TravelSearchCard
-              imageOrigin="https://media.istockphoto.com/id/667138246/es/foto/argentina-buenos-aires-amanecer-en-el-centro-con-hora-punta.jpg?s=612x612&w=0&k=20&c=tpvOrY5aqJBBaqb5X27WjlhDsUB0GHJWc1GRD5Z5icQ="
-              imageDestination="https://content.r9cdn.net/rimg/dimg/f8/29/792a1090-city-10439-169073685b0.jpg?crop=true&width=1020&height=498"
-              company="Empresa Ejemplo"
-              origin="Buenos Aires"
-              destination="Córdoba"
-              date="2025-03-10"
-              price="50.00"
-              busType="Cama"
-              duration="6h 30m"
-              seatsAvailable={5}
-              rating={4.5}
-              direct={false}
-              onClick={() => console.log("CLICK")}
-            />
-            <TravelSearchCard
-              imageOrigin="https://media.istockphoto.com/id/667138246/es/foto/argentina-buenos-aires-amanecer-en-el-centro-con-hora-punta.jpg?s=612x612&w=0&k=20&c=tpvOrY5aqJBBaqb5X27WjlhDsUB0GHJWc1GRD5Z5icQ="
-              imageDestination="https://content.r9cdn.net/rimg/dimg/f8/29/792a1090-city-10439-169073685b0.jpg?crop=true&width=1020&height=498"
-              company="Empresa Ejemplo"
-              origin="Buenos Aires"
-              destination="Córdoba"
-              date="2025-03-10"
-              price="50.00"
-              busType="Semicama"
-              duration="6h 30m"
-              seatsAvailable={5}
-              rating={4.5}
-              direct={false}
-              onClick={() => console.log("CLICK")}
-            />
+            {apiTripsSimulation.map((trip, index) => (
+              <TravelSearchCard
+                key={index}
+                imageOrigin={trip.origenImg}
+                imageDestination={trip.destinoImg}
+                company={trip.compañia}
+                origin={trip.origen}
+                destination={trip.destino}
+                date={trip.fecha}
+                price={trip.precio}
+                busType={trip.bus}
+                duration={trip.duracion}
+                seatsAvailable={5}
+                rating={4.5}
+                direct={false}
+                onClick={() => {
+                  crearContextTrip(
+                    trip.origenImg,
+                    trip.destinoImg,
+                    trip.compañia,
+                    trip.origen,
+                    trip.destino,
+                    trip.fecha,
+                    trip.precio,
+                    trip.bus,
+                    trip.duracion
+                  );
+                  navigate("/reserva"); // Navega a la ruta "reserva"
+                }}
+              />
+            ))}
           </>
         ) : (
-          <div>Error al obtener viajes: {error}</div>
+          <div>Error al obtener viajes. Mostrando datos simulados...</div>
         )}
       </>
     </MainLayout>

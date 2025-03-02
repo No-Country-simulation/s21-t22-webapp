@@ -1,29 +1,45 @@
 import { create } from "zustand";
 
 interface StoreState {
+  origenImg: string;
+  destinoImg: string;
+  compañia: string;
   origen: string;
   destino: string;
   fecha: string;
-  descripcion: string;
-  imagen: string;
+  precio: string;
+  bus: string;
+  duracion: string;
   setOrigen: (newOrigen: string) => void;
   setDestino: (newDestino: string) => void;
   setFecha: (newFecha: string) => void;
-  setDescripcion: (newDescripcion: string) => void;
-  setImagen: (newImagen: string) => void;
+  setOrigenImg: (newOrigenImg: string) => void;
+  setDestinoImg: (newDestinoImg: string) => void;
+  setCompañia: (newCompañia: string) => void;
+  setPrecio: (newPrecio: string) => void;
+  setBus: (newBus: string) => void;
+  setDuracion: (newDuracion: string) => void;
 }
 
 const useStore = create<StoreState>((set) => ({
+  origenImg: "",
+  destinoImg: "",
+  compañia: "",
   origen: "",
   destino: "",
   fecha: "",
-  descripcion: "",
-  imagen: "",
+  precio: "",
+  bus: "",
+  duracion: "",
   setOrigen: (newOrigen) => set({ origen: newOrigen }),
   setDestino: (newDestino) => set({ destino: newDestino }),
   setFecha: (newFecha) => set({ fecha: newFecha }),
-  setDescripcion: (newDescripcion) => set({ descripcion: newDescripcion }),
-  setImagen: (newImagen) => set({ imagen: newImagen }),
+  setOrigenImg: (newOrigenImg) => set({ origenImg: newOrigenImg }),
+  setDestinoImg: (newDestinoImg) => set({ destinoImg: newDestinoImg }),
+  setCompañia: (newCompañia) => set({ compañia: newCompañia }),
+  setPrecio: (newPrecio) => set({ precio: newPrecio }),
+  setBus: (newBus) => set({ bus: newBus }),
+  setDuracion: (newDuracion) => set({ duracion: newDuracion }),
 }));
 
 export default useStore;
