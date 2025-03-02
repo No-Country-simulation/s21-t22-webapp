@@ -1,5 +1,5 @@
-import { use, useEffect, useState } from "react";
-import { Box, Container, Typography, Paper, Stack, useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Container, Typography, Stack, useTheme } from "@mui/material";
 
 interface Seat {
   id: number;
@@ -12,14 +12,22 @@ interface BusSeatSelectorProps {
   quantity: number;
 }
 
-export default function BusSeatSelector({ seats, quantity }: BusSeatSelectorProps) {
+export default function BusSeatSelector({
+  seats,
+  quantity,
+}: BusSeatSelectorProps) {
   const theme = useTheme();
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
 
   const handleSeatClick = (seat: Seat) => {
     if (seat.tipo === "libre") {
-      setSelectedSeats((prev) =>
-        prev.includes(seat.id) ? prev.filter((id) => id !== seat.id) : prev.length < quantity ? [...prev, seat.id] : prev
+      setSelectedSeats(
+        (prev) =>
+          prev.includes(seat.id)
+            ? prev.filter((id) => id !== seat.id) // Deseleccionar
+            : prev.length < quantity
+            ? [...prev, seat.id] // Seleccionar
+            : prev // No hacer nada si ya se seleccionó la cantidad máxima
       );
     }
   };
@@ -39,26 +47,34 @@ export default function BusSeatSelector({ seats, quantity }: BusSeatSelectorProp
         onClick={() => handleSeatClick(seat)}
         style={{ cursor: isOccupied ? "not-allowed" : "pointer" }}
       >
+        {/* Asiento en forma de cuadrado */}
         <rect
+          x="0"
+          y="0"
           width="35"
           height="35"
-          rx="4"
           fill={
             isOccupied
-              ? theme.palette.grey[300]
+              ? theme.palette.grey[300] // Ocupado
               : isSelected
-                ? theme.palette.secondary.main
-                : theme.palette.primary.main
+              ? theme.palette.secondary.main // Seleccionado
+              : theme.palette.primary.main // Disponible
           }
           stroke={theme.palette.grey[400]}
           strokeWidth="1"
+          style={{ transition: "fill 0.2s ease" }} // Transición suave
         />
+        {/* Número del asiento */}
         <text
           x="17.5"
-          y="22.5"
+          y="20"
           textAnchor="middle"
-          fill={isOccupied ? theme.palette.text.disabled : theme.palette.primary.contrastText}
-          style={{ fontSize: "12px", userSelect: "none" }}
+          fill={
+            isOccupied
+              ? theme.palette.text.disabled
+              : theme.palette.primary.contrastText
+          }
+          style={{ fontSize: "12px", userSelect: "none", fontWeight: "bold" }}
         >
           {seat.numero}
         </text>
@@ -66,70 +82,95 @@ export default function BusSeatSelector({ seats, quantity }: BusSeatSelectorProp
     );
   };
 
-  const seatRows = Math.ceil(seats.length / 4);
-  const busHeight = 160 + seatRows * 40;
+  const seatColumns = Math.ceil(seats.length / 4);
+  const busWidth = 160 + seatColumns * 40;
 
   return (
-    <Container maxWidth="sm" sx={{ py: 4 }}>
-      <Typography variant="h5" gutterBottom align="center">
-        Selecciona tu asiento
-      </Typography>
-
+    <Container maxWidth="md" sx={{ display: "flex", flexDirection: "column" }}>
       {/* Leyenda */}
-      <Stack direction="row" spacing={4} justifyContent="center" sx={{ mb: 4 }}>
+      <Stack direction="row" spacing={4} justifyContent="center" sx={{ mt: 4 }}>
         <Stack direction="row" spacing={1} alignItems="center">
-          <Box sx={{ width: 20, height: 20, bgcolor: theme.palette.primary.main, borderRadius: 0.5 }} />
+          <Box
+            sx={{
+              width: 20,
+              height: 20,
+              bgcolor: theme.palette.primary.main,
+              borderRadius: 1,
+            }}
+          />
           <Typography variant="body2">Disponible</Typography>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
-          <Box sx={{ width: 20, height: 20, bgcolor: theme.palette.grey[300], borderRadius: 0.5 }} />
+          <Box
+            sx={{
+              width: 20,
+              height: 20,
+              bgcolor: theme.palette.grey[300],
+              borderRadius: 1,
+            }}
+          />
           <Typography variant="body2">Ocupado</Typography>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
-          <Box sx={{ width: 20, height: 20, bgcolor: theme.palette.secondary.main, borderRadius: 0.5 }} />
+          <Box
+            sx={{
+              width: 20,
+              height: 20,
+              bgcolor: theme.palette.secondary.main,
+              borderRadius: 1,
+            }}
+          />
           <Typography variant="body2">Seleccionado</Typography>
         </Stack>
       </Stack>
-
       {/* SVG del autobús */}
       <Box>
-        <svg width="300" height={busHeight} viewBox={`0 0 300 ${busHeight}`} style={{ display: "block", margin: "auto" }}>
+        <svg
+          width={busWidth}
+          height="300"
+          viewBox={`0 0 ${busWidth} 300`}
+          style={{ display: "block", margin: "auto" }}
+        >
           {/* Contorno del autobús */}
           <path
-            d={`M50,20 L250,20 Q270,20 270,40 L270,${busHeight - 20} Q270,${busHeight} 250,${busHeight} L50,${busHeight} Q30,${busHeight} 30,${busHeight - 20} L30,40 Q30,20 50,20`}
+            d={`M20,50 L20,250 Q20,270 40,270 L${
+              busWidth - 20
+            },270 Q${busWidth},270 ${busWidth},250 L${busWidth},50 Q${busWidth},30 ${
+              busWidth - 20
+            },30 L40,30 Q20,30 20,50`}
             fill="white"
             stroke={theme.palette.grey[300]}
             strokeWidth="2"
           />
-
-          {/* Volante en la izquierda */}
-          <circle cx="70" cy="60" r="15" fill="none" stroke={theme.palette.grey[400]} strokeWidth="2" />
-
-          {/* Texto de "INGRESO" sobre el asiento 4 */}
+          {/* Volante en la parte inferior */}
+          <circle
+            cx="60"
+            cy="230" // Movido hacia abajo
+            r="15"
+            fill="none"
+            stroke={theme.palette.grey[400]}
+            strokeWidth="2"
+          />
+          {/* Texto de "INGRESO" cerca del volante
           <text
-            x="220"
-            y="90"
+            x="90"
+            y="240" // Ajustado para estar cerca del volante
             textAnchor="middle"
             fill={theme.palette.grey[600]}
             style={{ fontSize: "14px", fontWeight: "bold", userSelect: "none" }}
           >
             Ingreso
-          </text>
-
+          </text> */}
           {/* Asientos */}
           {seats.map((seat, index) => {
-            const row = Math.floor(index / 4);
-            const col = index % 4;
-            const x = col < 2 ? 70 + col * 40 : 180 + (col - 2) * 40;
-            const y = 120 + row * 40;
+            const col = Math.floor(index / 4);
+            const row = index % 4;
+            const x = 120 + col * 40;
+            const y = row < 2 ? 50 + row * 40 : 160 + (row - 2) * 40; // Ajustado para dejar espacio abajo
             return renderSeat(seat, x, y);
           })}
         </svg>
       </Box>
-
-      <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>
-        Haz clic en un asiento disponible para seleccionarlo
-      </Typography>
     </Container>
   );
 }
