@@ -1,5 +1,8 @@
 // src/services/stop.service.js
-import stopRepository, { findStopByNameOrCoordinates, createStop } from "../repositories/stop.repository.js";
+import stopRepository, {
+  findStopByNameOrCoordinates,
+  createStop,
+} from "../repositories/stop.repository.js";
 
 export const createStopService = async ({ name, lat, lng }) => {
   // Revisar si la parada ya existe
@@ -15,7 +18,6 @@ export const createStopService = async ({ name, lat, lng }) => {
 };
 
 const findStopsByQuery = async (q) => {
-  
   if (!q) {
     throw new Error("Se requiere un parámetro de búsqueda (q).");
   }
