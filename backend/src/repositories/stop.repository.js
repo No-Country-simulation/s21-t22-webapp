@@ -2,9 +2,9 @@ import Stop from "../models/stops.model.js";
 
 export const findStopsByIds = async (stopIds) => {
   try {
-    return await Stop.find({ _id: { $in: stopIds } });
+    return await Stop.findById(id).session(session);
   } catch (error) {
-    throw new Error("Error al buscar las paradas: " + error.message);
+    throw new Error("Error al buscar la parada: " + error.message);
   }
 };
 export const findStopByNameOrCoordinates = async (name, lat, lng) => {
@@ -34,6 +34,10 @@ const findStopsByQuery = async (query) => {
       { city: { $regex: `^${query}`, $options: "i" } } 
     ]
   }).sort({ name: 1 });
+};
+
+export const findStopById = async (id) => {
+  return await Stop.findById(id).select("name location").lean();
 };
 
 export default { findStopsByQuery };

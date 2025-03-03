@@ -1,5 +1,48 @@
-// src/controllers/trip.controller.js
-import { createTripService, getTripsByRouteIdService, searchTripsService } from "../services/trip.service.js";
+import {
+  obtenerViajesService,
+  obtenerViajePorIdService,
+  createTripService, 
+  getTripsByRouteIdService, 
+  searchTripsService, 
+  getTripsForDate 
+} from "../services/trip.service.js";
+
+
+// Obtener todos los viajes
+export const obtenerViajesController = async (req, res) => {
+  try {
+    const trips = await obtenerViajesService();
+    res.status(200).json(trips);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener los viajes", details: error.message });
+  }
+};
+
+// Obtener un viaje por ID
+export const obtenerViajePorIdController = async (req, res) => {
+  try {
+    const trip = await obtenerViajePorIdService(req.params.tripId);
+    res.status(200).json(trip);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener el viaje", details: error.message });
+  }
+};
+
+export const buscarViajePorFecha = async (req, res) => {
+  try {
+    const { id1, id2, fecha } = req.query;
+
+    // Obtener los viajes mediante el servicio
+    const trips = await getTripsForDate(id1, id2, fecha);
+
+    return res.status(200).json(trips);
+  } catch (error) {
+    console.error("Error al buscar el viaje:", error);
+    return res
+      .status(500)
+      .json({ message: "Error interno del servidor", details: error.message });
+  }
+};
 
 export const createTripController = async (req, res) => {
   try {
@@ -63,3 +106,5 @@ export const searchTripsController = async (req, res) => {
     });
   }
 };
+
+
