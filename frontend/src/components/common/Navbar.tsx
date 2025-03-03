@@ -13,9 +13,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
-import { nanoid } from 'nanoid';
+import { nanoid } from "nanoid";
 
-const pages = ["Enlace1", "Enlace2", "Enlace3"];
+const pages = [
+  { label: "¡Prepara tu viaje!", link: "/viajes" },
+  { label: "enlace 2", link: "" },
+  { label: "enlace 3", link: "" },
+];
 const settings = [
   { label: "Iniciar Sesión", link: "/login" },
   { label: "Perfil", link: "/profile" },
@@ -68,7 +72,7 @@ function NavBar() {
               textDecoration: "none",
             }}
           >
-            Reserva tu bus{" "}
+            Tour Bus
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -99,8 +103,15 @@ function NavBar() {
               sx={{ display: { xs: "block", md: "none" } }}
             >
               {pages.map((page) => (
-                <MenuItem key={nanoid()} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                <MenuItem
+                  key={nanoid()}
+                  onClick={handleCloseNavMenu}
+                  component={NavLink}
+                  to={page.link}
+                >
+                  <Typography sx={{ textAlign: "center" }}>
+                    {page.label}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -132,8 +143,10 @@ function NavBar() {
                 key={nanoid()}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
+                component={NavLink}
+                to={page.link}
               >
-                {page}
+                {page.label}
               </Button>
             ))}
           </Box>
@@ -178,4 +191,5 @@ function NavBar() {
     </AppBar>
   );
 }
+
 export default NavBar;
