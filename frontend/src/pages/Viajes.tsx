@@ -4,11 +4,8 @@ import { Box, Typography, Grid, Button } from "@mui/material";
 import { Grafo } from "../utils/test/algoritmoGrafos";
 import { dijkstra } from "../utils/test/dijkstra";
 import MainLayout from '../components/common/MainLayout';
-<<<<<<< HEAD
 import TravelSearchCard, { TravelSearchCardProps } from "../components/travels/TravelSearchCard";
-=======
 import Hero from '../components/home/Hero';
->>>>>>> 3321f83667398595c37b795c41dd7da3648c84f6
 
 // Define el tipo TravelType
 
@@ -54,11 +51,6 @@ const Viajes = () => {
             } catch (error) {
                 console.error("Fetch error:", error);
                 // Usar información inventada por defecto
-                setTravelInfo([
-                    { id: 1, origin: "Buenos Aires", destination: "Entre Rios", date: "2025-02-23", description: "Un viaje relajante a la naturaleza.", imageUrl: "https://img.static-kl.com/images/media/EDD567B6-661E-481F-97ACD929AB125ABA" },
-                    { id: 2, origin: "Córdoba", destination: "Mendoza", date: "2025-03-10", description: "Disfruta de la mejor gastronomía y vino.", imageUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1" },
-                    { id: 2, origin: "Córdoba", destination: "Mendoza", date: "2025-03-10", description: "Disfruta de la mejor gastronomía y vino.", imageUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1" }, { id: 2, origin: "Córdoba", destination: "Mendoza", date: "2025-03-10", description: "Disfruta de la mejor gastronomía y vino.", imageUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1" }, { id: 2, origin: "Córdoba", destination: "Mendoza", date: "2025-03-10", description: "Disfruta de la mejor gastronomía y vino.", imageUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1" }, { id: 2, origin: "Córdoba", destination: "Mendoza", date: "2025-03-10", description: "Disfruta de la mejor gastronomía y vino.", imageUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1" }, { id: 2, origin: "Córdoba", destination: "Mendoza", date: "2025-03-10", description: "Disfruta de la mejor gastronomía y vino.", imageUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/3c/2b/f1/p1090956-1-largejpg.jpg?w=1200&h=700&s=1" },
-                ]);
                 setError(true);
             }
         };
