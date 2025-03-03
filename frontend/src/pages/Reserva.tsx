@@ -11,7 +11,7 @@ import "./Reserva.css";
 import { Box, Stack, Typography } from "@mui/material";
 import { DatosTrip } from "../components/reserva/DatosTrip";
 import { useLocation } from "react-router-dom";
-
+import AirlineSeatReclineExtraIcon from "@mui/icons-material/AirlineSeatReclineExtra";
 interface Seat {
   id: number;
   numero: number;
@@ -24,7 +24,8 @@ interface ReservaProps {
 }
 
 export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
-  const { destinoImg, fecha, destino, origen, compañia } = useStore();
+  const { origenImg, destinoImg, fecha, destino, origen, compañia, bus } =
+    useStore();
   const location = useLocation();
   //corrección de SPA (navegar hacia arriba)
   useEffect(() => {
@@ -35,31 +36,57 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
       {/* Destino*/}
       <Box
         sx={{
-          backgroundImage: destinoImg
-            ? `url(${destinoImg})`
-            : "url(https://www.infobae.com/resizer/v2/https%3A%2F%2Fs3.amazonaws.com%2Farc-wordpress-client-uploads%2Finfobae-wp%2Fwp-content%2Fuploads%2F2018%2F05%2F16163658%2Fmicros-larga-distancia-Getty-Images.jpg?auth=719b522476893895b314fbd2a2b32db914361f6be2e99aad2c7afe065edfdc3f&smart=true&width=1200&height=675&quality=85)",
-          backgroundSize: "cover",
           width: "100%",
           height: "40vh",
-          margin: "auto",
+          position: "relative",
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          clipPath: "polygon(33% 0, 100% 0%, 100% 100%, 16% 100%)",
         }}
         className="destino-clippath"
       >
-        <Typography
-          variant="h2"
+        <Box sx={{ flex: 0.3, position: "relative" }}>
+          <img src={origenImg} alt="" className="image-left" />
+          <Typography
+            variant="h2"
+            sx={{
+              color: "white", // Color del texto
+              textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)",
+              fontSize: { xs: "2rem", sm: "3rem", md: "3rem", lg: "3rem" },
+              position: "absolute",
+              top: "50%",
+              transform: "translate(-50%,-50%)",
+              left: "50%",
+            }}
+          >
+            {origen}
+          </Typography>
+        </Box>
+        <Box sx={{ flex: 0.7, position: "relative" }}>
+          <img src={destinoImg} alt="" className="image-right" />
+          <Typography
+            variant="h2"
+            sx={{
+              color: "white", // Color del texto
+              textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)",
+              fontSize: { xs: "2rem", sm: "3rem", md: "3rem", lg: "3rem" },
+              position: "absolute",
+              top: "50%",
+              transform: "translate(-50%,-50%)",
+              left: "50%",
+            }}
+          >
+            {destino}
+          </Typography>
+        </Box>
+        <SyncAltIcon
           sx={{
-            color: "white", // Color del texto
-            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)",
-            fontSize: { xs: "2rem", sm: "3rem", md: "3rem", lg: "4rem" }, // Sombra para mejorar el contraste
+            position: "absolute",
+            top: "50%",
+            left: "30%",
+            transform: "translate(-50%,-50%)",
+            color: "purple",
+            fontSize: "40px",
           }}
-        >
-          {destino}
-        </Typography>
+        />
       </Box>
       <Box
         sx={{
@@ -114,8 +141,40 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
         variant="h4"
         sx={{ m: 3, display: "flex", alignItems: "center" }}
       >
-        Asientos &nbsp;
-        <Typography>/{compañia}</Typography>
+        Detalles del bus
+      </Typography>
+      <Typography
+        variant="h5"
+        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+      >
+        Clase:&nbsp;
+        {bus && bus === "Semicama" ? (
+          <>
+            {" "}
+            <AirlineSeatReclineExtraIcon sx={{ color: "black" }} />
+            {bus}
+          </>
+        ) : (
+          ""
+        )}
+      </Typography>
+      <Typography
+        variant="h5"
+        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+      >
+        Asientos disponibles:&nbsp;5
+      </Typography>
+      <Typography
+        variant="h5"
+        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+      >
+        Agencia:&nbsp;{compañia}
+      </Typography>
+      <Typography
+        variant="h5"
+        sx={{ m: 6, display: "flex", alignItems: "center", pl: "15vw" }}
+      >
+        Selecciona tus asientos
       </Typography>
       <BusSeatSelector seats={seats || []} quantity={quantity || 0} />
       <Typography variant="h4" sx={{ m: 3 }}>
