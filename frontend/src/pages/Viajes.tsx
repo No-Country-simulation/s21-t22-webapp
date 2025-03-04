@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom"; // Importa useNavigate
-import { Box, Typography, Grid, Button } from "@mui/material";
-import { Grafo } from "../utils/test/algoritmoGrafos";
-import { dijkstra } from "../utils/test/dijkstra";
 import MainLayout from "../components/common/MainLayout";
 import TravelSearchCard, {
   TravelSearchCardProps,
 } from "../components/travels/TravelSearchCard";
-import Hero from "../components/home/Hero";
+import type { TravelData } from "../components/test/HeroDinamic";
 import useStore from "../contexts/store";
+import HeroDinamic from "../components/test/HeroDinamic";
 
 // Define el tipo TripSimulation
 interface TripSimulation {
@@ -116,10 +114,16 @@ const Viajes = () => {
     },
   ];
 
+  const travelData: TravelData = {
+    origin: origenId,
+    destination: destinoId,
+    date: fecha ? new Date(fecha) : null,
+  };
+
   return (
     <MainLayout>
       <>
-        <Hero from={origenId!} to={destinoId!} tripDate={fecha!} />
+        <HeroDinamic travelData={travelData} />
         {error ? (
           <>
             {apiTripsSimulation.map((trip, index) => (
