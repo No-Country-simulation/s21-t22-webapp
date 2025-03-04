@@ -153,7 +153,7 @@ const Viajes = () => {
                     trip.bus,
                     trip.duracion
                   );
-                  navigate("/reserva"); // Navega a la ruta "reserva"
+                  navigate("/reserva");
                 }}
               />
             ))}

@@ -1,0 +1,11 @@
+.formulario-reserva {
+  display: flex;
+  width: 70vw;
+  flex-direction: column;
+  height: auto;
+  margin: auto;
+}
+.formulario-reserva input {
+  margin: 0 0 10px 0;
+  height: 35px;
+}

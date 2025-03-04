@@ -6,7 +6,7 @@ const ReservationSchema = new mongoose.Schema({
   seatNumber: { type: Number, required: true },
   from: { type: mongoose.Schema.Types.ObjectId, ref: "Stop", required: true },
   to: { type: mongoose.Schema.Types.ObjectId, ref: "Stop", required: true },
-  price: { type: Number, required: true },
+  price: { type: Number, required: false },
   createdAt: { type: Date, default: Date.now },
 });
 

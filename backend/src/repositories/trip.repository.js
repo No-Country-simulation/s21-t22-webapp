@@ -1,8 +1,29 @@
 import Trip from "../models/trip.model.js";
 
-export const findTripById = async (tripId) => {
-  return await Trip.findById(tripId).populate("route seats.availability.stop");
+export const getAllTrips = async () => {
+  try {
+    return await Trip.find().populate("route seats.availability.stop");
+  } catch (error) {
+    throw new Error("Error al obtener los viajes: " + error.message);
+  }
 };
+
+export const getTripById = async (tripId) => {
+  try {
+    return await Trip.findById(tripId).populate("route seats.availability.stop");
+  } catch (error) {
+    throw new Error("Error al buscar el viaje: " + error.message);
+  }
+};
+
+export const findTripById = async (tripId, session = null) => {
+  try {
+    return await Trip.findById(tripId).populate("route seats.availability.stop").session(session);
+  } catch (error) {
+    throw new Error("Error al obtener el viaje: " + error.message);
+  }
+};
+
 export const createTrip = async (tripData) => {
   try {
     const newTrip = new Trip(tripData);
@@ -29,4 +50,20 @@ export const getTripsByRoutes = async (validRoutes) => {
   } catch (error) {
     throw new Error("Error al obtener los viajes: " + error.message);
   }
+};
+
+export const findTripsByDate = async (startDate, endDate) => {
+  return await Trip.find({
+    departureDate: { $gte: startDate, $lte: endDate }
+  })
+    .select("departureDate arrivalDate bus route")
+    .populate({
+      path: "route",
+      select: "name connections",
+      populate: {
+        path: "connections.from connections.to",
+        select: "name"
+      }
+    })
+    .lean();
 };

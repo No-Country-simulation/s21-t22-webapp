@@ -9,9 +9,9 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import "./Reserva.css";
 import { Box, Stack, Typography } from "@mui/material";
-import { DatosTrip } from "../components/reserva/DatosTrip";
 import { useLocation } from "react-router-dom";
 import AirlineSeatReclineExtraIcon from "@mui/icons-material/AirlineSeatReclineExtra";
+import DatosTrip from "../components/reserva/DatosTrip";
 interface Seat {
   id: number;
   numero: number;
@@ -181,9 +181,6 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
         Tus datos
       </Typography>
       <DatosTrip />
-      <Typography variant="h4" sx={{ m: 3 }}>
-        Aplicar descuentos
-      </Typography>
     </MainLayout>
   );
 };

@@ -5,6 +5,8 @@ import connectDB from "./config/db.js";
 import indexRouter from "./routes/index.route.js";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
+import helmet from "helmet";
+import morgan from "morgan";
 
 dotenv.config();
 connectDB();
@@ -18,16 +20,17 @@ const corsOptions = {
 };
 
 const swaggerDocument = YAML.load("./src/docs/swagger.yaml");
-
 app.use(express.json());
 app.use(cors(corsOptions));
+app.use(helmet());
+app.use(morgan('dev'));
 
 app.use("/api", indexRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //Always Redirect api
 app.get("/", (req, res) => {
-  res.redirect("/api");
+  res.redirect("/api-docs");
 });
 
 const PORT = process.env.PORT || 5000;
