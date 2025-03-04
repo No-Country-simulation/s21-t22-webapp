@@ -19,5 +19,9 @@
     "url": "https://github.com/No-Country-simulation/s21-07-webapp/issues"
   },
   "homepage": "https://github.com/No-Country-simulation/s21-07-webapp#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0"
+  }
 }
