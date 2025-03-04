@@ -1,5 +1,5 @@
 import stopService, { createStopService } from "../services/stop.service.js";
-import Stop from "../models/stops.model.js"
+import Stop from "../models/stop.model.js"
 import Trip from "../models/trip.model.js"
 
 export const createStopController = async (req, res) => {
@@ -24,7 +24,7 @@ export const findStopsByQuery = async (req, res) => {
   try {
     const { q } = req.query;
     const stops = await stopService.findStopsByQuery(q);
-    return res.status(200).json({ stops });
+    return res.status(200).json(stops);
   } catch (error) {
     console.error("Error al buscar paradas:", error.message);
     return res.status(400).json({ message: error.message });
