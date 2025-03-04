@@ -3,179 +3,215 @@ info:
   title: Bus Reservation API
   description: API for bus reservations, payments, trips, and more.
   version: 1.0.0
+
+servers:
+  - url: http://localhost:5000
+    description: Local server 
+
 paths:
-  /users:
+  /api/stop/search:
     get:
-      summary: Get all users
-      responses:
-        200:
-          description: List of all users
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
-    post:
-      summary: Create a new user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        201:
-          description: User created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-
-  /bus/add:
-    post:
-      summary: Add a new bus
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Bus'
-      responses:
-        201:
-          description: Bus added successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Bus'
-
-  /payment/pay:
-    post:
-      summary: Process a payment
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Payment'
-      responses:
-        201:
-          description: Payment processed successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
-
-  /reservar:
-    post:
-      summary: Make a seat reservation
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Reservation'
-      responses:
-        201:
-          description: Reservation created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Reservation'
-
-  /route/add:
-    post:
-      summary: Add a new route
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Route'
-      responses:
-        201:
-          description: Route added successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Route'
-
-  /stop/create:
-    post:
-      summary: Create a new stop
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Stop'
-      responses:
-        201:
-          description: Stop created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Stop'
-
-  /trip/search:
-    get:
-      summary: Search for trips based on 'from' and 'to' locations
+      summary: Search stops by name or city
+      description: Returns a list of stops that match the search parameter.
       parameters:
-        - in: query
-          name: from
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: to
+        - name: q
+          in: query
+          description: Search term to filter stops by name or city.
           required: true
           schema:
             type: string
       responses:
         200:
-          description: List of trips matching the search
+          description: List of matching stops found.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Trip'
-
-  /trip/get/{routeId}:
-    get:
-      summary: Get trips for a specific route
-      parameters:
-        - in: path
-          name: routeId
-          required: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: List of trips for the route
+                  $ref: '#/components/schemas/Stop'
+        400:
+          description: Missing or no matching search parameter.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Trip'
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: No se encontraron paradas con el criterio de búsqueda.
 
-  /trip/create:
-    post:
-      summary: Create a new trip
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Trip'
-      responses:
-        201:
-          description: Trip created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Trip'
+  # /users:
+  #   get:
+  #     summary: Get all users
+  #     responses:
+  #       200:
+  #         description: List of all users
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/User'
+  #   post:
+  #     summary: Create a new user
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/User'
+  #     responses:
+  #       201:
+  #         description: User created successfully
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/User'
+
+  # /bus/add:
+  #   post:
+  #     summary: Add a new bus
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Bus'
+  #     responses:
+  #       201:
+  #         description: Bus added successfully
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Bus'
+
+  # /payment/pay:
+  #   post:
+  #     summary: Process a payment
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Payment'
+  #     responses:
+  #       201:
+  #         description: Payment processed successfully
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Payment'
+
+  # /reservar:
+  #   post:
+  #     summary: Make a seat reservation
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Reservation'
+  #     responses:
+  #       201:
+  #         description: Reservation created successfully
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Reservation'
+
+  # /route/add:
+  #   post:
+  #     summary: Add a new route
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Route'
+  #     responses:
+  #       201:
+  #         description: Route added successfully
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Route'
+
+  # /stop/create:
+  #   post:
+  #     summary: Create a new stop
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Stop'
+  #     responses:
+  #       201:
+  #         description: Stop created successfully
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Stop'
+
+  # /trip/search:
+  #   get:
+  #     summary: Search for trips based on 'from' and 'to' locations
+  #     parameters:
+  #       - in: query
+  #         name: from
+  #         required: true
+  #         schema:
+  #           type: string
+  #       - in: query
+  #         name: to
+  #         required: true
+  #         schema:
+  #           type: string
+  #     responses:
+  #       200:
+  #         description: List of trips matching the search
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/Trip'
+
+  # /trip/get/{routeId}:
+  #   get:
+  #     summary: Get trips for a specific route
+  #     parameters:
+  #       - in: path
+  #         name: routeId
+  #         required: true
+  #         schema:
+  #           type: string
+  #     responses:
+  #       200:
+  #         description: List of trips for the route
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/Trip'
+
+  # /trip/create:
+  #   post:
+  #     summary: Create a new trip
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Trip'
+  #     responses:
+  #       201:
+  #         description: Trip created successfully
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Trip'
 
 components:
   schemas:
@@ -251,15 +287,35 @@ components:
     Stop:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
+          example: "60d21b4667d0d8992e610c85"
         name:
           type: string
+          example: "Buenos Aires"
+        city:
+          type: string
+          example: "Buenos Aires"
         location:
           type: object
           properties:
             lat:
               type: number
+              format: float
+              example: -34.603722
             lng:
               type: number
+              format: float
+              example: -58.381592
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-01-01T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2023-01-02T15:30:00Z"
     Trip:
       type: object
       properties:
