@@ -6,13 +6,19 @@ info:
 
 servers:
   - url: http://localhost:5000
-    description: Local server 
+    description: Local server
+
+tags:
+  - name: Stop
+    description: Operations related to bus stops
 
 paths:
   /api/stop/search:
     get:
       summary: Search stops by name or city
       description: Returns a list of stops that match the search parameter.
+      tags:
+        - Stop
       parameters:
         - name: q
           in: query
