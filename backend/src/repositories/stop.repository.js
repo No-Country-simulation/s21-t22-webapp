@@ -1,4 +1,4 @@
-import Stop from "../models/stops.model.js";
+import Stop from "../models/stop.model.js";
 
 export const findStopsByIds = async (stopIds) => {
   try {
