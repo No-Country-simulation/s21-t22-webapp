@@ -83,7 +83,7 @@ const Viajes = () => {
     setBus(bus);
     setDuracion(duracion);
   };
-  console.log(travelInfo)
+  console.log(travelInfo);
   // Datos simulados de viajes
   const apiTripsSimulation: TripSimulation[] = [
     {
