@@ -6,7 +6,8 @@ import {
     createTripController, 
     getTripController, 
     searchTripsController, 
-    buscarViajePorFecha 
+    buscarViajePorFecha,
+    getAvailableSeatsController
 } from "../controllers/trip.controller.js";
 
 
@@ -23,6 +24,6 @@ tripRouter.post("/create", createTripController);
 tripRouter.get("/get/:routeId", getTripController);
 tripRouter.get("/search", searchTripsController);
 tripRouter.get("/search-trips", buscarViajePorFecha)
-
+tripRouter.get("/available-seats", getAvailableSeatsController);
 
 export default tripRouter;

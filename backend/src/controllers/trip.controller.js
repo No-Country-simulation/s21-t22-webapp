@@ -4,8 +4,27 @@ import {
   createTripService, 
   getTripsByRouteIdService, 
   searchTripsService, 
-  getTripsForDate 
+  getTripsForDate,
+  getAvailableSeatsService
 } from "../services/trip.service.js";
+
+export const getAvailableSeatsController = async (req, res) => {
+  try {
+    const { tripId, fromStopId, toStopId } = req.query;
+
+    if (!tripId || !fromStopId || !toStopId) {
+      return res.status(400).json({ message: "Faltan parámetros requeridos." });
+    }
+
+    const availableSeats = await getAvailableSeatsService(tripId, fromStopId, toStopId);
+
+    res.json({ availableSeats });
+  } catch (error) {
+    console.error("Error en getAvailableSeatsController:", error);
+    res.status(500).json({ message: "Error al obtener los asientos disponibles.", error: error.message });
+  }
+};
+
 
 
 // Obtener todos los viajes
