@@ -25,8 +25,17 @@ interface ReservaProps {
 }
 
 export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
-  const { origenImg, destinoImg, fecha, destino, origen, compañia, bus } =
-    useStore();
+  const {
+    origenImg,
+    destinoImg,
+    fecha,
+    destino,
+    origen,
+    compañia,
+    bus,
+    salida,
+    llegada,
+  } = useStore();
   const location = useLocation();
   //corrección de SPA (navegar hacia arriba)
   useEffect(() => {
@@ -176,6 +185,18 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
         sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
       >
         Agencia:&nbsp;{compañia}
+      </Typography>
+      <Typography
+        variant="h5"
+        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+      >
+        Horario de salida:&nbsp;{salida}
+      </Typography>
+      <Typography
+        variant="h5"
+        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+      >
+        Horario de llegada:&nbsp;{llegada}
       </Typography>
       <Typography
         variant="h5"

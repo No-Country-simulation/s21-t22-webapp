@@ -53,6 +53,8 @@ interface TripSimulation {
   precio: string;
   bus: string;
   duracion: string;
+  salida: string;
+  llegada: string;
 }
 
 const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
@@ -87,6 +89,7 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
     if (!origin || !destination || !date) {
       alert("No has completado la búsqueda de viajes");
     } else {
+      // simulamos el endpoint de viajes
       const viajesSimulados: TripSimulation[] = [
         {
           origenImg:
@@ -100,6 +103,8 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
           precio: "50.00",
           bus: "Semicama",
           duracion: "6h 30m",
+          salida: "6:30 am",
+          llegada: "9 pm",
         },
         {
           origenImg:
@@ -113,6 +118,8 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
           precio: "30.00",
           bus: "Cama",
           duracion: "1h 30m",
+          salida: "8:30 am",
+          llegada: "4 pm",
         },
       ];
       setViajes(viajesSimulados);

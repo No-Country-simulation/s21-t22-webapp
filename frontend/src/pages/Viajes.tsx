@@ -26,6 +26,8 @@ const Viajes = () => {
     setPrecio,
     setBus,
     setDuracion,
+    setSalida,
+    setLlegada,
   } = useStore();
 
   const origenId = searchParams.get("origenId");
@@ -42,7 +44,9 @@ const Viajes = () => {
     fecha: string,
     precio: string,
     bus: string,
-    duracion: string
+    duracion: string,
+    salida: string,
+    llegada: string
   ) => {
     setOrigen(origen);
     setDestino(destino);
@@ -53,6 +57,8 @@ const Viajes = () => {
     setPrecio(precio);
     setBus(bus);
     setDuracion(duracion);
+    setSalida(salida);
+    setLlegada(llegada);
   };
   console.log(travelInfo);
   // Datos simulados de viajes
@@ -83,6 +89,8 @@ const Viajes = () => {
                 price={trip.precio}
                 busType={trip.bus}
                 duration={trip.duracion}
+                salida={trip.salida}
+                llegada={trip.llegada}
                 seatsAvailable={5}
                 rating={4.5}
                 direct={false}
@@ -96,7 +104,9 @@ const Viajes = () => {
                     trip.fecha,
                     trip.precio,
                     trip.bus,
-                    trip.duracion
+                    trip.duracion,
+                    trip.salida,
+                    trip.llegada
                   );
                   navigate("/reserva");
                 }}
