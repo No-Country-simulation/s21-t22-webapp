@@ -7,8 +7,8 @@ import TripOriginIcon from "@mui/icons-material/TripOrigin";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
-import { Box, Stack, Typography } from "@mui/material";
-import { useLocation } from "react-router-dom";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { Link, useLocation } from "react-router-dom";
 import AirlineSeatReclineExtraIcon from "@mui/icons-material/AirlineSeatReclineExtra";
 import AirlineSeatIndividualSuiteIcon from "@mui/icons-material/AirlineSeatIndividualSuite";
 import DatosTrip from "../components/reserva/DatosTrip";
@@ -54,7 +54,15 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
         className="destino-clippath"
       >
         <Box sx={{ flex: 0.3, position: "relative" }}>
-          <img src={origenImg} alt="" className="image-left" />
+          {origenImg ? (
+            <img src={origenImg} alt="" className="image-left" />
+          ) : (
+            <img
+              src="https://media.revistagq.com/photos/5ed5285ef95b900ced636e6d/1:1/w_4016,h_4016,c_limit/GettyImages-619394704.jpg"
+              alt=""
+              className="image-left"
+            />
+          )}
           <Typography
             variant="h2"
             sx={{
@@ -71,7 +79,15 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
           </Typography>
         </Box>
         <Box sx={{ flex: 0.7, position: "relative" }}>
-          <img src={destinoImg} alt="" className="image-right" />
+          {destinoImg ? (
+            <img src={destinoImg} alt="" className="image-right" />
+          ) : (
+            <img
+              src="https://s3.us-east-2.amazonaws.com/cdn.price4limo.com/static/price4limo-plano-charter-bus.jpg"
+              alt=""
+              className="image-right"
+            />
+          )}
           <Typography
             variant="h2"
             sx={{
@@ -103,112 +119,141 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-evenly",
-          width: "70vw",
+          width: !origen || !destino ? "100%" : "70vw",
           p: 3,
+          height: !origen || !destino ? "50vh" : "auto",
+          backgroundImage:
+            !origen || !destino
+              ? "url(https://res.cloudinary.com/fronda/image/upload/f_auto,q_auto,c_fill,w_1296,h_400/prod/build/shop/images/blog/descubrir/arboles-de-gran-tamano/arbolesgrandes.730c76f2.jpg)"
+              : "",
+          objectFit: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPositionX: "center",
         }}
       >
-        <Stack spacing={2}>
-          <Typography variant="h6">Origen</Typography>
-          <Typography
-            variant="h5"
-            sx={{ display: "flex", alignItems: "center" }}
-          >
-            <TripOriginIcon sx={{ color: "#1d2a4a" }} />
-            {origen}
-          </Typography>
-        </Stack>
-        <SyncAltIcon />
-        <Stack spacing={2}>
-          <Typography variant="h6">Destino</Typography>
-          <Typography
-            variant="h5"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <FmdGoodIcon sx={{ color: "#1d2a4a" }} />
-            {destino}
-          </Typography>
-        </Stack>
-        <TrendingFlatIcon />
-
-        <Stack spacing={2}>
-          <Typography variant="h6">Fecha</Typography>
-          <Typography
-            variant="h5"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <CalendarMonthIcon /> {fecha}
-          </Typography>
-        </Stack>
-      </Box>
-      <hr />
-      <Typography
-        variant="h4"
-        sx={{ m: 3, display: "flex", alignItems: "center" }}
-      >
-        Detalles del bus
-      </Typography>
-      <Typography
-        variant="h5"
-        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
-      >
-        Clase:&nbsp;&nbsp;
-        {bus && bus === "Semicama" ? (
+        {!origen || !destino ? (
           <>
-            <AirlineSeatReclineExtraIcon sx={{ color: "grey" }} />
-            &nbsp;&nbsp;
-            {bus}
-          </>
-        ) : bus && bus === "Cama" ? (
-          <>
-            <AirlineSeatIndividualSuiteIcon sx={{ color: "grey" }} />
-            &nbsp;&nbsp;
-            {bus}
+            <Typography variant="h3">Aun no has reservado tu viaje</Typography>
+            <Button
+              component={Link}
+              to="/viajes"
+              variant="contained"
+              color="primary"
+            >
+              Reservar viaje
+            </Button>
           </>
         ) : (
-          ""
+          <>
+            <Stack spacing={2}>
+              <Typography variant="h6">Origen</Typography>
+              <Typography
+                variant="h5"
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <TripOriginIcon sx={{ color: "#1d2a4a" }} />
+                {origen}
+              </Typography>
+            </Stack>
+            <SyncAltIcon />
+            <Stack spacing={2}>
+              <Typography variant="h6">Destino</Typography>
+              <Typography
+                variant="h5"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <FmdGoodIcon sx={{ color: "#1d2a4a" }} />
+                {destino}
+              </Typography>
+            </Stack>
+            <TrendingFlatIcon />
+            <Stack spacing={2}>
+              <Typography variant="h6">Fecha</Typography>
+              <Typography
+                variant="h5"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <CalendarMonthIcon /> {fecha}
+              </Typography>
+            </Stack>
+          </>
         )}
-      </Typography>
-      <Typography
-        variant="h5"
-        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
-      >
-        Asientos disponibles:&nbsp;5
-      </Typography>
-      <Typography
-        variant="h5"
-        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
-      >
-        Agencia:&nbsp;{compañia}
-      </Typography>
-      <Typography
-        variant="h5"
-        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
-      >
-        Horario de salida:&nbsp;{salida}
-      </Typography>
-      <Typography
-        variant="h5"
-        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
-      >
-        Horario de llegada:&nbsp;{llegada}
-      </Typography>
-      <Typography
-        variant="h5"
-        sx={{ m: 6, display: "flex", alignItems: "center", pl: "15vw" }}
-      >
-        Selecciona tus asientos
-      </Typography>
-      <BusSeatSelector seats={seats || []} quantity={quantity || 0} />
-      <Typography variant="h4" sx={{ m: 3 }}>
-        Tus datos
-      </Typography>
-      <DatosTrip />
+      </Box>
+      <hr />
+      {!origen || !destino || !origenImg || !destinoImg ? (
+        ""
+      ) : (
+        <>
+          <Typography
+            variant="h4"
+            sx={{ m: 3, display: "flex", alignItems: "center" }}
+          >
+            Detalles del bus
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+          >
+            Clase:&nbsp;&nbsp;
+            {bus && bus === "Semicama" ? (
+              <>
+                <AirlineSeatReclineExtraIcon sx={{ color: "grey" }} />
+                &nbsp;&nbsp;
+                {bus}
+              </>
+            ) : bus && bus === "Cama" ? (
+              <>
+                <AirlineSeatIndividualSuiteIcon sx={{ color: "grey" }} />
+                &nbsp;&nbsp;
+                {bus}
+              </>
+            ) : (
+              ""
+            )}
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+          >
+            Asientos disponibles:&nbsp;5
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+          >
+            Agencia:&nbsp;{compañia}
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+          >
+            Horario de salida:&nbsp;{salida}
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+          >
+            Horario de llegada:&nbsp;{llegada}
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{ m: 6, display: "flex", alignItems: "center", pl: "15vw" }}
+          >
+            Selecciona tus asientos
+          </Typography>
+          <BusSeatSelector seats={seats || []} quantity={quantity || 0} />
+          <Typography variant="h4" sx={{ m: 3 }}>
+            Tus datos
+          </Typography>
+          <DatosTrip />
+        </>
+      )}
     </MainLayout>
   );
 };
