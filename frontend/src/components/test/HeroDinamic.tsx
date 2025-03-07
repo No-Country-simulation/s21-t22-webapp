@@ -14,6 +14,8 @@ import { useState } from "react";
 import CustomAutocomplete from "../home/Autocomplete";
 import CustomDatePicker from "../home/Datepicker";
 import useStore from "../../contexts/store";
+import { useNavigate } from "react-router-dom";
+
 // import { formatDateToDDMMYYYY } from "../../utils/formatDateToDDMMYYYY";
 
 // Función para buscar lugares en la API
@@ -68,6 +70,7 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
   const [destinationOptions, setDestinationOptions] = useState<string[]>([]);
 
   const { setViajes } = useStore();
+  const navigate = useNavigate();
 
   // funciones
 
@@ -123,6 +126,7 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
         },
       ];
       setViajes(viajesSimulados);
+      navigate("/viajes");
     }
   };
 
@@ -202,6 +206,7 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
               direction={{ xs: "column", md: "row" }}
               spacing={2}
               alignItems="center"
+              justifyContent="space-evenly"
             >
               <CustomAutocomplete
                 value={origin}

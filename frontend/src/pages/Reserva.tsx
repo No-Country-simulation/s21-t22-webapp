@@ -83,7 +83,7 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
             <img src={destinoImg} alt="" className="image-right" />
           ) : (
             <img
-              src="https://s3.us-east-2.amazonaws.com/cdn.price4limo.com/static/price4limo-plano-charter-bus.jpg"
+              src="https://res.cloudinary.com/fronda/image/upload/f_auto,q_auto,c_fill,w_1296,h_400/prod/build/shop/images/blog/descubrir/arboles-de-gran-tamano/arbolesgrandes.730c76f2.jpg"
               alt=""
               className="image-right"
             />
@@ -122,18 +122,11 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
           width: !origen || !destino ? "100%" : "70vw",
           p: 3,
           height: !origen || !destino ? "50vh" : "auto",
-          backgroundImage:
-            !origen || !destino
-              ? "url(https://res.cloudinary.com/fronda/image/upload/f_auto,q_auto,c_fill,w_1296,h_400/prod/build/shop/images/blog/descubrir/arboles-de-gran-tamano/arbolesgrandes.730c76f2.jpg)"
-              : "",
-          objectFit: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPositionX: "center",
         }}
       >
         {!origen || !destino ? (
           <>
-            <Typography variant="h3">Aun no has reservado tu viaje</Typography>
+            <Typography variant="h5">Aun no has reservado tu viaje</Typography>
             <Button
               component={Link}
               to="/viajes"
