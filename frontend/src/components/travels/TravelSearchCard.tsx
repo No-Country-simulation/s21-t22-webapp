@@ -20,6 +20,8 @@ export type TravelSearchCardProps = {
   price: string;
   busType: string;
   duration: string;
+  salida: string;
+  llegada: string;
   seatsAvailable: number;
   rating: number;
   direct: boolean;
@@ -36,6 +38,8 @@ const TravelSearchCard: React.FC<TravelSearchCardProps> = ({
   price,
   busType,
   duration,
+  salida,
+  llegada,
   seatsAvailable,
   rating,
   direct,
@@ -95,6 +99,12 @@ const TravelSearchCard: React.FC<TravelSearchCardProps> = ({
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Asientos disponibles: {seatsAvailable}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Salida: {salida}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Llegada: {llegada}
             </Typography>
           </Box>
           <Box
