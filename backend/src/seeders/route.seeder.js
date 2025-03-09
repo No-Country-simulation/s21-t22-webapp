@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Route from "../models/route.model.js";
-import Stop from "../models/stops.model.js";
+import Stop from "../models/stop.model.js";
 import { distance } from "../utils/graph/distance.graph.js";
 
 dotenv.config();
