@@ -10,6 +10,8 @@ const TripSchema = new mongoose.Schema(
     },
     departureDate: { type: Date, required: true }, // Fecha de salida
     arrivalDate: { type: Date, required: true }, // Fecha de llegada
+    seatType: { type: String, enum: ["semicama", "cama"], required: true },
+    duration: { type: Number, required: true },
     seats: [
       {
         seatNumber: { type: Number, required: true },

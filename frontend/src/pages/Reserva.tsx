@@ -7,11 +7,12 @@ import TripOriginIcon from "@mui/icons-material/TripOrigin";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
-import "./Reserva.css";
 import { Box, Stack, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import AirlineSeatReclineExtraIcon from "@mui/icons-material/AirlineSeatReclineExtra";
+import AirlineSeatIndividualSuiteIcon from "@mui/icons-material/AirlineSeatIndividualSuite";
 import DatosTrip from "../components/reserva/DatosTrip";
+import "./Reserva.css";
 interface Seat {
   id: number;
   numero: number;
@@ -24,8 +25,17 @@ interface ReservaProps {
 }
 
 export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
-  const { origenImg, destinoImg, fecha, destino, origen, compañia, bus } =
-    useStore();
+  const {
+    origenImg,
+    destinoImg,
+    fecha,
+    destino,
+    origen,
+    compañia,
+    bus,
+    salida,
+    llegada,
+  } = useStore();
   const location = useLocation();
   //corrección de SPA (navegar hacia arriba)
   useEffect(() => {
@@ -147,11 +157,17 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
         variant="h5"
         sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
       >
-        Clase:&nbsp;
+        Clase:&nbsp;&nbsp;
         {bus && bus === "Semicama" ? (
           <>
-            {" "}
-            <AirlineSeatReclineExtraIcon sx={{ color: "black" }} />
+            <AirlineSeatReclineExtraIcon sx={{ color: "grey" }} />
+            &nbsp;&nbsp;
+            {bus}
+          </>
+        ) : bus && bus === "Cama" ? (
+          <>
+            <AirlineSeatIndividualSuiteIcon sx={{ color: "grey" }} />
+            &nbsp;&nbsp;
             {bus}
           </>
         ) : (
@@ -169,6 +185,18 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
         sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
       >
         Agencia:&nbsp;{compañia}
+      </Typography>
+      <Typography
+        variant="h5"
+        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+      >
+        Horario de salida:&nbsp;{salida}
+      </Typography>
+      <Typography
+        variant="h5"
+        sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+      >
+        Horario de llegada:&nbsp;{llegada}
       </Typography>
       <Typography
         variant="h5"

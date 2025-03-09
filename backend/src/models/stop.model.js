@@ -8,6 +8,7 @@ const StopSchema = new mongoose.Schema(
       lat: { type: Number, required: true }, //Latitud
       lng: { type: Number, required: true }, //Longitud
     },
+    imgUrl: { type: String, required: true }
   },
   { timestamps: true }
 );
