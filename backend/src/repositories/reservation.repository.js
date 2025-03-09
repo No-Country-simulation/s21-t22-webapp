@@ -12,9 +12,12 @@ export const createReservation = async (reservationData, session = null) => {
 };
 
 // Función para obtener reservas por viaje
-export const getReservationsByTrip = async (tripId) => {
+export const getReservationsByTrip = async (tripId, seatNumber, session = null) => {
   try {
-    return await Reservation.find({ trip: tripId });
+    const query = { trip: tripId, seatNumber };
+    return session
+      ? await Reservation.find(query).session(session)
+      : await Reservation.find(query);
   } catch (error) {
     throw new Error("Error al obtener las reservas para el viaje: " + error.message);
   }

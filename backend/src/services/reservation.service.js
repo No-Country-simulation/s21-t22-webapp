@@ -1,8 +1,7 @@
 // src/services/reservation.service.js
 import mongoose from "mongoose";
-import { createReservation } from "../repositories/reservation.repository.js";
 import { findTripById } from "../repositories/trip.repository.js";
-import { findStopById } from "../repositories/stop.repository.js";
+import { getReservationsByTrip, createReservation } from "../repositories/reservation.repository.js";
 
 // Obtener asientos disponibles para un viaje
 export const obtenerAsientosLibresService = async (tripId) => {
@@ -20,56 +19,47 @@ export const obtenerAsientosLibresService = async (tripId) => {
   }
 };
 
-// Reservar un asiento
 export const reservarAsientoService = async ({ tripId, userId, seatNumber, from, to }) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    // Validar paradas
-    const stopFrom = await findStopById(from, session);
-    const stopTo = await findStopById(to, session);
-    if (!stopFrom || !stopTo) throw new Error("Una o ambas paradas no existen");
+    // Convertir tripId a ObjectId
+    const objectIdTripId = new mongoose.Types.ObjectId(tripId);
 
-    // Obtener el viaje
-    const trip = await findTripById(tripId, session);
-    if (!trip) throw new Error("Viaje no encontrado");
+    // Buscar reservas previas en el mismo viaje y asiento
+    const existingReservations = await getReservationsByTrip(objectIdTripId, seatNumber, session);
 
-    // Buscar el asiento
-    const seat = trip.seats.find((s) => s.seatNumber === seatNumber);
-    if (!seat) throw new Error("Asiento no encontrado");
-
-    // Verificar disponibilidad del asiento
-    const isAvailable = seat.availability.every((avail) => avail.isAvailable);
-    if (!isAvailable) throw new Error("El asiento no está disponible");
-
-    // Marcar el asiento como no disponible
-    seat.availability.forEach((avail) => {
-      avail.isAvailable = false;
+    // Verificar si el asiento está ocupado en el rango de paradas
+    const isSeatTaken = existingReservations.some(reservation => {
+      return (
+        (from >= reservation.from && from < reservation.to) ||
+        (to > reservation.from && to <= reservation.to) ||
+        (from <= reservation.from && to >= reservation.to)
+      );
     });
 
-    // Guardar el viaje actualizado
-    await trip.save({ session });
+    if (isSeatTaken) {
+      throw new Error("El asiento ya está reservado en el rango de paradas seleccionado");
+    }
 
     // Crear la reserva
     const reservationData = {
-      trip: tripId,
+      trip: objectIdTripId,
       user: userId,
       seatNumber,
       from,
       to,
-      price: 100, // Precio fijo o calculado de otra manera
+      price: 100, // Puede ser calculado dinámicamente
     };
 
     const reservation = await createReservation(reservationData, session);
 
-    // Confirmar la transacción
     await session.commitTransaction();
     session.endSession();
 
     return { reservation, precioFinal: reservationData.price };
   } catch (error) {
-    // Revertir la transacción en caso de error
     await session.abortTransaction();
     session.endSession();
     throw new Error("Error en el servicio de reserva: " + error.message);

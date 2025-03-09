@@ -16,7 +16,12 @@ export const getAvailableSeatsController = async (req, res) => {
       return res.status(400).json({ message: "Faltan parámetros requeridos." });
     }
 
-    const availableSeats = await getAvailableSeatsService(tripId, fromStopId, toStopId);
+    // 🔹 Limpiar IDs (eliminar espacios y saltos de línea)
+    const cleanTripId = tripId.trim();
+    const cleanFromStopId = fromStopId.trim();
+    const cleanToStopId = toStopId.trim();
+
+    const availableSeats = await getAvailableSeatsService(cleanTripId, cleanFromStopId, cleanToStopId);
 
     res.json({ availableSeats });
   } catch (error) {
@@ -24,6 +29,7 @@ export const getAvailableSeatsController = async (req, res) => {
     res.status(500).json({ message: "Error al obtener los asientos disponibles.", error: error.message });
   }
 };
+
 
 
 

@@ -10,17 +10,14 @@ export const obtenerAsientosLibresController = async (req, res) => {
   }
 };
 
-// Reservar un asiento
 export const reservarAsientoController = async (req, res) => {
   try {
     const { tripId, userId, seatNumber, from, to } = req.body;
 
-    // Validar campos obligatorios
     if (!tripId || !userId || !seatNumber || !from || !to) {
       return res.status(400).json({ error: "Faltan campos obligatorios" });
     }
 
-    // Validar tipos de datos
     if (typeof seatNumber !== "number") {
       return res.status(400).json({ error: "El número de asiento debe ser un número" });
     }
@@ -39,6 +36,8 @@ export const reservarAsientoController = async (req, res) => {
       precioTotal: precioFinal,
     });
   } catch (error) {
-    res.status(500).json({ error: "Error al procesar la reserva", details: error.message });
+    console.error("🔥 Error en el controlador de reserva:", error);
+    res.status(500).json({ error: "Error interno en la reserva", details: error.message });
   }
 };
+

@@ -1,4 +1,4 @@
-import { get } from "mongoose";
+import Reservation from "../models/reservation.model.js";
 import Trip from "../models/trip.model.js";
 
 export const getAllTrips = async () => {
@@ -68,14 +68,28 @@ export const findTripsByDate = async (startDate, endDate) => {
     })
     .lean();
 };
-// Si tienes una función getTripWithSeats en trip.repository.js
+// Obtener un viaje con asientos y paradas
 export const getTripWithSeats = async (tripId) => {
   try {
-    const trip = await Trip.findById(tripId).populate("route seats.availability.stop");
-    console.log('Viaje con asientos:', trip);  // Agrega este log
-    return trip;
+    return await Trip.findById(tripId).populate("route seats.availability.stop");
   } catch (error) {
     throw new Error("Error al obtener el viaje con asientos: " + error.message);
   }
 };
+
+// Obtener los asientos reservados para un viaje y tramo
+export const getReservedSeats = async (tripId, fromStopId, toStopId) => {
+  try {
+    const reservations = await Reservation.find({
+      trip: tripId,
+      from: fromStopId,
+      to: toStopId,
+    });
+
+    return reservations.map(res => res.seatNumber);
+  } catch (error) {
+    throw new Error("Error al obtener los asientos reservados: " + error.message);
+  }
+};
+
 
