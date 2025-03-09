@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import Trip from "../models/trip.model.js";
 import Bus from "../models/bus.model.js";
 import Route from "../models/route.model.js";
-import Stop from "../models/stops.model.js";
+import Stop from "../models/stop.model.js";
 
 dotenv.config();
 
@@ -39,7 +39,9 @@ const seedTrips = async () => {
         bus: buses[0]._id,
         route: routes[0]._id,
         departureDate: new Date(),
-        arrivalDate: new Date(new Date().getTime() + 5 * 60 * 60 * 1000), // 5 horas después
+        arrivalDate: new Date(new Date().getTime() + 5 * 60 * 60 * 1000),
+        duration: 120,
+        seatType: 'semicama', // 5 horas después
         seats: Array.from({ length: 40 }, (_, i) => ({
           seatNumber: i + 1,
           availability: stops.map((stop) => ({
