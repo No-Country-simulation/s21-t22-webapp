@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import Stop from "../models/stops.model.js";
+import Stop from "../models/stop.model.js";
 import { stops } from "./stops.seeder.js";
 
 dotenv.config();
