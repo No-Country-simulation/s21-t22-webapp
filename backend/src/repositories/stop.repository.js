@@ -37,7 +37,7 @@ const findStopsByQuery = async (query) => {
 };
 
 export const findStopById = async (id) => {
-  return await Stop.findById(id).select("name location").lean();
+  return await Stop.findById(id).select("name location imgUrl").lean();
 };
 
 export default { findStopsByQuery };
