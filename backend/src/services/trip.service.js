@@ -157,13 +157,15 @@ export const getTripsForDate = async (id1, id2, fecha) => {
   if (!validTrips || validTrips.length === 0) {
     throw new Error("No se encontró un viaje válido en la fecha indicada.");
   }
-
+  
   return validTrips.map((trip) => ({
     trip: {
       _id: trip._id,
       departureDate: trip.departureDate,
       arrivalDate: trip.arrivalDate,
       bus: trip.bus,
+      seatType: trip.seatType,
+      duration: trip.duration,
       route: {
         _id: trip.route._id,
         name: trip.route.name
