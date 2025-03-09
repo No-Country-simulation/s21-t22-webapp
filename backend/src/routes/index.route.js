@@ -7,7 +7,7 @@ import paymentRouter from "./payment.route.js";
 import tripRouter from "./trip.route.js";
 import stopRouter from "./stop.route.js";
 import reservationRouter from "./reservation.route.js";
-import awsRouter from "./aws.route.js";
+import awsRouter from "./s3.route.js";
 
 const indexRouter = express.Router();
 

@@ -1,5 +1,5 @@
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { s3 } from "../config/s3.config.js";
+import { s3 } from "../config/s3.js";
 
 export const S3Repository = {
     
