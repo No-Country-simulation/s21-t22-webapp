@@ -19,7 +19,7 @@ indexRouter.use("/payment", paymentRouter);
 indexRouter.use("/trip", tripRouter);
 indexRouter.use("/stop", stopRouter);
 indexRouter.use("/reservation", reservationRouter);
-indexRouter.use("/reservation", awsRouter);
+indexRouter.use("/s3", awsRouter);
 
 
 export default indexRouter;

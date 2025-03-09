@@ -4,19 +4,21 @@ import {
   LocationOn,
   Schedule,
 } from "@mui/icons-material";
-import {
-  Box,
-  Container,
-  Grid,
-  Typography,
-} from "@mui/material";
-import { DestinationCard } from '../components/home/DestinationCard';
-import { ExperienceCard } from '../components/home/ExperienceCard';
-import { FeaturedCard } from '../components/home/FeaturedCard';
-import { nanoid } from 'nanoid';
-import { SpecialOffer } from '../components/home/SpecialOffer';
-import Hero from '../components/home/Hero';
-import MainLayout from '../components/common/MainLayout';
+import { Box, Container, Grid, Typography } from "@mui/material";
+import { DestinationCard } from "../components/home/DestinationCard";
+import { ExperienceCard } from "../components/home/ExperienceCard";
+import { FeaturedCard } from "../components/home/FeaturedCard";
+import { nanoid } from "nanoid";
+import { SpecialOffer } from "../components/home/SpecialOffer";
+import MainLayout from "../components/common/MainLayout";
+import HeroDinamic from "../components/test/HeroDinamic";
+
+// Definición de la interfaz TravelData
+interface TravelData {
+  origin: string | null;
+  destination: string | null;
+  date: Date | null;
+}
 
 const features = [
   {
@@ -44,7 +46,8 @@ const features = [
 const destinations = [
   {
     title: "Bs. As. - Mendoza",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSTtBfEcT9UuJXGKVlQhW97QHGe1Z0Ih1Vng&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSTtBfEcT9UuJXGKVlQhW97QHGe1Z0Ih1Vng&s",
     price: "$150.000",
     duration: "12h 30min",
     rating: 4.8,
@@ -53,7 +56,8 @@ const destinations = [
   },
   {
     title: "Córdoba - Rosario",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQDf22Rl3oLQMMff4VxCK3CPAGeaCIXMVcHQ&s",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQDf22Rl3oLQMMff4VxCK3CPAGeaCIXMVcHQ&s",
     price: "$55.000",
     duration: "4h 15min",
     rating: 4.7,
@@ -74,7 +78,8 @@ const destinations = [
 const experiences = [
   {
     name: "Laura Martínez",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80",
     route: "Madrid - Barcelona",
     comment:
       "Viaje muy cómodo. El bus salió puntual y el conductor fue muy profesional. Los asientos son espaciosos y el WiFi funcionó perfectamente durante todo el trayecto.",
@@ -82,7 +87,8 @@ const experiences = [
   },
   {
     name: "David Sánchez",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80",
     route: "Barcelona - Valencia",
     comment:
       "Excelente servicio, el autobús estaba muy limpio y el aire acondicionado funcionaba perfectamente. Llegamos incluso antes de lo previsto.",
@@ -90,11 +96,24 @@ const experiences = [
   },
 ];
 
-export default function Home() {
+// Definición de props para Home
+interface HomeProps {
+  origenId?: string;
+  destinoId?: string;
+  fecha?: string;
+}
+
+export default function Home({ origenId, destinoId, fecha }: HomeProps) {
+  const travelData: TravelData = {
+    origin: origenId || null,
+    destination: destinoId || null,
+    date: fecha ? new Date(fecha) : null,
+  };
+
   return (
     <MainLayout>
       <>
-        <Hero />
+        <HeroDinamic travelData={travelData} />
         {/* Destacados */}
         <Container maxWidth="lg" sx={{ py: 8 }}>
           <Grid container spacing={4}>
@@ -110,7 +129,11 @@ export default function Home() {
             <Typography variant="h3" align="center" gutterBottom>
               Rutas Populares
             </Typography>
-            <Typography variant="subtitle1" align="center" color="text.secondary">
+            <Typography
+              variant="subtitle1"
+              align="center"
+              color="text.secondary"
+            >
               Descubre nuestras rutas más solicitadas con salidas diarias
             </Typography>
             <Grid container spacing={4} sx={{ mt: 2 }}>
@@ -130,7 +153,12 @@ export default function Home() {
             <Typography variant="h3" align="center" gutterBottom>
               Experiencias de Viajeros
             </Typography>
-            <Typography variant="subtitle1" align="center" color="text.secondary" paragraph>
+            <Typography
+              variant="subtitle1"
+              align="center"
+              color="text.secondary"
+              paragraph
+            >
               Lo que dicen nuestros pasajeros sobre sus viajes
             </Typography>
             <Grid container spacing={4} sx={{ mt: 2 }}>
@@ -144,4 +172,3 @@ export default function Home() {
     </MainLayout>
   );
 }
-
