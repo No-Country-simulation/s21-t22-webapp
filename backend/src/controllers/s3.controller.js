@@ -1,6 +1,6 @@
 import { uploadService } from "../services/s3.service.js";
 
-export const UploadController = async (req, res) => {
+export const uploadController = async (req, res) => {
       try {
         const result = await uploadService.uploadFile(req.file);
         res.json({ message: "Archivo subido con éxito", file: result.fileName });
