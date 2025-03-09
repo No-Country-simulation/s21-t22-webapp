@@ -57,14 +57,18 @@ export const findTripsByDate = async (startDate, endDate) => {
   return await Trip.find({
     departureDate: { $gte: startDate, $lte: endDate }
   })
-    .select("departureDate arrivalDate bus route")
+    .select("departureDate arrivalDate bus route seatType duration")
     .populate({
       path: "route",
       select: "name connections",
       populate: {
         path: "connections.from connections.to",
-        select: "name"
+        select: "name imgUrl"
       }
+    })
+    .populate({
+      path: "bus",
+      select: "company" // Selecciona los campos que necesites del bus
     })
     .lean();
 };
