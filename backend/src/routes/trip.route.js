@@ -15,7 +15,7 @@ const tripRouter = express.Router();
 
 
 // Obtener todos los viajes
-tripRouter.get("/viajes", obtenerViajesController);
+tripRouter.get("/trips", obtenerViajesController);
 
 // Obtener un viaje por ID
 tripRouter.get("/viajes/:tripId", obtenerViajePorIdController);
