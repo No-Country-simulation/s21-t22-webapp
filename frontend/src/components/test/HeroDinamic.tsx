@@ -53,6 +53,8 @@ interface Place {
 }
 
 const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
+  const { setViajes, setViajesNoEncontrados } = useStore();
+  const navigate = useNavigate();
   // Estados
   const [origin, setOrigin] = useState<Place | null>(null);
   const [destination, setDestination] = useState<Place | null>(null);
@@ -61,9 +63,6 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
   const [destinationOptions, setDestinationOptions] = useState<
     { id: string; name: string }[]
   >([]);
-
-  const { setViajes } = useStore();
-  const navigate = useNavigate();
 
   // Funciones
   const handleOriginSearch = async (query: string) => {
@@ -81,59 +80,49 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
   };
 
   const handleSearch = () => {
+    navigate("/viajes");
+    // Validación de campos
     if (!origin || !destination || !date) {
       alert("No has completado la búsqueda de viajes");
-    } else {
-      //formateamos fecha
-      const fechaOriginal = new Date(date);
-      // Formatear la fecha a "yyyy-MM-dd"
-      const fechaFormateada = format(fechaOriginal, "yyyy-MM-dd");
-      // console.log(fechaFormateada);
-
-      const url = `http://localhost:5000/api/trip/search-trips?id1=${origin.id}&id2=${destination.id}&fecha=${fechaFormateada}`;
-
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          setViajes(data);
-        });
-
-      // // Simulamos el endpoint de viajes
-      // const viajesSimulados: TripSimulation[] = [
-      //   {
-      //     origenImg:
-      //       "https://media.istockphoto.com/id/667138246/es/foto/argentina-buenos-aires-amanecer-en-el-centro-con-hora-punta.jpg?s=612x612&w=0&k=20&c=tpvOrY5aqJBBaqb5X27WjlhDsUB0GHJWc1GRD5Z5icQ=",
-      //     destinoImg:
-      //       "https://content.r9cdn.net/rimg/dimg/f8/29/792a1090-city-10439-169073685b0.jpg?crop=true&width=1020&height=498",
-      //     compañia: "Tour Bus",
-      //     origen: "Buenos Aires",
-      //     destino: "Córdoba",
-      //     fecha: "2025-03-10",
-      //     precio: "50.00",
-      //     bus: "Semicama",
-      //     duracion: "6h 30m",
-      //     salida: "6:30 am",
-      //     llegada: "9 pm",
-      //   },
-      //   {
-      //     origenImg:
-      //       "https://turismo.laplata.gob.ar/wp-content/uploads/2023/10/plaza_morenocatedral-1024x684.jpg",
-      //     destinoImg:
-      //       "https://content.r9cdn.net/rimg/dimg/42/2f/addb7f9b-city-4012-16916c05055.jpg?width=1200&height=630&crop=true",
-      //     compañia: "Pullman Bus",
-      //     origen: "La plata",
-      //     destino: "Mar del plata",
-      //     fecha: "2025-03-20",
-      //     precio: "30.00",
-      //     bus: "Cama",
-      //     duracion: "1h 30m",
-      //     salida: "8:30 am",
-      //     llegada: "4 pm",
-      //   },
-      // ];
-      navigate("/viajes");
+      return; // Detener la ejecución si falta algún campo
     }
+
+    // Formatear la fecha
+    const fechaOriginal = new Date(date);
+    const fechaFormateada = format(fechaOriginal, "yyyy-MM-dd");
+
+    const url = `http://localhost:5000/api/trip/search-trips?id1=${origin.id}&id2=${destination.id}&fecha=${fechaFormateada}`;
+
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) {
+          // Si la respuesta no es exitosa, lanzar un error con el código de estado
+          throw new Error(
+            `Error en la solicitud: ${res.status} ${res.statusText}`
+          );
+        }
+        return res.json();
+      })
+      .then((data) => {
+        // Si la respuesta es exitosa y hay datos
+        setViajes(data);
+        setViajesNoEncontrados(false); // Desactivar el mensaje de "no encontrados"
+        navigate("/viajes");
+      })
+      .catch((error) => {
+        console.error("Error al buscar viajes:", error);
+
+        // Verificar si el error es un error interno del servidor (por ejemplo, 500)
+        if (error.message.includes("500")) {
+          setViajesNoEncontrados(true); // Activar el mensaje de "no encontrados"
+          setViajes([]); // Limpiar los viajes
+        } else {
+          // Otros errores (por ejemplo, red o problemas de conexión)
+          alert(
+            "Hubo un error al buscar viajes. Por favor, intenta nuevamente."
+          );
+        }
+      });
   };
 
   return (

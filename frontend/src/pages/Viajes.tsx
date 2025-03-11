@@ -7,6 +7,8 @@ import TravelSearchCard, {
 import type { TravelData } from "../components/test/HeroDinamic";
 import useStore from "../contexts/store";
 import HeroDinamic from "../components/test/HeroDinamic";
+import { Box, Typography } from "@mui/material";
+import EventBusyIcon from "@mui/icons-material/EventBusy";
 
 // Función para formatear salida y llegada (definida en el mismo archivo)
 const formatDate = (isoDate: string): string => {
@@ -32,8 +34,8 @@ const formatFecha = (isoDate: string): string => {
 const Viajes = () => {
   const [searchParams] = useSearchParams();
   const [travelInfo, setTravelInfo] = useState<TravelSearchCardProps[]>([]);
-  const [error, setError] = useState(false);
-  const { viajes } = useStore();
+  // const [error, setError] = useState(false);
+  const { viajes, ViajesNoEncontrados } = useStore();
 
   const navigate = useNavigate();
 
@@ -90,10 +92,27 @@ const Viajes = () => {
 
   return (
     <MainLayout>
-      <>
+      <Box
+        sx={{
+          minHeight: "90vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <HeroDinamic travelData={travelData} />
-        {error ? (
-          <div>Error al obtener viajes. Mostrando datos simulados...</div>
+        {ViajesNoEncontrados ? (
+          <Typography
+            variant="h5"
+            sx={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-evenly",
+            }}
+          >
+            No hay viajes disponibles para esa fecha{" "}
+            <EventBusyIcon sx={{ color: "#641c34" }} />
+          </Typography>
         ) : (
           <>
             {viajes.map((trip, index) => {
@@ -140,7 +159,7 @@ const Viajes = () => {
             })}
           </>
         )}
-      </>
+      </Box>
     </MainLayout>
   );
 };

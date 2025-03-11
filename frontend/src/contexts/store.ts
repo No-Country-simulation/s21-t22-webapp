@@ -34,6 +34,7 @@ interface StoreState {
   salida: string;
   llegada: string;
   viajes: Viaje[];
+  ViajesNoEncontrados: boolean;
   setOrigen: (newOrigen: string) => void;
   setDestino: (newDestino: string) => void;
   setFecha: (newFecha: string) => void;
@@ -45,7 +46,7 @@ interface StoreState {
   setDuracion: (newDuracion: string) => void;
   setSalida: (newSalida: string) => void;
   setLlegada: (newLlegada: string) => void;
-
+  setViajesNoEncontrados: (value: boolean) => void;
   setViajes: (newViajes: Viaje[]) => void;
 }
 
@@ -62,6 +63,7 @@ const useStore = create<StoreState>((set) => ({
   salida: "",
   llegada: "",
   viajes: [],
+  ViajesNoEncontrados: false,
   setOrigen: (newOrigen) => set({ origen: newOrigen }),
   setDestino: (newDestino) => set({ destino: newDestino }),
   setFecha: (newFecha) => set({ fecha: newFecha }),
@@ -74,6 +76,7 @@ const useStore = create<StoreState>((set) => ({
   setSalida: (newSalida) => set({ salida: newSalida }),
   setLlegada: (newLlegada) => set({ llegada: newLlegada }),
   setViajes: (newViajes) => set({ viajes: newViajes }), // Función para actualizar el array
+  setViajesNoEncontrados: (value) => set({ ViajesNoEncontrados: value }),
 }));
 
 export default useStore;
