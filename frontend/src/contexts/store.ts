@@ -1,5 +1,4 @@
 import { create } from "zustand";
-
 interface Bus {
   company: string;
 }

@@ -8,7 +8,7 @@ import type { TravelData } from "../components/test/HeroDinamic";
 import useStore from "../contexts/store";
 import HeroDinamic from "../components/test/HeroDinamic";
 
-// Función para formatear fechas (definida en el mismo archivo)
+// Función para formatear salida y llegada (definida en el mismo archivo)
 const formatDate = (isoDate: string): string => {
   const date = new Date(isoDate);
   return date.toLocaleString("es-ES", {
@@ -17,6 +17,15 @@ const formatDate = (isoDate: string): string => {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+  });
+};
+// Función para formatear fecha
+const formatFecha = (isoDate: string): string => {
+  const date = new Date(isoDate);
+  return date.toLocaleString("es-ES", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
   });
 };
 
@@ -31,12 +40,12 @@ const Viajes = () => {
   const {
     setOrigen,
     setDestino,
-    setFecha,
     setOrigenImg,
     setDestinoImg,
     setCompañia,
     setPrecio,
     setBus,
+    setFecha,
     setDuracion,
     setSalida,
     setLlegada,
@@ -53,21 +62,21 @@ const Viajes = () => {
     compañia: string,
     origen: string,
     destino: string,
-    fecha: string,
     precio: string,
     bus: string,
+    fecha: string,
     duracion: string,
     salida: string,
     llegada: string
   ) => {
     setOrigen(origen);
     setDestino(destino);
-    setFecha(fecha);
     setOrigenImg(origenImg);
     setDestinoImg(destinoImg);
     setCompañia(compañia);
     setPrecio(precio);
     setBus(bus);
+    setFecha(fecha);
     setDuracion(duracion);
     setSalida(salida);
     setLlegada(llegada);
@@ -91,6 +100,7 @@ const Viajes = () => {
               // Formatea las fechas de salida y llegada
               const salidaFormateada = formatDate(trip.trip.departureDate);
               const llegadaFormateada = formatDate(trip.trip.arrivalDate);
+              const fecha = formatFecha(trip.trip.departureDate);
 
               return (
                 <TravelSearchCard
@@ -100,7 +110,7 @@ const Viajes = () => {
                   company={trip.trip.bus.company}
                   origin={trip.stops[0].name}
                   destination={trip.stops[1].name}
-                  date={trip.fecha}
+                  date={fecha}
                   price={trip.precio}
                   busType={trip.trip.seatType}
                   duration={""}
@@ -116,9 +126,9 @@ const Viajes = () => {
                       trip.trip.bus.company,
                       trip.stops[0].name,
                       trip.stops[1].name,
-                      trip.fecha,
                       trip.precio,
                       trip.trip.seatType,
+                      fecha,
                       "",
                       salidaFormateada,
                       llegadaFormateada

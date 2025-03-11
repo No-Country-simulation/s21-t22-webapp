@@ -28,11 +28,11 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
   const {
     origenImg,
     destinoImg,
-    fecha,
     destino,
     origen,
     compañia,
     bus,
+    fecha,
     salida,
     llegada,
   } = useStore();
