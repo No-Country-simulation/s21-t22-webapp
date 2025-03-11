@@ -1,4 +1,5 @@
 import { create } from "zustand";
+
 interface Bus {
   company: string;
 }
@@ -6,6 +7,8 @@ interface Trip {
   // duration: number;
   seatType: string;
   bus: Bus;
+  departureDate: string;
+  arrivalDate: string;
 }
 interface Stop {
   imgUrl: string;

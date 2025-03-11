@@ -194,13 +194,13 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
             sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
           >
             Clase:&nbsp;&nbsp;
-            {bus && bus === "Semicama" ? (
+            {bus && bus === "semicama" ? (
               <>
                 <AirlineSeatReclineExtraIcon sx={{ color: "grey" }} />
                 &nbsp;&nbsp;
                 {bus}
               </>
-            ) : bus && bus === "Cama" ? (
+            ) : bus && bus === "cama" ? (
               <>
                 <AirlineSeatIndividualSuiteIcon sx={{ color: "grey" }} />
                 &nbsp;&nbsp;

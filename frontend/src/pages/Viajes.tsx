@@ -8,6 +8,18 @@ import type { TravelData } from "../components/test/HeroDinamic";
 import useStore from "../contexts/store";
 import HeroDinamic from "../components/test/HeroDinamic";
 
+// Función para formatear fechas (definida en el mismo archivo)
+const formatDate = (isoDate: string): string => {
+  const date = new Date(isoDate);
+  return date.toLocaleString("es-ES", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
 const Viajes = () => {
   const [searchParams] = useSearchParams();
   const [travelInfo, setTravelInfo] = useState<TravelSearchCardProps[]>([]);
@@ -75,41 +87,47 @@ const Viajes = () => {
           <div>Error al obtener viajes. Mostrando datos simulados...</div>
         ) : (
           <>
-            {viajes.map((trip, index) => (
-              <TravelSearchCard
-                key={index}
-                imageOrigin={trip.stops[0].imgUrl}
-                imageDestination={trip.stops[1].imgUrl}
-                company={trip.trip.bus.company}
-                origin={trip.stops[0].name}
-                destination={trip.stops[1].name}
-                date={trip.fecha} // Pasa la fecha
-                price={trip.precio} // Pasa el precio
-                busType={trip.trip.seatType}
-                duration={""} // Pasa la duración (o usa un valor real si está disponible)
-                salida={trip.salida} // Pasa la hora de salida
-                llegada={trip.llegada} // Pasa la hora de llegada
-                seatsAvailable={5} // Pasa el número de asientos disponibles
-                rating={4.5} // Pasa la calificación
-                direct={false} // Pasa si es directo o no
-                onClick={() => {
-                  crearContextTrip(
-                    trip.stops[0].imgUrl,
-                    trip.stops[1].imgUrl,
-                    trip.trip.bus.company,
-                    trip.stops[0].name,
-                    trip.stops[1].name,
-                    trip.fecha,
-                    trip.precio,
-                    trip.trip.seatType,
-                    "", // Pasa la duración (o usa un valor real si está disponible)
-                    trip.salida,
-                    trip.llegada
-                  );
-                  navigate("/reserva");
-                }}
-              />
-            ))}
+            {viajes.map((trip, index) => {
+              // Formatea las fechas de salida y llegada
+              const salidaFormateada = formatDate(trip.trip.departureDate);
+              const llegadaFormateada = formatDate(trip.trip.arrivalDate);
+
+              return (
+                <TravelSearchCard
+                  key={index}
+                  imageOrigin={trip.stops[0].imgUrl}
+                  imageDestination={trip.stops[1].imgUrl}
+                  company={trip.trip.bus.company}
+                  origin={trip.stops[0].name}
+                  destination={trip.stops[1].name}
+                  date={trip.fecha}
+                  price={trip.precio}
+                  busType={trip.trip.seatType}
+                  duration={""}
+                  salida={salidaFormateada}
+                  llegada={llegadaFormateada}
+                  seatsAvailable={5}
+                  rating={4.5}
+                  direct={false}
+                  onClick={() => {
+                    crearContextTrip(
+                      trip.stops[0].imgUrl,
+                      trip.stops[1].imgUrl,
+                      trip.trip.bus.company,
+                      trip.stops[0].name,
+                      trip.stops[1].name,
+                      trip.fecha,
+                      trip.precio,
+                      trip.trip.seatType,
+                      "",
+                      salidaFormateada,
+                      llegadaFormateada
+                    );
+                    navigate("/reserva");
+                  }}
+                />
+              );
+            })}
           </>
         )}
       </>
