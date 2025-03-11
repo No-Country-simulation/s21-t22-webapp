@@ -6,6 +6,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { format } from "date-fns";
+
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { es } from "date-fns/locale";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -16,10 +18,10 @@ import CustomDatePicker from "../home/Datepicker";
 import useStore from "../../contexts/store";
 import { useNavigate } from "react-router-dom";
 
-// import { formatDateToDDMMYYYY } from "../../utils/formatDateToDDMMYYYY";
-
 // Función para buscar lugares en la API
-const searchPlaces = async (query: string): Promise<string[]> => {
+const searchPlaces = async (
+  query: string
+): Promise<{ id: string; name: string }[]> => {
   const url = `http://localhost:5000/api/stop/search?q=${query}`;
   try {
     const response = await fetch(url);
@@ -27,8 +29,8 @@ const searchPlaces = async (query: string): Promise<string[]> => {
       throw new Error("Error al obtener los datos");
     }
     const data = await response.json();
-    console.log("Datos de la API:", data);
-    return data.map((item: any) => item.name);
+    console.log(data);
+    return data.map((item: any) => ({ id: item._id, name: item.name })); // Devuelve un array de objetos
   } catch (error) {
     console.error("Error en la búsqueda:", error);
     return [];
@@ -38,42 +40,32 @@ const searchPlaces = async (query: string): Promise<string[]> => {
 const backgroundImage =
   "https://www.infobae.com/resizer/v2/https%3A%2F%2Fs3.amazonaws.com%2Farc-wordpress-client-uploads%2Finfobae-wp%2Fwp-content%2Fuploads%2F2018%2F05%2F16163658%2Fmicros-larga-distancia-Getty-Images.jpg?auth=719b522476893895b314fbd2a2b32db914361f6be2e99aad2c7afe065edfdc3f&smart=true&width=1200&height=675&quality=85";
 
-// tipados
+// Tipados
 export type TravelData = {
   origin: string | null;
   destination: string | null;
   date: Date | null;
 };
 
-interface TripSimulation {
-  origenImg: string;
-  destinoImg: string;
-  compañia: string;
-  origen: string;
-  destino: string;
-  fecha: string;
-  precio: string;
-  bus: string;
-  duracion: string;
-  salida: string;
-  llegada: string;
+interface Place {
+  id: string;
+  name: string;
 }
 
 const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
-  // estados
-  const [origin, setOrigin] = useState<string | null>(travelData.origin);
-  const [destination, setDestination] = useState<string | null>(
-    travelData.destination
-  );
+  // Estados
+  const [origin, setOrigin] = useState<Place | null>(null);
+  const [destination, setDestination] = useState<Place | null>(null);
   const [date, setDate] = useState<Date | null>(travelData.date);
-  const [originOptions, setOriginOptions] = useState<string[]>([]);
-  const [destinationOptions, setDestinationOptions] = useState<string[]>([]);
+  const [originOptions, setOriginOptions] = useState<Place[]>([]);
+  const [destinationOptions, setDestinationOptions] = useState<
+    { id: string; name: string }[]
+  >([]);
 
   const { setViajes } = useStore();
   const navigate = useNavigate();
 
-  // funciones
-
+  // Funciones
   const handleOriginSearch = async (query: string) => {
     if (query.length > 2) {
       const results = await searchPlaces(query);
@@ -92,40 +84,54 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
     if (!origin || !destination || !date) {
       alert("No has completado la búsqueda de viajes");
     } else {
-      // simulamos el endpoint de viajes
-      const viajesSimulados: TripSimulation[] = [
-        {
-          origenImg:
-            "https://media.istockphoto.com/id/667138246/es/foto/argentina-buenos-aires-amanecer-en-el-centro-con-hora-punta.jpg?s=612x612&w=0&k=20&c=tpvOrY5aqJBBaqb5X27WjlhDsUB0GHJWc1GRD5Z5icQ=",
-          destinoImg:
-            "https://content.r9cdn.net/rimg/dimg/f8/29/792a1090-city-10439-169073685b0.jpg?crop=true&width=1020&height=498",
-          compañia: "Tour Bus",
-          origen: "Buenos Aires",
-          destino: "Córdoba",
-          fecha: "2025-03-10",
-          precio: "50.00",
-          bus: "Semicama",
-          duracion: "6h 30m",
-          salida: "6:30 am",
-          llegada: "9 pm",
-        },
-        {
-          origenImg:
-            "https://turismo.laplata.gob.ar/wp-content/uploads/2023/10/plaza_morenocatedral-1024x684.jpg",
-          destinoImg:
-            "https://content.r9cdn.net/rimg/dimg/42/2f/addb7f9b-city-4012-16916c05055.jpg?width=1200&height=630&crop=true",
-          compañia: "Pullman Bus",
-          origen: "La plata",
-          destino: "Mar del plata",
-          fecha: "2025-03-20",
-          precio: "30.00",
-          bus: "Cama",
-          duracion: "1h 30m",
-          salida: "8:30 am",
-          llegada: "4 pm",
-        },
-      ];
-      setViajes(viajesSimulados);
+      //formateamos fecha
+      const fechaOriginal = new Date(date);
+      // Formatear la fecha a "yyyy-MM-dd"
+      const fechaFormateada = format(fechaOriginal, "yyyy-MM-dd");
+      // console.log(fechaFormateada);
+
+      const url = `http://localhost:5000/api/trip/search-trips?id1=${origin.id}&id2=${destination.id}&fecha=${fechaFormateada}`;
+
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          setViajes(data);
+        });
+
+      // // Simulamos el endpoint de viajes
+      // const viajesSimulados: TripSimulation[] = [
+      //   {
+      //     origenImg:
+      //       "https://media.istockphoto.com/id/667138246/es/foto/argentina-buenos-aires-amanecer-en-el-centro-con-hora-punta.jpg?s=612x612&w=0&k=20&c=tpvOrY5aqJBBaqb5X27WjlhDsUB0GHJWc1GRD5Z5icQ=",
+      //     destinoImg:
+      //       "https://content.r9cdn.net/rimg/dimg/f8/29/792a1090-city-10439-169073685b0.jpg?crop=true&width=1020&height=498",
+      //     compañia: "Tour Bus",
+      //     origen: "Buenos Aires",
+      //     destino: "Córdoba",
+      //     fecha: "2025-03-10",
+      //     precio: "50.00",
+      //     bus: "Semicama",
+      //     duracion: "6h 30m",
+      //     salida: "6:30 am",
+      //     llegada: "9 pm",
+      //   },
+      //   {
+      //     origenImg:
+      //       "https://turismo.laplata.gob.ar/wp-content/uploads/2023/10/plaza_morenocatedral-1024x684.jpg",
+      //     destinoImg:
+      //       "https://content.r9cdn.net/rimg/dimg/42/2f/addb7f9b-city-4012-16916c05055.jpg?width=1200&height=630&crop=true",
+      //     compañia: "Pullman Bus",
+      //     origen: "La plata",
+      //     destino: "Mar del plata",
+      //     fecha: "2025-03-20",
+      //     precio: "30.00",
+      //     bus: "Cama",
+      //     duracion: "1h 30m",
+      //     salida: "8:30 am",
+      //     llegada: "4 pm",
+      //   },
+      // ];
       navigate("/viajes");
     }
   };
@@ -210,14 +216,14 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
             >
               <CustomAutocomplete
                 value={origin}
-                onChange={setOrigin}
+                onChange={(newValue) => setOrigin(newValue)}
                 options={originOptions}
                 onSearch={handleOriginSearch}
                 placeholder="Origen"
               />
               <CustomAutocomplete
                 value={destination}
-                onChange={setDestination}
+                onChange={(newValue) => setDestination(newValue)}
                 options={destinationOptions}
                 onSearch={handleDestinationSearch}
                 placeholder="Destino"

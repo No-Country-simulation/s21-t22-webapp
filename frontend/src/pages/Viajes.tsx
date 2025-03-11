@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom"; // Importa useNavigate
+import { useSearchParams, useNavigate } from "react-router-dom";
 import MainLayout from "../components/common/MainLayout";
 import TravelSearchCard, {
   TravelSearchCardProps,
@@ -60,8 +60,6 @@ const Viajes = () => {
     setSalida(salida);
     setLlegada(llegada);
   };
-  console.log(travelInfo);
-  // Datos simulados de viajes
 
   const travelData: TravelData = {
     origin: origenId,
@@ -80,31 +78,31 @@ const Viajes = () => {
             {viajes.map((trip, index) => (
               <TravelSearchCard
                 key={index}
-                imageOrigin={trip.origenImg}
-                imageDestination={trip.destinoImg}
-                company={trip.compañia}
-                origin={trip.origen}
-                destination={trip.destino}
-                date={trip.fecha}
-                price={trip.precio}
-                busType={trip.bus}
-                duration={trip.duracion}
-                salida={trip.salida}
-                llegada={trip.llegada}
-                seatsAvailable={5}
-                rating={4.5}
-                direct={false}
+                imageOrigin={trip.stops[0].imgUrl}
+                imageDestination={trip.stops[1].imgUrl}
+                company={trip.trip.bus.company}
+                origin={trip.stops[0].name}
+                destination={trip.stops[1].name}
+                date={trip.fecha} // Pasa la fecha
+                price={trip.precio} // Pasa el precio
+                busType={trip.trip.seatType}
+                duration={""} // Pasa la duración (o usa un valor real si está disponible)
+                salida={trip.salida} // Pasa la hora de salida
+                llegada={trip.llegada} // Pasa la hora de llegada
+                seatsAvailable={5} // Pasa el número de asientos disponibles
+                rating={4.5} // Pasa la calificación
+                direct={false} // Pasa si es directo o no
                 onClick={() => {
                   crearContextTrip(
-                    trip.origenImg,
-                    trip.destinoImg,
-                    trip.compañia,
-                    trip.origen,
-                    trip.destino,
+                    trip.stops[0].imgUrl,
+                    trip.stops[1].imgUrl,
+                    trip.trip.bus.company,
+                    trip.stops[0].name,
+                    trip.stops[1].name,
                     trip.fecha,
                     trip.precio,
-                    trip.bus,
-                    trip.duracion,
+                    trip.trip.seatType,
+                    "", // Pasa la duración (o usa un valor real si está disponible)
                     trip.salida,
                     trip.llegada
                   );

@@ -1,9 +1,14 @@
 import { Autocomplete, TextField } from "@mui/material";
 
+interface Option {
+  id: string;
+  name: string;
+}
+
 interface Props {
-  value: string | null;
-  onChange: (value: string | null) => void;
-  options: string[];
+  value: Option | null;
+  onChange: (value: Option | null) => void;
+  options: Option[];
   onSearch: (query: string) => void;
   onBlur?: () => void;
   placeholder: string;
@@ -22,6 +27,7 @@ const CustomAutocomplete: React.FC<Props> = ({
       fullWidth
       options={options}
       noOptionsText="No se encontraron resultados"
+      getOptionLabel={(option) => option.name} // Muestra el nombre de la opción
       onInputChange={(_, newInputValue) => {
         if (newInputValue === "") {
           onSearch("");

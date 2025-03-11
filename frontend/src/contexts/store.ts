@@ -1,15 +1,21 @@
 import { create } from "zustand";
-
+interface Bus {
+  company: string;
+}
+interface Trip {
+  // duration: number;
+  seatType: string;
+  bus: Bus;
+}
+interface Stop {
+  imgUrl: string;
+  name: string;
+}
 interface Viaje {
-  origenImg: string;
-  destinoImg: string;
-  compañia: string;
-  origen: string;
-  destino: string;
   fecha: string;
   precio: string;
-  bus: string;
-  duracion: string;
+  trip: Trip;
+  stops: Stop[];
   salida: string;
   llegada: string;
 }
