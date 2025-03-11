@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Box, Container, Typography, Stack, useTheme } from "@mui/material";
+import useStore from "../contexts/store";
 
+// TIPADOS
 interface Seat {
   id: number;
   numero: number;
@@ -35,6 +37,19 @@ export default function BusSeatSelector({
   useEffect(() => {
     console.log("Asientos seleccionados:", selectedSeats);
   }, [selectedSeats]);
+
+  // contextos de zustand
+  const { id, origenId, destinoId } = useStore();
+
+  // Llamada a asientos disponibles
+  useEffect(() => {
+    const url = `http://localhost:5000/api/trip/available-seats?tripId=${id}&fromStopId=${origenId}&toStopId=${destinoId}`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  }, [id]);
 
   const renderSeat = (seat: Seat, x: number, y: number) => {
     const isOccupied = seat.tipo === "ocupado";

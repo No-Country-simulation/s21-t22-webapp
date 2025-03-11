@@ -86,7 +86,6 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
       alert("No has completado la búsqueda de viajes");
       return; // Detener la ejecución si falta algún campo
     }
-
     // Formatear la fecha
     const fechaOriginal = new Date(date);
     const fechaFormateada = format(fechaOriginal, "yyyy-MM-dd");
