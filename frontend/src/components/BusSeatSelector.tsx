@@ -1,32 +1,40 @@
 import { useEffect, useState } from "react";
 import { Box, Container, Typography, Stack, useTheme } from "@mui/material";
+import useStore from "../contexts/store";
 
+// TIPADOS
 interface Seat {
-  id: number;
-  numero: number;
-  tipo: string;
+  // id: number;
+  seat: number;
+  available: boolean;
 }
 
 interface BusSeatSelectorProps {
   seats: Seat[];
   quantity: number;
 }
-
+// COMPONENTE PRINCIPAL
 export default function BusSeatSelector({
   seats,
   quantity,
 }: BusSeatSelectorProps) {
+  // HOOKS
+
   const theme = useTheme();
+
+  // ESTADOS
+
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+  const [availableSeats, setAvailableSeats] = useState<Seat[] | null>(null);
 
   const handleSeatClick = (seat: Seat) => {
-    if (seat.tipo === "libre") {
+    if (seat.available === true) {
       setSelectedSeats(
         (prev) =>
-          prev.includes(seat.id)
-            ? prev.filter((id) => id !== seat.id) // Deseleccionar
+          prev.includes(seat.seat)
+            ? prev.filter((id) => id !== seat.seat) // Deseleccionar
             : prev.length < quantity
-            ? [...prev, seat.id] // Seleccionar
+            ? [...prev, seat.seat] // Seleccionar
             : prev // No hacer nada si ya se seleccionó la cantidad máxima
       );
     }
@@ -36,13 +44,37 @@ export default function BusSeatSelector({
     console.log("Asientos seleccionados:", selectedSeats);
   }, [selectedSeats]);
 
+  // contextos de zustand
+  const { id, origenId, destinoId } = useStore();
+
+  // Llamada a asientos disponibles para trip id especifico
+  useEffect(() => {
+    if (id && origenId && destinoId) {
+      console.group("IDs del viaje despues de pasar por la store"); // Título del grupo
+      console.log("Trip ID:", id);
+      console.log("Origen ID:", origenId);
+      console.log("Destino ID:", destinoId);
+      console.groupEnd(); // Cierra el grupo
+      const url = `http://localhost:5000/api/trip/available-seats?tripId=67d0d056cc9b8e985532913e&fromStopId=67d0cb7c8aa988689a86b283&toStopId=67d0cb7c8aa988689a86b28a`;
+      // const url = `http://localhost:5000/api/trip/available-seats?tripId=${id}&fromStopId=${origenId}&toStopId=${destinoId}`;
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Array de asientos disponibles", data);
+          setAvailableSeats(data);
+        });
+    } else {
+      console.log("Error al obtener ids desde la store");
+    }
+  }, [id]);
+
   const renderSeat = (seat: Seat, x: number, y: number) => {
-    const isOccupied = seat.tipo === "ocupado";
-    const isSelected = selectedSeats.includes(seat.id);
+    const isOccupied = seat.available === false;
+    const isSelected = selectedSeats.includes(seat.seat);
 
     return (
       <g
-        key={seat.id}
+        key={seat.seat}
         transform={`translate(${x}, ${y})`}
         onClick={() => handleSeatClick(seat)}
         style={{ cursor: isOccupied ? "not-allowed" : "pointer" }}
@@ -76,7 +108,7 @@ export default function BusSeatSelector({
           }
           style={{ fontSize: "12px", userSelect: "none", fontWeight: "bold" }}
         >
-          {seat.numero}
+          {seat.seat}
         </text>
       </g>
     );
@@ -162,13 +194,15 @@ export default function BusSeatSelector({
             Ingreso
           </text> */}
           {/* Asientos */}
-          {seats.map((seat, index) => {
-            const col = Math.floor(index / 4);
-            const row = index % 4;
-            const x = 120 + col * 40;
-            const y = row < 2 ? 50 + row * 40 : 160 + (row - 2) * 40; // Ajustado para dejar espacio abajo
-            return renderSeat(seat, x, y);
-          })}
+          {availableSeats != null && Array.isArray(availableSeats)
+            ? availableSeats.map((seat, index) => {
+                const col = Math.floor(index / 4);
+                const row = index % 4;
+                const x = 120 + col * 40;
+                const y = row < 2 ? 50 + row * 40 : 160 + (row - 2) * 40;
+                return renderSeat(seat, x, y);
+              })
+            : ""}
         </svg>
       </Box>
     </Container>

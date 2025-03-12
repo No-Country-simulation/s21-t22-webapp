@@ -51,6 +51,9 @@ const Viajes = () => {
     setDuracion,
     setSalida,
     setLlegada,
+    setId,
+    setOrigenId,
+    setDestinoId,
   } = useStore();
 
   const origenId = searchParams.get("origenId");
@@ -69,8 +72,17 @@ const Viajes = () => {
     fecha: string,
     duracion: string,
     salida: string,
-    llegada: string
+    llegada: string,
+    id: string,
+    origenId: string,
+    destinoId: string
   ) => {
+    console.group("IDs del viaje"); // Título del grupo
+    console.log("Trip ID:", id);
+    console.log("Origen ID:", origenId);
+    console.log("Destino ID:", destinoId);
+    console.groupEnd(); // Cierra el grupo
+
     setOrigen(origen);
     setDestino(destino);
     setOrigenImg(origenImg);
@@ -82,6 +94,9 @@ const Viajes = () => {
     setDuracion(duracion);
     setSalida(salida);
     setLlegada(llegada);
+    setId(id);
+    setOrigenId(origenId);
+    setDestinoId(destinoId);
   };
 
   const travelData: TravelData = {
@@ -116,7 +131,7 @@ const Viajes = () => {
           </Typography>
         ) : (
           <>
-            {viajes.map((trip, index) => {
+            {viajes.map((trip) => {
               // Formatea las fechas de salida y llegada
               const salidaFormateada = formatDate(trip.trip.departureDate);
               const llegadaFormateada = formatDate(trip.trip.arrivalDate);
@@ -124,7 +139,7 @@ const Viajes = () => {
 
               return (
                 <TravelSearchCard
-                  key={index}
+                  key={trip.trip._id}
                   imageOrigin={trip.stops[0].imgUrl}
                   imageDestination={trip.stops[1].imgUrl}
                   company={trip.trip.bus.company}
@@ -151,7 +166,10 @@ const Viajes = () => {
                       fecha,
                       "",
                       salidaFormateada,
-                      llegadaFormateada
+                      llegadaFormateada,
+                      trip.trip._id,
+                      trip.stops[0]._id,
+                      trip.stops[1]._id
                     );
                     navigate("/reserva");
                   }}
