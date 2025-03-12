@@ -230,7 +230,78 @@ paths:
                     type: string
                     example: "Error retrieving trips."
 
-      
+  /api/trip/available-seats:
+    get:
+      summary: Get available seats for a trip
+      description: Returns a list of seats with their availability for a given trip.
+      tags:
+        - Trip
+      parameters:
+        - in: query
+          name: tripId
+          schema:
+            type: string
+          required: true
+          description: ID of the trip
+        - in: query
+          name: fromStopId
+          schema:
+            type: string
+          required: true
+          description: ID of the departure stop
+        - in: query
+          name: toStopId
+          schema:
+            type: string
+          required: true
+          description: ID of the destination stop
+      responses:
+        "200":
+          description: Successfully retrieved available seats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    seat:
+                      type: integer
+                      description: Seat number
+                    available:
+                      type: boolean
+                      description: Seat availability
+          example:
+            - seat: 1
+              available: true
+            - seat: 2
+              available: true
+            - seat: 3
+              available: false
+        "400":
+          description: Missing required parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Faltan parámetros requeridos."
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error al obtener los asientos disponibles."
+                  error:
+                    type: string
+                    example: "Detailed error message"
+
 
 
 
