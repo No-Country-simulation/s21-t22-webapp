@@ -12,6 +12,7 @@ import { findStopById } from "../repositories/stop.repository.js";
 import Route from "../models/route.model.js";
 import Bus from "../models/bus.model.js";
 import { buildGraphFromConnections, canTravel } from "../utils/graph/bfs.graph.js";
+import { distance } from "../utils/graph/distance.graph.js";
 
 export const getAvailableSeatsService = async (tripId, fromStopId, toStopId) => {
   try {
@@ -172,19 +173,36 @@ export const getTripsForDate = async (id1, id2, fecha) => {
     throw new Error("No se encontró un viaje válido en la fecha indicada.");
   }
   
-  return validTrips.map((trip) => ({
-    trip: {
-      _id: trip._id,
-      departureDate: trip.departureDate,
-      arrivalDate: trip.arrivalDate,
-      bus: trip.bus,
-      seatType: trip.seatType,
-      duration: trip.duration,
-      route: {
-        _id: trip.route._id,
-        name: trip.route.name
-      }
-    },
-    stops: [stopDesde, stopHasta]
-  }));
+  // calcular precio de pasaje
+  const precio = Math.round(
+    distance(stopDesde.location.lat, stopDesde.location.lng, stopHasta.location.lat, stopHasta.location.lng) * 66
+  );
+
+  const tripsWithSeats = await Promise.all(
+    validTrips.map(async (trip) => {
+      const reservedSeats = await getReservedSeats(trip._id, stopDesde._id, stopHasta._id);
+      const { seats } = await getSeatsTrip(trip._id);
+      const availableSeats = seats - reservedSeats.length;
+
+      return {
+        trip: {
+          _id: trip._id,
+          departureDate: trip.departureDate,
+          arrivalDate: trip.arrivalDate,
+          bus: trip.bus,
+          seatType: trip.seatType,
+          duration: trip.duration,
+          price: precio,
+          availableSeats,
+          route: {
+            _id: trip.route._id,
+            name: trip.route.name,
+          },
+        },
+        stops: [stopDesde, stopHasta],
+      };
+    })
+  );
+
+  return tripsWithSeats;
 };
