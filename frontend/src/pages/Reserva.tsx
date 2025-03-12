@@ -13,10 +13,9 @@ import AirlineSeatReclineExtraIcon from "@mui/icons-material/AirlineSeatReclineE
 import AirlineSeatIndividualSuiteIcon from "@mui/icons-material/AirlineSeatIndividualSuite";
 import DatosTrip from "../components/reserva/DatosTrip";
 import "./Reserva.css";
-interface Seat {
-  id: number;
-  numero: number;
-  tipo: "libre" | "ocupado";
+export interface Seat {
+  seat: number; // Número del asiento
+  available: boolean; // Disponibilidad del asiento
 }
 
 interface ReservaProps {
