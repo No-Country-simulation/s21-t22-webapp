@@ -30,3 +30,12 @@ export const findStopsByQuery = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+export const getAllStops = async (req, res) => {
+  try {
+    const stops = await stopService.getAllStops()
+    return res.status(200).json(stops)
+  } catch (e) {
+    return res.status(400).json({ message: e.message });
+  }
+}
