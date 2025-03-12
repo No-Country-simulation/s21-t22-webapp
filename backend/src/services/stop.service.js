@@ -31,4 +31,9 @@ const findStopsByQuery = async (q) => {
   return stops;
 };
 
-export default { findStopsByQuery };
+const getAllStops = async () => {
+  const stops = await stopRepository.getAllStops()
+  return stops
+}
+
+export default { findStopsByQuery, getAllStops };
