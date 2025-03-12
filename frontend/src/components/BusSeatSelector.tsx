@@ -13,13 +13,19 @@ interface BusSeatSelectorProps {
   seats: Seat[];
   quantity: number;
 }
-
+// COMPONENTE PRINCIPAL
 export default function BusSeatSelector({
   seats,
   quantity,
 }: BusSeatSelectorProps) {
+  // HOOKS
+
   const theme = useTheme();
+
+  // ESTADOS
+
   const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+  const [availableSeats, setAvailableSeats] = useState(null);
 
   const handleSeatClick = (seat: Seat) => {
     if (seat.tipo === "libre") {
@@ -41,14 +47,24 @@ export default function BusSeatSelector({
   // contextos de zustand
   const { id, origenId, destinoId } = useStore();
 
-  // Llamada a asientos disponibles
+  // Llamada a asientos disponibles para trip id especifico
   useEffect(() => {
-    const url = `http://localhost:5000/api/trip/available-seats?tripId=${id}&fromStopId=${origenId}&toStopId=${destinoId}`;
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
+    if (id && origenId && destinoId) {
+      console.group("IDs del viaje despues de pasar por la store"); // Título del grupo
+      console.log("Trip ID:", id);
+      console.log("Origen ID:", origenId);
+      console.log("Destino ID:", destinoId);
+      console.groupEnd(); // Cierra el grupo
+      const url = `http://localhost:5000/api/trip/available-seats?tripId=${id}&fromStopId=${origenId}&toStopId=${destinoId}`;
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Array de asientos disponibles", data);
+          setAvailableSeats(data);
+        });
+    } else {
+      console.log("Error al obtener ids desde la store");
+    }
   }, [id]);
 
   const renderSeat = (seat: Seat, x: number, y: number) => {

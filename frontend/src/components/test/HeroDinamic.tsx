@@ -29,7 +29,6 @@ const searchPlaces = async (
       throw new Error("Error al obtener los datos");
     }
     const data = await response.json();
-    console.log(data);
     return data.map((item: any) => ({ id: item._id, name: item.name })); // Devuelve un array de objetos
   } catch (error) {
     console.error("Error en la búsqueda:", error);

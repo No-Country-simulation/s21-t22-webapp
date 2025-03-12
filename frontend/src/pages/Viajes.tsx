@@ -77,6 +77,12 @@ const Viajes = () => {
     origenId: string,
     destinoId: string
   ) => {
+    console.group("IDs del viaje"); // Título del grupo
+    console.log("Trip ID:", id);
+    console.log("Origen ID:", origenId);
+    console.log("Destino ID:", destinoId);
+    console.groupEnd(); // Cierra el grupo
+
     setOrigen(origen);
     setDestino(destino);
     setOrigenImg(origenImg);
