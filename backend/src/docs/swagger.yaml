@@ -11,6 +11,8 @@ servers:
 tags:
   - name: Stop
     description: Operations related to bus stops
+  - name: Trip
+    description: Operations related to bus trips
 
 paths:
   /api/stop/search:
@@ -27,13 +29,35 @@ paths:
           schema:
             type: string
       responses:
-        200:
+        "200":
           description: List of matching stops found.
           content:
             application/json:
               schema:
                 type: array
                 items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: "67d0cb7c8aa988689a86b281"
+                    name:
+                      type: string
+                      example: "Buenos Aires"
+                    city:
+                      type: string
+                      example: "Buenos Aires"
+                    location:
+                      type: object
+                      properties:
+                        lat:
+                          type: number
+                          example: -34.6037
+                        lng:
+                          type: number
+                          example: -58.3816
+        "404":
+          description: No stops found.
           content:
             application/json:
               schema:
@@ -41,7 +65,176 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: No se encontraron paradas con el criterio de búsqueda.
+                    example: No stops found for the given search criteria.
+
+  /api/stop/get-all:
+    get:
+      summary: Get all stops
+      description: Retrieves a list of all available stops.
+      tags:
+        - Stop
+      responses:
+        "200":
+          description: Successfully retrieved the list of stops.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: "67d0cb7c8aa988689a86b281"
+                    name:
+                      type: string
+                      example: "Buenos Aires"
+                    city:
+                      type: string
+                      example: "Buenos Aires"
+                    location:
+                      type: object
+                      properties:
+                        lat:
+                          type: number
+                          example: -34.6037
+                        lng:
+                          type: number
+                          example: -58.3816
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error retrieving stops."
+
+  /api/trip/search-trips:
+    get:
+      summary: Search for trips by date
+      description: Retrieves trips that match the given departure and destination stops for a specific date.
+      tags:
+        - Trip
+      parameters:
+        - in: query
+          name: id1
+          schema:
+            type: string
+          required: true
+          description: ID of the departure stop
+        - in: query
+          name: id2
+          schema:
+            type: string
+          required: true
+          description: ID of the destination stop
+        - in: query
+          name: fecha
+          schema:
+            type: string
+            format: date
+          required: true
+          description: Date of the trip (YYYY-MM-DD format)
+      responses:
+        "200":
+          description: Successfully retrieved trips
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    trip:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                          description: Trip ID
+                        departureDate:
+                          type: string
+                          format: date-time
+                          description: Departure date and time
+                        arrivalDate:
+                          type: string
+                          format: date-time
+                          description: Arrival date and time
+                        bus:
+                          type: object
+                          properties:
+                            company:
+                              type: string
+                              description: Bus company name
+                        seatType:
+                          type: string
+                          description: Type of seat (e.g., "cama", "semicama")
+                        duration:
+                          type: integer
+                          description: Duration of the trip in minutes
+                        route:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              description: Route ID
+                            name:
+                              type: string
+                              description: Route name
+                    stops:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
+                            description: Stop ID
+                          name:
+                            type: string
+                            description: Stop name
+                          location:
+                            type: object
+                            properties:
+                              lat:
+                                type: number
+                                format: float
+                                description: Latitude coordinate
+                              lng:
+                                type: number
+                                format: float
+                                description: Longitude coordinate
+                          imgUrl:
+                            type: string
+                            format: uri
+                            description: URL of the stop image
+        "400":
+          description: Invalid request parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid query parameters."
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error retrieving trips."
+
+      
+
+
+
+
 
   # /users:
   #   get:
