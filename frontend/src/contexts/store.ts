@@ -8,10 +8,12 @@ interface Trip {
   bus: Bus;
   departureDate: string;
   arrivalDate: string;
+  _id: string;
 }
 interface Stop {
   imgUrl: string;
   name: string;
+  _id: string;
 }
 interface Viaje {
   fecha: string;
@@ -35,6 +37,9 @@ interface StoreState {
   llegada: string;
   viajes: Viaje[];
   ViajesNoEncontrados: boolean;
+  id: string;
+  origenId: string;
+  destinoId: string;
   setOrigen: (newOrigen: string) => void;
   setDestino: (newDestino: string) => void;
   setFecha: (newFecha: string) => void;
@@ -48,6 +53,9 @@ interface StoreState {
   setLlegada: (newLlegada: string) => void;
   setViajesNoEncontrados: (value: boolean) => void;
   setViajes: (newViajes: Viaje[]) => void;
+  setId: (newId: string) => void;
+  setOrigenId: (newOriginId: string) => void;
+  setDestinoId: (newDestinoId: string) => void;
 }
 
 const useStore = create<StoreState>((set) => ({
@@ -64,6 +72,9 @@ const useStore = create<StoreState>((set) => ({
   llegada: "",
   viajes: [],
   ViajesNoEncontrados: false,
+  id: "",
+  origenId: "",
+  destinoId: "",
   setOrigen: (newOrigen) => set({ origen: newOrigen }),
   setDestino: (newDestino) => set({ destino: newDestino }),
   setFecha: (newFecha) => set({ fecha: newFecha }),
@@ -77,6 +88,9 @@ const useStore = create<StoreState>((set) => ({
   setLlegada: (newLlegada) => set({ llegada: newLlegada }),
   setViajes: (newViajes) => set({ viajes: newViajes }), // Función para actualizar el array
   setViajesNoEncontrados: (value) => set({ ViajesNoEncontrados: value }),
+  setId: (newId) => set({ id: newId }),
+  setOrigenId: (newOriginId) => set({ origenId: newOriginId }),
+  setDestinoId: (newDestinoId) => set({ destinoId: newDestinoId }),
 }));
 
 export default useStore;
