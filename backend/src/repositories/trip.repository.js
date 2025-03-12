@@ -3,7 +3,20 @@ import Trip from "../models/trip.model.js";
 
 export const getAllTrips = async () => {
   try {
-    return await Trip.find().populate("route seats.availability.stop");
+    const trips = await Trip.find()
+  .populate("bus", "plate capacity company") // Selecciona solo los campos deseados de "bus"
+  .populate({
+    path: "route",
+    select: "name connections",
+    populate: {
+      path: "connections.from connections.to", // Poblar los nombres de las conexiones
+      select: "name",
+    },
+  })
+  .lean();
+    return trips
+
+    
   } catch (error) {
     throw new Error("Error al obtener los viajes: " + error.message);
   }
@@ -72,6 +85,7 @@ export const findTripsByDate = async (startDate, endDate) => {
     })
     .lean();
 };
+
 // Obtener un viaje con asientos y paradas
 export const getTripWithSeats = async (tripId) => {
   try {
@@ -96,4 +110,21 @@ export const getReservedSeats = async (tripId, fromStopId, toStopId) => {
   }
 };
 
+
+export const getSeatsTrip = async (tripId) => {
+  try {
+    const trip = await Trip.findById(tripId)
+      .populate({ path: "bus", select: "capacity" })
+      .lean();
+
+    if (!trip) {
+      throw new Error("Trip not found");
+    }
+
+    return { tripId: trip._id, seats: trip.bus?.capacity || 0 };
+  } catch (error) {
+    console.error("Error fetching trip seats:", error);
+    throw error;
+  }
+}
 

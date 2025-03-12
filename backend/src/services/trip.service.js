@@ -5,7 +5,7 @@ import {
   findTripsByDate,
   getAllTrips,
   getTripById,
-  getTripWithSeats, 
+  getSeatsTrip, 
   getReservedSeats 
 } from "../repositories/trip.repository.js";
 import { findStopById } from "../repositories/stop.repository.js";
@@ -15,25 +15,39 @@ import { buildGraphFromConnections, canTravel } from "../utils/graph/bfs.graph.j
 
 export const getAvailableSeatsService = async (tripId, fromStopId, toStopId) => {
   try {
-    const trip = await getTripWithSeats(tripId);
-    if (!trip) throw new Error("Viaje no encontrado");
+    
 
-    // 🔹 Obtener los asientos reservados desde el repositorio
     const reservedSeats = await getReservedSeats(tripId, fromStopId, toStopId);
+    const { seats } = await getSeatsTrip(tripId)
 
-    // 🔹 Filtrar los asientos disponibles excluyendo los reservados
-    const availableSeats = trip.seats.map(seat => ({
-      seatNumber: seat.seatNumber,
-      isAvailable: !reservedSeats.includes(seat.seatNumber), // Si está reservado, no está disponible
+     // Crear un array con todos los asientos y su disponibilidad
+     const seatsAvailability = Array.from({ length: seats }, (_, i) => ({
+      seat: i + 1,
+      available: !reservedSeats.includes(i + 1),
     }));
 
-    return availableSeats;
+    return seatsAvailability;
 
   } catch (error) {
     console.error("Error en getAvailableSeatsService:", error);
     throw error;
   }
 };
+
+//const trip = await getTripWithSeats(tripId);
+    //if (!trip) throw new Error("Viaje no encontrado");
+
+    // 🔹 Obtener los asientos reservados desde el repositorio
+
+    // 🔹 Filtrar los asientos disponibles excluyendo los reservados
+    
+    /*
+    const availableSeats = trip.seats.map(seat => ({
+      seatNumber: seat.seatNumber,
+      isAvailable: !reservedSeats.includes(seat.seatNumber), // Si está reservado, no está disponible
+    }));
+
+    */
 
 // Obtener todos los viajes
 export const obtenerViajesService = async () => {

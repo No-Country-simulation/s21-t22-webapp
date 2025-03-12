@@ -23,7 +23,7 @@ export const getAvailableSeatsController = async (req, res) => {
 
     const availableSeats = await getAvailableSeatsService(cleanTripId, cleanFromStopId, cleanToStopId);
 
-    res.json({ availableSeats });
+    res.json( availableSeats );
   } catch (error) {
     console.error("Error en getAvailableSeatsController:", error);
     res.status(500).json({ message: "Error al obtener los asientos disponibles.", error: error.message });

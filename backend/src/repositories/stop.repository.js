@@ -40,4 +40,11 @@ export const findStopById = async (id) => {
   return await Stop.findById(id).select("name location imgUrl").lean();
 };
 
-export default { findStopsByQuery };
+const getAllStops = async () => {
+  return await Stop.find()
+    .select("name city location") // Solo incluye estos campos
+    .sort({ name: 1 })
+    .lean(); // Convierte a objetos JSON simples
+};
+
+export default { findStopsByQuery, getAllStops };
