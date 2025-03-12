@@ -95,6 +95,7 @@ const Viajes = () => {
       <Box
         sx={{
           minHeight: "90vh",
+          height: "auto",
           display: "flex",
           flexDirection: "column",
         }}

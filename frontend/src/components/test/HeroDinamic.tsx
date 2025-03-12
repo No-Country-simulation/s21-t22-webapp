@@ -241,6 +241,7 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
                   px: 4,
                   py: 1.5,
                   whiteSpace: "nowrap",
+                  ml: 2,
                 }}
               >
                 Buscar Viaje
