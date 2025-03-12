@@ -24,6 +24,8 @@ const seedTrips = async () => {
   await connectDB();
 
   try {
+    console.log("Conectado a la BD. Obteniendo datos...");
+
     // Obtener datos de referencia
     const buses = await Bus.find();
     const routes = await Route.find();
@@ -33,33 +35,47 @@ const seedTrips = async () => {
       throw new Error("Asegúrate de tener buses, rutas y paradas en la BD");
     }
 
-    // Crear viajes
-    const trips = [
-      {
-        bus: buses[0]._id,
-        route: routes[0]._id,
-        departureDate: new Date(),
-        arrivalDate: new Date(new Date().getTime() + 5 * 60 * 60 * 1000),
-        duration: 120,
-        seatType: 'semicama', // 5 horas después
-        seats: Array.from({ length: 40 }, (_, i) => ({
-          seatNumber: i + 1,
-          availability: stops.map((stop) => ({
-            stop: stop._id,
-            isAvailable: Math.random() < 0.8, // 80% de asientos disponibles
-          })),
-        })),
-      },
-    ];
+    console.log(`Buses encontrados: ${buses.length}`);
+    console.log(`Rutas encontradas: ${routes.length}`);
+    console.log(`Paradas encontradas: ${stops.length}`);
 
-    await Trip.deleteMany(); // Limpiar colección antes de sembrar
+    // Borrar datos previos solo si existen
+    const existingTrips = await Trip.countDocuments();
+    if (existingTrips > 0) {
+      console.log("Eliminando viajes existentes...");
+      await Trip.deleteMany();
+    }
+
+    // Crear múltiples viajes
+    const trips = Array.from({ length: 50 }, (_, index) => {
+      const randomBus = buses[Math.floor(Math.random() * buses.length)];
+      const randomRoute = routes[Math.floor(Math.random() * routes.length)];
+
+      // Fecha de salida aleatoria dentro de los próximos 7 días
+      const departureDate = new Date();
+      departureDate.setDate(departureDate.getDate() + Math.floor(Math.random() * 7));
+
+      const arrivalDate = new Date(departureDate.getTime() + (3 + Math.random() * 5) * 60 * 60 * 1000); // 3 a 8 horas después
+
+      return {
+        bus: randomBus._id,
+        route: randomRoute._id,
+        departureDate,
+        arrivalDate,
+        duration: Math.floor((arrivalDate - departureDate) / (60 * 1000)), // en minutos
+        seatType: Math.random() < 0.5 ? "semicama" : "cama",
+      };
+    });
+
+    // Insertar viajes
     await Trip.insertMany(trips);
 
-    console.log("Seeding completo");
-    process.exit();
+    console.log(`✅ Seeding completo: ${trips.length} viajes creados.`);
   } catch (error) {
-    console.error("Error en seeding", error);
-    process.exit(1);
+    console.error("❌ Error en seeding:", error);
+  } finally {
+    mongoose.connection.close();
+    console.log("Conexión cerrada.");
   }
 };
 
