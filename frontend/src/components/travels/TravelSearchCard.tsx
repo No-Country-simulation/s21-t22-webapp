@@ -103,9 +103,9 @@ const TravelSearchCard: React.FC<TravelSearchCardProps> = ({
             <Typography variant="body2" color="text.secondary">
               Duración: {duration}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            {/* <Typography variant="body2" color="text.secondary">
               Asientos disponibles: {seatsAvailable}
-            </Typography>
+            </Typography> */}
             <Typography variant="body2" color="text.secondary">
               Salida: {salida}
             </Typography>
