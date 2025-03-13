@@ -8,6 +8,7 @@ import tripRouter from "./trip.route.js";
 import stopRouter from "./stop.route.js";
 import reservationRouter from "./reservation.route.js";
 import awsRouter from "./s3.route.js";
+import mercadoRouter from "./mercado.route.js"
 
 const indexRouter = express.Router();
 
@@ -20,6 +21,6 @@ indexRouter.use("/trip", tripRouter);
 indexRouter.use("/stop", stopRouter);
 indexRouter.use("/reservation", reservationRouter);
 indexRouter.use("/s3", awsRouter);
-
+indexRouter.use("/mercado", mercadoRouter)
 
 export default indexRouter;

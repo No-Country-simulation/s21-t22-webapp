@@ -59,8 +59,9 @@ const TravelSearchCard: React.FC<TravelSearchCardProps> = ({
         sx={{
           display: "flex",
           flexDirection: "row",
-          width: 1000,
-          height: 300,
+          width: "100%", // Cambié el width a 100% para hacer que se adapte al tamaño del contenedor
+          maxWidth: 1000, // Agregué un máximo ancho para evitar que el card se haga muy grande
+          height: "auto",
           boxShadow: 3,
           borderRadius: 2,
           overflow: "hidden",
@@ -70,7 +71,12 @@ const TravelSearchCard: React.FC<TravelSearchCardProps> = ({
           component="img"
           image={imageOrigin}
           alt="travel"
-          sx={{ width: 200, height: "100%" }}
+          sx={{
+            width: "30%", // Hago que la imagen ocupe un 30% del card
+            height: "auto",
+            objectFit: "cover",
+            marginRight: 2, // Añadí margen a la derecha para separar la imagen del contenido
+          }}
         />
         <CardContent
           sx={{
@@ -115,17 +121,13 @@ const TravelSearchCard: React.FC<TravelSearchCardProps> = ({
           >
             <Typography variant="body2" color="text.secondary">
               {direct ? (
-                <>
-                  <Typography variant="body2" color="text.secondary">
-                    Viaje directo
-                  </Typography>
-                </>
+                <Typography variant="body2" color="text.secondary">
+                  Viaje directo
+                </Typography>
               ) : (
-                <>
-                  <Typography variant="body2" color="text.secondary">
-                    Viaje con paradas
-                  </Typography>
-                </>
+                <Typography variant="body2" color="text.secondary">
+                  Viaje con paradas
+                </Typography>
               )}
             </Typography>
           </Box>
@@ -158,7 +160,12 @@ const TravelSearchCard: React.FC<TravelSearchCardProps> = ({
           component="img"
           image={imageDestination}
           alt="travel"
-          sx={{ width: 200, height: "100%" }}
+          sx={{
+            width: "30%", // Hago que la imagen ocupe un 30% del card
+            height: "auto",
+            objectFit: "cover",
+            marginLeft: 2, // Añadí margen a la izquierda para separar la imagen del contenido
+          }}
         />
       </Card>
     </Container>

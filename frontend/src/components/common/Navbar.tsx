@@ -17,8 +17,6 @@ import { nanoid } from "nanoid";
 
 const pages = [
   { label: "¡Prepara tu viaje!", link: "/viajes" },
-  { label: "enlace 2", link: "" },
-  { label: "enlace 3", link: "" },
 ];
 const settings = [
   { label: "Iniciar Sesión", link: "/login" },
@@ -142,7 +140,7 @@ function NavBar() {
               <Button
                 key={nanoid()}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{ my: 2, color: "white", display: "block", paddingRight: "20px" }}
                 component={NavLink}
                 to={page.link}
               >
