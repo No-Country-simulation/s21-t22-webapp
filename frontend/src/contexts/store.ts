@@ -4,6 +4,7 @@ interface Bus {
 }
 interface Trip {
   duration: number;
+  price: number;
   seatType: string;
   bus: Bus;
   departureDate: string;
@@ -17,7 +18,6 @@ interface Stop {
 }
 interface Viaje {
   fecha: string;
-  precio: string;
   trip: Trip;
   stops: Stop[];
   salida: string;

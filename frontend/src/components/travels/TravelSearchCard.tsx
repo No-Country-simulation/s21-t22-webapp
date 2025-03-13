@@ -143,7 +143,7 @@ const TravelSearchCard: React.FC<TravelSearchCardProps> = ({
               </Typography>
             </Box>
             <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-              ${price}
+              {price}
             </Typography>
           </Box>
           <Button

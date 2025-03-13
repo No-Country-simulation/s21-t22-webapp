@@ -29,6 +29,7 @@ interface DetallesReserva {
   llegada: string;
   correo: string;
   duracion: string;
+  precio: string;
 }
 
 const style = {
@@ -53,8 +54,17 @@ export default function DatosTrip() {
   };
 
   // Obtén los datos del store
-  const { origen, destino, fecha, bus, compañia, salida, llegada, duracion } =
-    useStore();
+  const {
+    origen,
+    destino,
+    fecha,
+    bus,
+    compañia,
+    salida,
+    llegada,
+    duracion,
+    precio,
+  } = useStore();
 
   const {
     register,
@@ -76,6 +86,7 @@ export default function DatosTrip() {
       llegada: llegada || "00:00", // Asigna un valor por defecto si no está definido
       correo: `${data.correo}`,
       duracion,
+      precio,
     };
 
     // Actualizar el estado
@@ -164,6 +175,9 @@ export default function DatosTrip() {
                 <li>Clase: {detalles.clase}</li>
                 <li>Agencia: {detalles.agencia}</li>
                 <li>Duracion estimada: {detalles.duracion}</li>
+                <li>
+                  Precio: <strong>{detalles.precio}</strong>
+                </li>
               </ul>
             ) : (
               "No hay detalles disponibles."

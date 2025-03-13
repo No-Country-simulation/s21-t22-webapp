@@ -35,6 +35,7 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
     salida,
     llegada,
     duracion,
+    precio,
   } = useStore();
   const location = useLocation();
   //corrección de SPA (navegar hacia arriba)
@@ -122,6 +123,7 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
           width: !origen || !destino ? "100%" : "70vw",
           p: 3,
           height: !origen || !destino ? "50vh" : "auto",
+          position: "relative",
         }}
       >
         {!origen || !destino ? (
@@ -175,6 +177,18 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
                 <CalendarMonthIcon /> {fecha}
               </Typography>
             </Stack>
+            <Typography
+              variant="h4"
+              sx={{
+                position: "absolute",
+                right: "-20vw",
+                top: "50%",
+                transform: "translateY(-50%)",
+                fontStyle: "italic",
+              }}
+            >
+              {precio}
+            </Typography>
           </>
         )}
       </Box>

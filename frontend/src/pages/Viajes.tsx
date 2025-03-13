@@ -1,9 +1,7 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import MainLayout from "../components/common/MainLayout";
-import TravelSearchCard, {
-  TravelSearchCardProps,
-} from "../components/travels/TravelSearchCard";
+import TravelSearchCard from "../components/travels/TravelSearchCard"; // TravelSearchCardProps,
 import type { TravelData } from "../components/test/HeroDinamic";
 import useStore from "../contexts/store";
 import HeroDinamic from "../components/test/HeroDinamic";
@@ -33,7 +31,7 @@ const formatFecha = (isoDate: string): string => {
 
 const Viajes = () => {
   const [searchParams] = useSearchParams();
-  const [travelInfo, setTravelInfo] = useState<TravelSearchCardProps[]>([]);
+  // const [travelInfo, setTravelInfo] = useState<TravelSearchCardProps[]>([]);
   // const [error, setError] = useState(false);
   const { viajes, ViajesNoEncontrados } = useStore();
   // formateo de  duracion de viaje
@@ -48,6 +46,13 @@ const Viajes = () => {
       return `${horas} horas y ${minutos} minutos`;
     }
     console.log(`${horas} horas y ${minutos} minutos`);
+  }
+  // formateo de precio
+  function formatToARS(number: number): string {
+    return new Intl.NumberFormat("es-AR", {
+      style: "currency",
+      currency: "ARS",
+    }).format(number);
   }
 
   const navigate = useNavigate();
@@ -159,7 +164,7 @@ const Viajes = () => {
                   origin={trip.stops[0].name}
                   destination={trip.stops[1].name}
                   date={fecha}
-                  price={trip.precio}
+                  price={formatToARS(trip.trip.price)}
                   busType={trip.trip.seatType}
                   duration={formatDuration(trip.trip.duration)}
                   salida={salidaFormateada}
@@ -174,7 +179,7 @@ const Viajes = () => {
                       trip.trip.bus.company,
                       trip.stops[0].name,
                       trip.stops[1].name,
-                      trip.precio,
+                      formatToARS(trip.trip.price),
                       trip.trip.seatType,
                       fecha,
                       formatDuration(trip.trip.duration),
