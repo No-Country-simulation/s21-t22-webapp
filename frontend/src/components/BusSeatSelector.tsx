@@ -41,11 +41,11 @@ export default function BusSeatSelector({
   };
 
   useEffect(() => {
-    console.log("Asientos seleccionados:", selectedSeats);
+    setAsientos(selectedSeats);
   }, [selectedSeats]);
 
   // contextos de zustand
-  const { id, origenId, destinoId } = useStore();
+  const { id, origenId, destinoId, setAsientos } = useStore();
 
   // Llamada a asientos disponibles para trip id especifico
   useEffect(() => {

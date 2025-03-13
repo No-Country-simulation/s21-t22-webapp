@@ -23,6 +23,7 @@ interface Viaje {
   salida: string;
   llegada: string;
 }
+
 interface StoreState {
   origenImg: string;
   destinoImg: string;
@@ -40,6 +41,7 @@ interface StoreState {
   id: string;
   origenId: string;
   destinoId: string;
+  asientos: number[];
   setOrigen: (newOrigen: string) => void;
   setDestino: (newDestino: string) => void;
   setFecha: (newFecha: string) => void;
@@ -56,6 +58,7 @@ interface StoreState {
   setId: (newId: string) => void;
   setOrigenId: (newOriginId: string) => void;
   setDestinoId: (newDestinoId: string) => void;
+  setAsientos: (newAsientos: number[]) => void;
 }
 
 const useStore = create<StoreState>((set) => ({
@@ -75,6 +78,7 @@ const useStore = create<StoreState>((set) => ({
   id: "",
   origenId: "",
   destinoId: "",
+  asientos: [],
   setOrigen: (newOrigen) => set({ origen: newOrigen }),
   setDestino: (newDestino) => set({ destino: newDestino }),
   setFecha: (newFecha) => set({ fecha: newFecha }),
@@ -91,6 +95,7 @@ const useStore = create<StoreState>((set) => ({
   setId: (newId) => set({ id: newId }),
   setOrigenId: (newOriginId) => set({ origenId: newOriginId }),
   setDestinoId: (newDestinoId) => set({ destinoId: newDestinoId }),
+  setAsientos: (newAsientos) => set({ asientos: newAsientos }),
 }));
 
 export default useStore;

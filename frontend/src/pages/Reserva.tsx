@@ -256,11 +256,13 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
               {compañia}
             </Typography>
             <Typography variant="h6" sx={style}>
-              <Typography sx={styleGris}>Horario de salida:</Typography>
+              <Typography sx={styleGris}>Fecha y horario de salida:</Typography>
               {salida}
             </Typography>
             <Typography variant="h6" sx={style}>
-              <Typography sx={styleGris}>Horario de llegada:</Typography>
+              <Typography sx={styleGris}>
+                Fecha y horario de llegada:
+              </Typography>
               {llegada}
             </Typography>
           </Stack>

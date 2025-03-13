@@ -22,7 +22,7 @@ interface DetallesReserva {
   destino: string;
   fecha: string;
   pasajero: string;
-  asiento: number;
+  asiento: string[];
   clase: string;
   agencia: string;
   salida: string;
@@ -64,6 +64,7 @@ export default function DatosTrip() {
     llegada,
     duracion,
     precio,
+    asientos,
   } = useStore();
 
   const {
@@ -73,13 +74,18 @@ export default function DatosTrip() {
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    // extraemos asientos del array
+    const asientosSeleccionados = asientos.map((numero: number) =>
+      numero.toString()
+    );
+
     // Crear el objeto detalles
     const detallesObj: DetallesReserva = {
       origen,
       destino,
       fecha,
       pasajero: `${data.nombre} ${data.apellido}`,
-      asiento: 1, // Asigna un valor por defecto o obtén el asiento seleccionado
+      asiento: asientosSeleccionados,
       clase: bus || "semicama", // Asigna un valor por defecto si no está definido
       agencia: compañia || "Desconocida", // Asigna un valor por defecto si no está definido
       salida: salida || "00:00", // Asigna un valor por defecto si no está definido
@@ -171,7 +177,7 @@ export default function DatosTrip() {
                 <li>Fecha: {detalles.fecha}</li>
                 <li>Salida: {detalles.salida}</li>
                 <li>Llegada: {detalles.llegada}</li>
-                <li>Asiento: {detalles.asiento}</li>
+                <li>Asientos: {detalles.asiento.join(", ")}</li>
                 <li>Clase: {detalles.clase}</li>
                 <li>Agencia: {detalles.agencia}</li>
                 <li>Duracion estimada: {detalles.duracion}</li>
