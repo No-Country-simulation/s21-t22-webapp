@@ -209,12 +209,12 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
               ""
             )}
           </Typography>
-          <Typography
+          {/* <Typography
             variant="h5"
             sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
           >
             Asientos disponibles:&nbsp;5
-          </Typography>
+          </Typography> */}
           <Typography
             variant="h5"
             sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
