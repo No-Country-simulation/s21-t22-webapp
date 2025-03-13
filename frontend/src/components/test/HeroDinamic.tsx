@@ -102,6 +102,7 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
         return res.json();
       })
       .then((data) => {
+        console.log(data);
         // Si la respuesta es exitosa y hay datos
         setViajes(data);
         setViajesNoEncontrados(false); // Desactivar el mensaje de "no encontrados"

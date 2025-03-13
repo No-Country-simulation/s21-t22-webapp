@@ -36,6 +36,19 @@ const Viajes = () => {
   const [travelInfo, setTravelInfo] = useState<TravelSearchCardProps[]>([]);
   // const [error, setError] = useState(false);
   const { viajes, ViajesNoEncontrados } = useStore();
+  // formateo de  duracion de viaje
+  function formatDuration(horaEnBruto: number) {
+    const horas = Math.floor(horaEnBruto / 60);
+    const minutos = horaEnBruto % 60;
+    if (horas === 0) {
+      return `${minutos}min`;
+    } else if (minutos === 0) {
+      return `${horas} hrs`;
+    } else {
+      return `${horas} horas y ${minutos} minutos`;
+    }
+    console.log(`${horas} horas y ${minutos} minutos`);
+  }
 
   const navigate = useNavigate();
 
@@ -148,7 +161,7 @@ const Viajes = () => {
                   date={fecha}
                   price={trip.precio}
                   busType={trip.trip.seatType}
-                  duration={""}
+                  duration={formatDuration(trip.trip.duration)}
                   salida={salidaFormateada}
                   llegada={llegadaFormateada}
                   seatsAvailable={5}
@@ -164,7 +177,7 @@ const Viajes = () => {
                       trip.precio,
                       trip.trip.seatType,
                       fecha,
-                      "",
+                      formatDuration(trip.trip.duration),
                       salidaFormateada,
                       llegadaFormateada,
                       trip.trip._id,

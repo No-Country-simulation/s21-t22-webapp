@@ -40,9 +40,9 @@ const TravelSearchCard: React.FC<TravelSearchCardProps> = ({
   duration,
   salida,
   llegada,
-  seatsAvailable,
+  // seatsAvailable,
   rating,
-  direct,
+  // direct,
   onClick,
 }) => {
   return (
@@ -119,7 +119,7 @@ const TravelSearchCard: React.FC<TravelSearchCardProps> = ({
             alignItems="center"
             mt={1}
           >
-            <Typography variant="body2" color="text.secondary">
+            {/* <Typography variant="body2" color="text.secondary">
               {direct ? (
                 <Typography variant="body2" color="text.secondary">
                   Viaje directo
@@ -129,7 +129,7 @@ const TravelSearchCard: React.FC<TravelSearchCardProps> = ({
                   Viaje con paradas
                 </Typography>
               )}
-            </Typography>
+            </Typography> */}
           </Box>
           <Box
             display="flex"

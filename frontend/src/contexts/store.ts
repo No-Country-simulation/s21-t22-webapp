@@ -3,7 +3,7 @@ interface Bus {
   company: string;
 }
 interface Trip {
-  // duration: number;
+  duration: number;
   seatType: string;
   bus: Bus;
   departureDate: string;

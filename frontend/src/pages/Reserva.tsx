@@ -34,6 +34,7 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
     fecha,
     salida,
     llegada,
+    duracion,
   } = useStore();
   const location = useLocation();
   //corrección de SPA (navegar hacia arriba)
@@ -215,6 +216,12 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
           >
             Asientos disponibles:&nbsp;5
           </Typography> */}
+          <Typography
+            variant="h5"
+            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+          >
+            Duración:&nbsp;{duracion}
+          </Typography>
           <Typography
             variant="h5"
             sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}

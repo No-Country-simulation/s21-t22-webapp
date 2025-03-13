@@ -28,6 +28,7 @@ interface DetallesReserva {
   salida: string;
   llegada: string;
   correo: string;
+  duracion: string;
 }
 
 const style = {
@@ -52,7 +53,8 @@ export default function DatosTrip() {
   };
 
   // Obtén los datos del store
-  const { origen, destino, fecha, bus, compañia, salida, llegada } = useStore();
+  const { origen, destino, fecha, bus, compañia, salida, llegada, duracion } =
+    useStore();
 
   const {
     register,
@@ -73,6 +75,7 @@ export default function DatosTrip() {
       salida: salida || "00:00", // Asigna un valor por defecto si no está definido
       llegada: llegada || "00:00", // Asigna un valor por defecto si no está definido
       correo: `${data.correo}`,
+      duracion,
     };
 
     // Actualizar el estado
@@ -151,15 +154,16 @@ export default function DatosTrip() {
           <Typography id="modal-modal-description" sx={{ mt: 2, p: 5 }}>
             {detalles ? (
               <ul>
+                <li>Pasajero: {detalles.pasajero}</li>
                 <li>Origen: {detalles.origen}</li>
                 <li>Destino: {detalles.destino}</li>
                 <li>Fecha: {detalles.fecha}</li>
-                <li>Pasajero: {detalles.pasajero}</li>
+                <li>Salida: {detalles.salida}</li>
+                <li>Llegada: {detalles.llegada}</li>
                 <li>Asiento: {detalles.asiento}</li>
                 <li>Clase: {detalles.clase}</li>
                 <li>Agencia: {detalles.agencia}</li>
-                <li>Salida: {detalles.salida}</li>
-                <li>Llegada: {detalles.llegada}</li>
+                <li>Duracion estimada: {detalles.duracion}</li>
               </ul>
             ) : (
               "No hay detalles disponibles."
