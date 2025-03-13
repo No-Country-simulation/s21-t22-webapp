@@ -12,3 +12,7 @@
 .destino-clippath .image-right {
   clip-path: polygon(100px 0, 100% 0, 100% 100%, 0 100%); /* Recorte diagonal */
 }
+.hrs-80 {
+  width: 80vw;
+  margin: auto;
+}

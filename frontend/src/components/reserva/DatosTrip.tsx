@@ -1,5 +1,4 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import "./DatosTrip.css";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -8,6 +7,7 @@ import Modal from "@mui/material/Modal";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import useStore from "../../contexts/store";
 import { useNavigate } from "react-router-dom";
+import "./DatosTrip.css";
 
 // Interfaz para el formulario
 interface IFormInput {

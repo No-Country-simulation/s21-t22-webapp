@@ -22,7 +22,17 @@ interface ReservaProps {
   seats?: Seat[];
   quantity?: number;
 }
-
+const style = {
+  m: 1,
+  display: "flex",
+  justifyContent: "space-between",
+};
+const styleGris = {
+  color: "gray",
+  display: "inline",
+  fontSize: "1.1rem",
+  fontStyle: "italic",
+};
 export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
   const {
     origenImg,
@@ -128,7 +138,7 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
       >
         {!origen || !destino ? (
           <>
-            <Typography variant="h5">Aun no has reservado tu viaje</Typography>
+            <Typography variant="h6">Aun no has reservado tu viaje</Typography>
             <Button
               component={Link}
               to="/viajes"
@@ -143,7 +153,7 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
             <Stack spacing={2}>
               <Typography variant="h6">Origen</Typography>
               <Typography
-                variant="h5"
+                variant="h6"
                 sx={{ display: "flex", alignItems: "center" }}
               >
                 <TripOriginIcon sx={{ color: "#1d2a4a" }} />
@@ -154,7 +164,7 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
             <Stack spacing={2}>
               <Typography variant="h6">Destino</Typography>
               <Typography
-                variant="h5"
+                variant="h6"
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -168,7 +178,7 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
             <Stack spacing={2}>
               <Typography variant="h6">Fecha</Typography>
               <Typography
-                variant="h5"
+                variant="h6"
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -178,7 +188,7 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
               </Typography>
             </Stack>
             <Typography
-              variant="h4"
+              variant="h6"
               sx={{
                 position: "absolute",
                 right: "-20vw",
@@ -203,66 +213,73 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
           >
             Detalles del bus
           </Typography>
-          <Typography
-            variant="h5"
-            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
+          <Stack
+            sx={{
+              width: "40vw",
+              minWidth: "max-content",
+              m: "0 auto 10vh auto",
+            }}
           >
-            Clase:&nbsp;&nbsp;
-            {bus && bus === "semicama" ? (
-              <>
-                <AirlineSeatReclineExtraIcon sx={{ color: "grey" }} />
-                &nbsp;&nbsp;
-                {bus}
-              </>
-            ) : bus && bus === "cama" ? (
-              <>
-                <AirlineSeatIndividualSuiteIcon sx={{ color: "grey" }} />
-                &nbsp;&nbsp;
-                {bus}
-              </>
-            ) : (
-              ""
-            )}
-          </Typography>
-          {/* <Typography
-            variant="h5"
-            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
-          >
-            Asientos disponibles:&nbsp;5
-          </Typography> */}
+            {" "}
+            <Typography variant="h6" sx={style}>
+              <Typography sx={styleGris}>Clase:</Typography>
+
+              {bus && bus === "semicama" ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <AirlineSeatReclineExtraIcon sx={{ color: "grey" }} />
+
+                  {bus}
+                </Box>
+              ) : bus && bus === "cama" ? (
+                <>
+                  <AirlineSeatIndividualSuiteIcon sx={{ color: "grey" }} />
+
+                  {bus}
+                </>
+              ) : (
+                ""
+              )}
+            </Typography>
+            <Typography variant="h6" sx={style}>
+              <Typography sx={styleGris}>Duración:</Typography>
+
+              {duracion}
+            </Typography>
+            <Typography variant="h6" sx={style}>
+              <Typography sx={styleGris}>Agencia:</Typography>
+
+              {compañia}
+            </Typography>
+            <Typography variant="h6" sx={style}>
+              <Typography sx={styleGris}>Horario de salida:</Typography>
+              {salida}
+            </Typography>
+            <Typography variant="h6" sx={style}>
+              <Typography sx={styleGris}>Horario de llegada:</Typography>
+              {llegada}
+            </Typography>
+          </Stack>
+          <hr className="hrs-80" />
           <Typography
-            variant="h5"
-            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
-          >
-            Duración:&nbsp;{duracion}
-          </Typography>
-          <Typography
-            variant="h5"
-            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
-          >
-            Agencia:&nbsp;{compañia}
-          </Typography>
-          <Typography
-            variant="h5"
-            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
-          >
-            Horario de salida:&nbsp;{salida}
-          </Typography>
-          <Typography
-            variant="h5"
-            sx={{ m: 5, display: "flex", alignItems: "center", pl: "30vw" }}
-          >
-            Horario de llegada:&nbsp;{llegada}
-          </Typography>
-          <Typography
-            variant="h5"
-            sx={{ m: 6, display: "flex", alignItems: "center", pl: "15vw" }}
+            variant="h6"
+            sx={{
+              m: 6,
+              display: "flex",
+              alignItems: "center",
+              pl: "15vw",
+            }}
           >
             Selecciona tus asientos
           </Typography>
           <BusSeatSelector seats={seats || []} quantity={quantity || 0} />
+          <hr className="hrs-80" />
           <Typography variant="h4" sx={{ m: 3 }}>
-            Tus datos
+            Completa con tus datos personales
           </Typography>
           <DatosTrip />
         </>

@@ -149,6 +149,16 @@ const Viajes = () => {
           </Typography>
         ) : (
           <>
+            <Typography
+              variant="h4"
+              sx={{
+                textAlign: "center",
+                m: 5,
+                p: 0,
+              }}
+            >
+              ¡Si hay viajes!
+            </Typography>
             {viajes.map((trip) => {
               // Formatea las fechas de salida y llegada
               const salidaFormateada = formatDate(trip.trip.departureDate);
