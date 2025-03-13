@@ -236,11 +236,18 @@ export const Reserva: React.FC<ReservaProps> = ({ seats, quantity }) => {
                   {bus}
                 </Box>
               ) : bus && bus === "cama" ? (
-                <>
-                  <AirlineSeatIndividualSuiteIcon sx={{ color: "grey" }} />
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <AirlineSeatIndividualSuiteIcon
+                    sx={{ color: "grey", mx: 2 }}
+                  />
 
                   {bus}
-                </>
+                </Box>
               ) : (
                 ""
               )}
