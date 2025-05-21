@@ -1,23 +1,24 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
 import { nanoid } from "nanoid";
+import busicon from "../../assets/busicon.png";
 
-const pages = [
-  { label: "¡Prepara tu viaje!", link: "/viajes" },
-];
+const pages = [{ label: "¡Prepara tu viaje!", link: "/viajes" }];
+
 const settings = [
   { label: "Iniciar Sesión", link: "/login" },
   { label: "Perfil", link: "/profile" },
@@ -36,6 +37,7 @@ function NavBar() {
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -50,52 +52,24 @@ function NavBar() {
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ bgcolor: "#70B734" }}>
         <Toolbar disableGutters>
-          <DirectionsBusIcon
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-          />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Tour Bus
-          </Typography>
+          <img src={busicon} alt="Bus icon" style={{ maxHeight: "10vh" }} />
 
+          {/* Menú para móviles */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
+              aria-label="open menu"
               onClick={handleOpenNavMenu}
               color="inherit"
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+              transformOrigin={{ vertical: "top", horizontal: "left" }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
@@ -107,66 +81,53 @@ function NavBar() {
                   component={NavLink}
                   to={page.link}
                 >
-                  <Typography sx={{ textAlign: "center" }}>
-                    {page.label}
-                  </Typography>
+                  <Typography textAlign="center">{page.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <DirectionsBusIcon
-            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
-          />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+
+          {/* NavLinks desktop */}
+          <Box
             sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+              display: { xs: "none", md: "flex" },
+              ml: 4, // 👈 ESPACIO aplicado entre ícono y links
             }}
           >
-            Reserva tu bus
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={nanoid()}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block", paddingRight: "20px" }}
                 component={NavLink}
                 to={page.link}
+                sx={{
+                  my: 2,
+                  display: "block",
+                  pr: 2,
+                  fontFamily: "var(--font-main)",
+                  color: "#1E1E1E",
+                  fontSize: "1.3rem",
+                  textTransform: "capitalize",
+                }}
               >
                 {page.label}
               </Button>
             ))}
           </Box>
+
+          {/* Avatar y menú de usuario */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Usuario" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}
-              id="menu-appbar"
               anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
+              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
@@ -177,9 +138,7 @@ function NavBar() {
                   component={NavLink}
                   to={setting.link}
                 >
-                  <Typography sx={{ textAlign: "center" }}>
-                    {setting.label}
-                  </Typography>
+                  <Typography textAlign="center">{setting.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>

@@ -232,10 +232,11 @@ const HeroDinamic = ({ travelData }: { travelData: TravelData }) => {
                 sx={{
                   width: { xs: "100%", md: "auto" },
                   minWidth: { md: "200px" },
-                  bgcolor: "primary.main",
-                  color: "white",
+                  bgcolor: "#70B734",
+                  fontFamily: "var(--font-main)",
+                  color: "#1E1E1E",
                   "&:hover": {
-                    bgcolor: "primary.dark",
+                    bgcolor: "green",
                   },
                   px: 4,
                   py: 1.5,

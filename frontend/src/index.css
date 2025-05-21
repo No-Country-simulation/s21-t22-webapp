@@ -1,8 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap");
+:root {
+  --font-main: "Poetsen One", sans-serif;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 h2 {
   color: white;
 }
@@ -11,6 +17,7 @@ h4 {
   padding-left: 15vw;
   color: #1d2a4a;
 }
+
 /* button {
   width: max-content;
   margin: auto !important;
