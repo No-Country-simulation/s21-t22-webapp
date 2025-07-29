@@ -107,6 +107,9 @@ function NavBar() {
                   pr: 2,
                   fontFamily: "var(--font-main)",
                   color: "#1E1E1E",
+                  "&:hover": {
+                    color: "#fefefe", // fondo
+                  },
                   fontSize: "1.3rem",
                   textTransform: "capitalize",
                 }}
