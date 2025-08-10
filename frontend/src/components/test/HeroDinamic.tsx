@@ -17,6 +17,7 @@ import CustomAutocomplete from "../home/Autocomplete";
 import CustomDatePicker from "../home/Datepicker";
 import useStore from "../../contexts/store";
 import { useNavigate } from "react-router-dom";
+import fondoDinamic from "../../assets/fondo-hero-dinamic.avif";
 
 // Función para buscar lugares en la API
 const searchPlaces = async (
@@ -36,9 +37,7 @@ const searchPlaces = async (
   }
 };
 
-const backgroundImage =
-  "https://www.infobae.com/resizer/v2/https%3A%2F%2Fs3.amazonaws.com%2Farc-wordpress-client-uploads%2Finfobae-wp%2Fwp-content%2Fuploads%2F2018%2F05%2F16163658%2Fmicros-larga-distancia-Getty-Images.jpg?auth=719b522476893895b314fbd2a2b32db914361f6be2e99aad2c7afe065edfdc3f&smart=true&width=1200&height=675&quality=85";
-
+const backgroundImage = fondoDinamic;
 // Tipados
 export type TravelData = {
   origin: string | null;
