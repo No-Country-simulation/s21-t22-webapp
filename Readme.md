@@ -10,8 +10,8 @@ Este proyecto es una aplicación de reserva de viajes para participar en el sele
 
 ## 🚀 Enlaces de despliegue
 
-- **Backend**: [RTB-API](https://reserva-tu-bus.netlify.app/)
-- **Frontend**: --
+- **Backend**: --
+- **Frontend**: [RTB-API](https://reserva-tu-bus.netlify.app/)
 
 ## 🚀 Instalación y configuración
 ### 1️⃣ Clonar el repositorio
